@@ -1,0 +1,126 @@
+﻿<ribbon:RibbonWindow x:Class="IPReport.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="clr-namespace:IPReport.ViewModel"
+		xmlns:vw="clr-namespace:IPReport.View"
+		xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+        Title="IPReport" Height="781" Width="956" Icon="/IPReport;component/Resources/world_big.png">
+	
+	<Window.Resources>
+		<ResourceDictionary>
+			<BooleanToVisibilityConverter x:Key="FalseToCollapsed"/>
+
+			<!--<DataTemplate x:Key="WorkspaceTabItemTemplate">
+				<ContentPresenter
+				Content="{Binding Path=DisplayName}"/>
+			</DataTemplate>-->
+
+            <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
+                <vw:InventoryView DataContext="{Binding}"/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:SalesDashboardViewModel}">
+                <vw:SalesDashboardView DataContext="{Binding}"/>
+            </DataTemplate>
+            <!--<DataTemplate DataType="{x:Type vm:AllDepartmentsViewModel}">
+				<vw:AllDepartmentsView/>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type vm:StoreViewModel}">
+				<vw:StoreRetailValueView/>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type vm:AllStoresViewModel}">
+				<vw:AllStoresView/>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type vm:GroupedStoreViewModel}">
+				<vw:DepartmentGroupsView/>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type vm:AllDepartmentGroupsViewModel}">
+				<vw:AllDepartmentGroupsView/>
+			</DataTemplate>
+            <DataTemplate DataType="{x:Type vm:StoreSalesViewModel}">
+                <vw:AssociateSalesView/>
+            </DataTemplate>-->
+		</ResourceDictionary>
+	</Window.Resources>
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="138"/>
+			<RowDefinition></RowDefinition>
+			<RowDefinition Height="24"/>
+		</Grid.RowDefinitions>
+		<ribbon:Ribbon x:Name="IPReportRibbon"
+					   Grid.Row="0">
+			<ribbon:Ribbon.ApplicationMenu>
+				<ribbon:RibbonApplicationMenu>
+					<ribbon:RibbonApplicationMenuItem Header="Save to XML"
+													  ImageSource="resources\save_big.png"
+												  Command="{Binding SaveToXmlCommand}"/>
+					<ribbon:RibbonApplicationMenuItem Header="Save to CSV"
+													  ImageSource="resources\save_big.png"
+												  Command="{Binding SaveToCsvCommand}"/>
+					<ribbon:RibbonApplicationMenuItem Header="Save to OTB"
+													  ImageSource="resources\save_big.png"
+												  Command="{Binding SaveToOtbCommand}"/>
+				</ribbon:RibbonApplicationMenu>
+				
+			</ribbon:Ribbon.ApplicationMenu>
+			<ribbon:RibbonTab x:Name="HomeTab" Header="Inventory" DataContext="{Binding Inventory}">
+				<ribbon:RibbonGroup x:Name="QuickBooks" Header="QuickBooks">
+					<ribbon:RibbonButton Label="Run Reports" LargeImageSource="Resources\login_big.png"
+										 Command="{Binding ConnectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+					
+					<ribbon:RibbonButton Label="Report Date" LargeImageSource="Resources\calendar_big.png"
+										 Command="{Binding ReportDateCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                    <ribbon:RibbonButton Label="Update" LargeImageSource="Resources\refresh_big.png"
+										 Command="{Binding UpdateCommand}" />
+
+                </ribbon:RibbonGroup>
+				<ribbon:RibbonGroup x:Name="Save" Header="Save">
+					<ribbon:RibbonButton Label="Save as XML" LargeImageSource="Resources\save_big.png"
+										 Command="{Binding SaveToXmlCommand}" />
+					<ribbon:RibbonButton Label="Save as CSV" LargeImageSource="Resources\save_big.png"
+										 Command="{Binding SaveToCsvCommand}" />
+					<ribbon:RibbonButton Label="Save as OTB" LargeImageSource="Resources\save_big.png"
+										 Command="{Binding SaveToOtbCommand}" />
+				</ribbon:RibbonGroup>
+			</ribbon:RibbonTab>
+
+            <ribbon:RibbonTab x:Name="SalesTab" Header="Sales" DataContext="{Binding Sales}">
+                <ribbon:RibbonGroup x:Name="QuickBooksSales" Header="QuickBooks">
+                    <ribbon:RibbonButton Label="Report Date" LargeImageSource="Resources\calendar_big.png"
+										 Command="{Binding ReportDateCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                    <ribbon:RibbonButton Label="Update" LargeImageSource="Resources\refresh_big.png"
+										 Command="{Binding UpdateCommand}" />
+                </ribbon:RibbonGroup>
+                
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab x:Name="DebugTab" Header="Debug">
+				<ribbon:RibbonGroup Header="Debugging">
+					<ribbon:RibbonButton Label="Debug" LargeImageSource="Resources\login_big.png"
+										 Command="{Binding DebugConnectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+					<ribbon:RibbonButton Label="Query Test" LargeImageSource="Resources\login_big.png"
+										 Command="{Binding QueryTestCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+				</ribbon:RibbonGroup>
+				
+			</ribbon:RibbonTab>
+		</ribbon:Ribbon>
+		
+        <Grid Grid.Row="1" x:Name="DashboardContent">
+            <ContentControl Content="{Binding ElementName=IPReportRibbon, Path=SelectedItem.DataContext}"/>
+        </Grid>
+		<StatusBar Grid.Row="2" Height="23" HorizontalAlignment="Left" Name="statusBar1" VerticalAlignment="Top" Width="934" >
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"></ColumnDefinition>
+						</Grid.ColumnDefinitions>
+					</Grid>
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem Grid.Column="0">
+				<TextBlock Text="{Binding Path=WorkingOn}"/>
+			</StatusBarItem>
+		</StatusBar>
+	</Grid>
+</ribbon:RibbonWindow>

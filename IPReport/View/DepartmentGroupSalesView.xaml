@@ -1,0 +1,58 @@
+﻿<Window x:Class="IPReport.View.DepartmentGroupSalesView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Department Group Sales" Height="300" Width="800" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" Icon="/IPReport;component/world_big.ico">
+	<ListView 
+		ItemsSource="{Binding Path=Departments}" Width="Auto">
+		<ListView.ItemContainerStyle>
+			<Style TargetType="ListViewItem">
+				<EventSetter Event="MouseDoubleClick" Handler="DepartmentGroupDoubleClick"/>
+			</Style>
+		</ListView.ItemContainerStyle>
+		<ListView.View>
+			<GridView>
+				<GridViewColumn
+				Header="Code"
+				DisplayMemberBinding="{Binding Path=Code}"
+				/>
+				<GridViewColumn
+				Header="Name"
+				DisplayMemberBinding="{Binding Path=Name}"
+				/>
+				<GridViewColumn
+				Header="SALES"
+				DisplayMemberBinding="{Binding Path=SalesForMonth, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="MKDNS"
+				DisplayMemberBinding="{Binding Path=DiscountForMonth, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="MKUPS"
+				DisplayMemberBinding="{Binding Path=MarkupsForMonth, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="PHY/INV"
+				DisplayMemberBinding="{Binding Path=RetailValue, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="REC/CST"
+				DisplayMemberBinding="{Binding Path=TotalReceivedForMonth, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="REC/RET"
+				DisplayMemberBinding="{Binding Path=TotalReceivedForMonthRetail, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="TR/IN"
+				DisplayMemberBinding="{Binding Path=TotalTransferredInForMonth, StringFormat={}{0:#.00}}"
+				/>
+				<GridViewColumn
+				Header="TR/OUT"
+				DisplayMemberBinding="{Binding Path=TotalTransferredOutForMonth, StringFormat={}{0:#.00}}"
+				/>
+			</GridView>
+		</ListView.View>
+
+	</ListView>
+</Window>
