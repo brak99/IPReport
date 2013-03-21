@@ -22,5 +22,15 @@ namespace IPReport.Util
 
             return datePart + "T" + timePart;
         }
+
+        static public DateTime EndOfDay(DateTime dateTime)
+        {
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+        }
+
+        static public DateTime StartOfDay(DateTime dateTime)
+        {
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+        }
 	}
 }

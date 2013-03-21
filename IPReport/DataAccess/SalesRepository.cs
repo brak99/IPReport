@@ -47,28 +47,15 @@ namespace IPReport.DataAccess
 			return salesOrderList;
 		}
 
-        private static XmlDocument SalesReceiptRequest(DateTime startDate, int storeNumber)
+        protected static XmlDocument SalesReceiptRequest(DateTime startDate, int storeNumber)
         {
-            XmlDocument requestXmlDoc = CreateBaseDocument();
-
-            XmlElement qbposxmlmsgsrq = CreateXmlMsgRequest(requestXmlDoc);
-
-            XmlElement salesReceiptQuery = requestXmlDoc.CreateElement("SalesReceiptQueryRq");
-            qbposxmlmsgsrq.AppendChild(salesReceiptQuery);
-
-            XmlElement timeCreatedFilter = requestXmlDoc.CreateElement("TimeCreatedRangeFilter");
-            salesReceiptQuery.AppendChild(timeCreatedFilter);
-            XmlElement fromTimeCreated = requestXmlDoc.CreateElement("FromTimeCreated");
-            timeCreatedFilter.AppendChild(fromTimeCreated);
-            DateTime start = DateUtil.FirstDayOfMonthFromDateTime(startDate);
-            fromTimeCreated.InnerText = DateUtil.FormatDate(start);
-
-            XmlElement toTimeCreated = requestXmlDoc.CreateElement("ToTimeCreated");
-            timeCreatedFilter.AppendChild(toTimeCreated);
             DateTime end = DateUtil.LastDayOfMonthFromDateTime(startDate);
-            toTimeCreated.InnerText = DateUtil.FormatDate(end);
 
+            XmlDocument requestXmlDoc = SalesReceiptRequest(startDate, end);
+            
             XmlElement storeNumberFilter = requestXmlDoc.CreateElement("StoreNumberFilter");
+            XmlElement salesReceiptQuery = (XmlElement)requestXmlDoc.GetElementsByTagName("SalesReceiptQueryRq")[0];
+
             salesReceiptQuery.AppendChild(storeNumberFilter);
             XmlElement matchNumberCriterion = requestXmlDoc.CreateElement("MatchNumericCriterion");
             matchNumberCriterion.InnerText = "Equal";
@@ -80,7 +67,7 @@ namespace IPReport.DataAccess
             return requestXmlDoc;
         }
 
-        private static XmlDocument SalesReceiptRequest(DateTime startDate, DateTime endDate)
+        protected static XmlDocument SalesReceiptRequest(DateTime startDate, DateTime endDate)
         {
             XmlDocument requestXmlDoc = CreateBaseDocument();
 
