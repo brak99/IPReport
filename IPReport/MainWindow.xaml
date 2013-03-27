@@ -87,8 +87,6 @@
 
             <ribbon:RibbonTab x:Name="SalesTab" Header="Sales" DataContext="{Binding Sales}">
                 <ribbon:RibbonGroup x:Name="QuickBooksSales" Header="QuickBooks">
-                    <ribbon:RibbonButton Label="Report Date" LargeImageSource="Resources\calendar_big.png"
-										 Command="{Binding ReportDateCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
                     <ribbon:RibbonButton Label="Update" LargeImageSource="Resources\refresh_big.png"
 										 Command="{Binding UpdateCommand}" />
                 </ribbon:RibbonGroup>
