@@ -49,6 +49,14 @@ namespace IPReport.ViewModel
             OnPropertyChanged("TotalSales");
             }
         }
+        private decimal _totalCost;
+        public decimal TotalCost
+        {
+            get { return _totalCost; }
+            set { _totalCost = value;
+            OnPropertyChanged("TotalCost");
+            }
+        }
         private decimal _averagePerSale;
         public decimal AveragePerSale
         {
@@ -81,12 +89,12 @@ namespace IPReport.ViewModel
             OnPropertyChanged("SalesPerHour");
             }
         }
-        private decimal _marginPercent;
-        public decimal MarginPercent
+        private decimal _profitMargin;
+        public decimal ProfitMargin
         {
-            get { return _marginPercent; }
-            set { _marginPercent = value;
-            OnPropertyChanged("MarginPercent");
+            get { return _profitMargin; }
+            set { _profitMargin = value;
+            OnPropertyChanged("ProfitMargin");
             }
         }
 
@@ -152,6 +160,11 @@ namespace IPReport.ViewModel
     // Sales Associate        Hours Worked       # of sales       % of total store sales       Total Sales $     Avg $ per sale      Avg Items Per Sale     Sales per hour     margin %
     public class SalesDashboardViewModel : WorkspaceViewModel
     {
+
+        //TODO: need ignore list to exclude used and *something else*
+        //TODO: for sales dashboard...need double click to show items for sales
+        //TODO: need lookup for inventory to calc margin...that or is cost in receipt?  in receipt there is SalesReceiptItemRet which has Cost
+
         private DateTime? _startDate;
         public DateTime? StartDate
         {
@@ -222,6 +235,7 @@ namespace IPReport.ViewModel
                 associateSales.SalesPerHour = associateSales.HoursWorked == 0.0m ? 0.0m : (associateSales.NumberSales / associateSales.HoursWorked);
                 associateSales.AverageItemsPerSale = associateSales.NumberSales == 0.0m ? 0.0m : associateSales.TotalItems / associateSales.NumberSales;
                 associateSales.AveragePerSale = associateSales.NumberSales == 0.0m ? 0.0m : associateSales.TotalSales / associateSales.NumberSales;
+                associateSales.ProfitMargin = associateSales.TotalCost == 0.0m ? 0.0m : ((associateSales.TotalSales - associateSales.TotalCost) / associateSales.TotalCost)*100.0m;
             }
         }
 
@@ -308,19 +322,33 @@ namespace IPReport.ViewModel
                     if (associateSales != null)
                     {
                         associateSales.NumberSales++;
-                        associateSales.TotalSales += Convert.ToDecimal(salesReceipt.Subtotal);
-                        associateSales.TotalItems += Convert.ToInt32(salesReceipt.ItemsCount);
+                        TotalUpSales(associateSales, salesReceipt);
                     }
                     else
                     {
                         associateSales = new AssociateSales();
                         associateSales.SalesAssociate = salesReceipt.Associate;
                         associateSales.NumberSales = 1;
-                        associateSales.TotalSales += Convert.ToDecimal(salesReceipt.Subtotal);
-                        associateSales.TotalItems += Convert.ToInt32(salesReceipt.ItemsCount);
+                        TotalUpSales(associateSales, salesReceipt);
+                        
                         AssociateSales.Add(associateSales);
                     }
+                    TotalUpCost(associateSales, salesReceipt);
                 }
+            }
+        }
+
+        private void TotalUpSales(AssociateSales associateSales, SalesReceipt salesReceipt)
+        {
+            associateSales.TotalSales += Convert.ToDecimal(salesReceipt.Subtotal);
+            associateSales.TotalItems += Convert.ToInt32(salesReceipt.ItemsCount);
+        }
+
+        private void TotalUpCost(AssociateSales associateSales, SalesReceipt salesReceipt)
+        {
+            foreach (SalesReceiptItem item in salesReceipt.Items)
+            {
+                associateSales.TotalCost += Convert.ToDecimal(item.Cost);
             }
         }
     }

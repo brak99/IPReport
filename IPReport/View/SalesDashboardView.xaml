@@ -14,13 +14,6 @@
         ItemsSource="{Binding Path=AssociateSales}" Width="Auto">
             <ListView.View>
                 <GridView>
-                    <!--<GridViewColumn Header="Associate" DisplayMemberBinding="{Binding Key}"/>
-                    <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding Value.HoursWorked, StringFormat={}{0:#.0}}"/>
-                    <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding Value.NumberSales}"/>
-                    <GridViewColumn Header="Total Sales" DisplayMemberBinding="{Binding Value.TotalSales, StringFormat={}{0:#.00}}"/>
-                    <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding Value.AveragePerSale, StringFormat={}{0:#.00}}"/>
-                    <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding Value.AverageItemsPerSale}"/>
-                    <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding Value.SalesPerHour, StringFormat={}{0:#.0}}"/>-->
                     <GridViewColumn Header="Associate" DisplayMemberBinding="{Binding SalesAssociate}"/>
                     <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}"/>
                     <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding NumberSales}"/>
@@ -28,6 +21,7 @@
                     <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}"/>
                     <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding AverageItemsPerSale}"/>
                     <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}"/>
+                    <GridViewColumn Header="Profit Margin" DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}"/>
                 </GridView>
             </ListView.View>
         </ListView>

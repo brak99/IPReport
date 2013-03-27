@@ -11,6 +11,7 @@ namespace IPReport.Model
 		public string Price { get { return GetNodeInnerText("Price"); } }
 		public string Desc1 { get { return GetNodeInnerText("Desc1"); } }
 		public string Desc2 { get { return GetNodeInnerText("Desc2"); } }
+        public string Cost { get { return GetNodeInnerText("Cost"); } }
 
 		public SalesReceiptItem(XmlNode node)
 			: base(node)
