@@ -46,7 +46,7 @@ namespace IPReport.Util
             DayOfWeek today = DateTime.Now.DayOfWeek;
             DateTime startOfWeek = dateTime.AddDays(-(today - fdow));
 
-            return startOfWeek;
+            return StartOfDay(startOfWeek);
         }
 	}
 }

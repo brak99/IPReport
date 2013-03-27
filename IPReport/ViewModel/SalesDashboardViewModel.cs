@@ -215,7 +215,7 @@ namespace IPReport.ViewModel
         {
             StartDate = DateUtil.StartOfWeek(DateTime.Now);
 
-            EndDate = DateTime.Now;
+            EndDate = DateUtil.EndOfDay(DateTime.Now);
         }
 
         public void Update(object sender, RoutedEventArgs args)
@@ -257,7 +257,7 @@ namespace IPReport.ViewModel
 
         private void PopulateTime()
         {
-            XmlNodeList timeList = TimeEntryRepository.GetTimeEntries(DateUtil.StartOfDay(StartDate.Value), DateUtil.EndOfDay(EndDate.Value));
+            XmlNodeList timeList = TimeEntryRepository.GetTimeEntries(StartDate.Value, EndDate.Value);
 
             if (timeList != null)
             {
@@ -301,7 +301,7 @@ namespace IPReport.ViewModel
 
         private void PopulateSales()
         {
-            XmlNodeList salesList = SalesRepository.GetSales(DateUtil.StartOfDay(StartDate.Value), DateUtil.EndOfDay(EndDate.Value));
+            XmlNodeList salesList = SalesRepository.GetSales(StartDate.Value, EndDate.Value);
 
             if (salesList != null)
             {
