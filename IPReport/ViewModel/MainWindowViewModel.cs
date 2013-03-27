@@ -18,10 +18,12 @@ namespace IPReport.ViewModel
 
         public MainWindowViewModel()
         {
+            ServiceContainer.Instance.AddService<IStatusUpdate>(this);
+
             _inventory = new InventoryViewModel();
             _sales = SalesDashboardViewModel.GetInstance();
 
-            ServiceContainer.Instance.AddService<IStatusUpdate>(this);
+           
         }
 
         public WorkspaceViewModel Inventory

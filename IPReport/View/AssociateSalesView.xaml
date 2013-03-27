@@ -11,6 +11,8 @@
             <GridView>
                 <GridViewColumn Header="Associate" DisplayMemberBinding="{Binding Key}"/>
                 <GridViewColumn Header="Sales" DisplayMemberBinding="{Binding Value, StringFormat={}{0:#.00}}"/>
+                <GridViewColumn Header="Sales" DisplayMemberBinding="{Binding Value, StringFormat={}{0:#.00}}"/>
+                
             </GridView>
         </ListView.View>
     </ListView>

@@ -49,18 +49,6 @@ namespace IPReport.DataAccess
             clockInRangeFilter.AppendChild(toClockInTime);
             toClockInTime.InnerText = DateUtil.FormatDate(endDate);
 
-
-            XmlElement clockOutRangeFilter = requestXmlDoc.CreateElement("ClockOutTimeRangeFilter");
-            timeEntryQuery.AppendChild(clockOutRangeFilter);
-
-            XmlElement fromClockOutTime = requestXmlDoc.CreateElement("FromClockOutTime");
-            clockOutRangeFilter.AppendChild(fromClockOutTime);
-            fromClockOutTime.InnerText = DateUtil.FormatDate(startDate);
-
-            XmlElement toClockOutTime = requestXmlDoc.CreateElement("ToClockOutTime");
-            clockOutRangeFilter.AppendChild(toClockOutTime);
-            toClockOutTime.InnerText = DateUtil.FormatDate(endDate);
-
             return requestXmlDoc;
         }
 

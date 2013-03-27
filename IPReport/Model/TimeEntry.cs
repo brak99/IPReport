@@ -10,7 +10,7 @@ namespace IPReport.Model
     {
         public string ListID { get { return GetNodeInnerText("ListID"); } }
         public string ClockInTime { get { return GetNodeInnerText("ClockInTime"); } }
-        public string ClockOutTime { get { return GetNodeInnerText("ClockInTime"); } }
+        public string ClockOutTime { get { return GetNodeInnerText("ClockOutTime"); } }
         public string EmployeeListID { get { return GetNodeInnerText("EmployeeListID"); } }
         public string EmployeeLoginName { get { return GetNodeInnerText("EmployeeLoginName"); } }
         public string FirstName { get { return GetNodeInnerText("FirstName"); } }

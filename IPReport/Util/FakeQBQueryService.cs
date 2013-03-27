@@ -19,6 +19,10 @@ namespace IPReport.Util
 			{
 				queryReturn = TestResponses.InventoryResponse;
 			}
+            else if (queryString.Contains("SalesReceiptQueryRq") && queryString.Contains("TimeCreatedRangeFilter"))
+            {
+                queryReturn = TestResponses.ReceiptRequestResponseRanged;
+            }
 			else if (queryString.Contains("SalesReceiptQueryRq"))
 			{
 				queryReturn = TestResponses.SalesReceiptResponse;
@@ -31,6 +35,11 @@ namespace IPReport.Util
 			{
 				queryReturn = TestResponses.VoucherQueryResponse;
 			}
+            else if (queryString.Contains("TimeEntryQueryRq"))
+            {
+                queryReturn = TestResponses.TimeEntryResponseRanged;
+            }
+            
 			return queryReturn;
 		}
 	}

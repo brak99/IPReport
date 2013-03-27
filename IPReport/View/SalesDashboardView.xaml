@@ -4,8 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0"
+        ItemsSource="{Binding Path=AssociateSales}" Width="Auto">
+            <ListView.View>
+                <GridView>
+                    <!--<GridViewColumn Header="Associate" DisplayMemberBinding="{Binding Key}"/>
+                    <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding Value.HoursWorked, StringFormat={}{0:#.0}}"/>
+                    <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding Value.NumberSales}"/>
+                    <GridViewColumn Header="Total Sales" DisplayMemberBinding="{Binding Value.TotalSales, StringFormat={}{0:#.00}}"/>
+                    <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding Value.AveragePerSale, StringFormat={}{0:#.00}}"/>
+                    <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding Value.AverageItemsPerSale}"/>
+                    <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding Value.SalesPerHour, StringFormat={}{0:#.0}}"/>-->
+                    <GridViewColumn Header="Associate" DisplayMemberBinding="{Binding SalesAssociate}"/>
+                    <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}"/>
+                    <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding NumberSales}"/>
+                    <GridViewColumn Header="Total Sales" DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}"/>
+                    <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}"/>
+                    <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding AverageItemsPerSale}"/>
+                    <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock FontSize="20" Padding="10,0,30,0">Sales Dashboard</TextBlock>
+            <Label Content="Start:"/>
+            <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}"></DatePicker>
+            <Label Content="End:"/>
+            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}"></DatePicker>
+        </StackPanel>
     </Grid>
 </UserControl>

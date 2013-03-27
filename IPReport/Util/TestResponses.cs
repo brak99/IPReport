@@ -1212,5 +1212,39 @@ namespace IPReport.Util
 				return returnValue;
 			}
 		}
+
+        public static string ReceiptRequestResponseRanged
+        {
+            get
+            {
+                string returnValue = "";
+
+                FileStream stream = new FileStream("ReceiptRequestResponse.xml", FileMode.Open, FileAccess.Read);
+                StreamReader sr = new StreamReader(stream);
+
+                returnValue = sr.ReadToEnd();
+
+                sr.Close();
+
+                return returnValue;
+            }
+        }
+
+        public static string TimeEntryResponseRanged
+        {
+            get
+            {
+                string returnValue = "";
+
+                FileStream stream = new FileStream("TimeEntryQueryResponse.xml", FileMode.Open, FileAccess.Read);
+                StreamReader sr = new StreamReader(stream);
+
+                returnValue = sr.ReadToEnd();
+
+                sr.Close();
+
+                return returnValue;
+            }
+        }
 	}
 }

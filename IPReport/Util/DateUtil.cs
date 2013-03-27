@@ -23,6 +23,12 @@ namespace IPReport.Util
             return datePart + "T" + timePart;
         }
 
+        public static DateTime ParseDate(string dateTime)
+        {
+            DateTime parsedDate = DateTime.Parse(dateTime);
+            return parsedDate;
+        }
+
         static public DateTime EndOfDay(DateTime dateTime)
         {
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
@@ -31,6 +37,16 @@ namespace IPReport.Util
         static public DateTime StartOfDay(DateTime dateTime)
         {
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+        }
+
+        static public DateTime StartOfWeek(DateTime dateTime)
+        {
+            System.Globalization.CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
+            DayOfWeek fdow = ci.DateTimeFormat.FirstDayOfWeek;
+            DayOfWeek today = DateTime.Now.DayOfWeek;
+            DateTime startOfWeek = dateTime.AddDays(-(today - fdow));
+
+            return startOfWeek;
         }
 	}
 }

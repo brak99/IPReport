@@ -89,6 +89,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Charts\ChartControls\ChartLegendItem.cs" />
+    <Compile Include="Charts\ChartControls\ChartTitle.cs" />
+    <Compile Include="Charts\ChartControls\PiePieceLabel.cs" />
+    <Compile Include="Charts\ChartControls\PlotterArea.cs" />
+    <Compile Include="Charts\Controls\AutoSizeTextBlock.cs" />
+    <Compile Include="Charts\Controls\ColumnSeriesPanel.cs" />
+    <Compile Include="Charts\Controls\EvenlyDistributedColumnsGrid.cs" />
+    <Compile Include="Charts\Controls\EvenlyDistributedRowGrid.cs" />
+    <Compile Include="Charts\Controls\FadingListView.cs" />
+    <Compile Include="Charts\Controls\GridHelpers.cs" />
+    <Compile Include="Charts\Controls\MinimalWidthTextBlock.cs" />
+    <Compile Include="Charts\Controls\RowSeriesPanel.cs" />
+    <Compile Include="Charts\Converters\DoubleToGridLengthPercent.cs" />
+    <Compile Include="Charts\Core\BarChart\BarPiece.cs" />
+    <Compile Include="Charts\Core\BarChart\ClusteredBarChart.cs" />
+    <Compile Include="Charts\Core\BarChart\StackedBar100Chart.cs" />
+    <Compile Include="Charts\Core\BarChart\StackedBarChart.cs" />
+    <Compile Include="Charts\Core\ChartArea.cs" />
+    <Compile Include="Charts\Core\ChartBase.cs" />
+    <Compile Include="Charts\Core\ChartSeries.cs" />
+    <Compile Include="Charts\Core\ChartSeriesViewModel.cs" />
+    <Compile Include="Charts\Core\ColumnChart\ClusteredColumnChart.cs" />
+    <Compile Include="Charts\Core\ColumnChart\ColumnPiece.cs" />
+    <Compile Include="Charts\Core\ColumnChart\StackedColumn100Chart.cs" />
+    <Compile Include="Charts\Core\ColumnChart\StackedColumnChart.cs" />
+    <Compile Include="Charts\Core\CustomWrapPanel.cs" />
+    <Compile Include="Charts\Core\DataPoint.cs" />
+    <Compile Include="Charts\Core\Extensions.cs" />
+    <Compile Include="Charts\Core\GroupedChartSeries.cs" />
+    <Compile Include="Charts\Core\Legend.cs" />
+    <Compile Include="Charts\Core\PieChart\PieChart.cs" />
+    <Compile Include="Charts\Core\PieChart\PiePiece.cs" />
+    <Compile Include="Charts\Core\ResourceDictionaryCollection.cs" />
     <Compile Include="DataAccess\TimeEntryRepository.cs" />
     <Compile Include="DataAccess\DepartmentGroupsRepository.cs" />
     <Compile Include="DataAccess\DepartmentRepository.cs" />
@@ -337,6 +370,7 @@
   <ItemGroup>
     <Resource Include="Resources\refresh_big.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
