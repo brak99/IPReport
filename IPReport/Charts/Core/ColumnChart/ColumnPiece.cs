@@ -275,7 +275,7 @@
                 
                 //SetValue(ColumnPiece.ColumnHeightProperty, this.ClientHeight * Percentage);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }

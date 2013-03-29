@@ -3,29 +3,144 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#FFEFEFEF"/>
+        <SolidColorBrush x:Key="ForegroundBrush" Color="#FF666666"/>
+        <Color x:Key="PrimaryForeground">#FF666666</Color>
+
+        <Style x:Key="BasicTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF666666"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="TextTrimming" Value="WordEllipsis"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Typography.StylisticSet20" Value="True"/>
+            <Setter Property="Typography.DiscretionaryLigatures" Value="True"/>
+            <Setter Property="Typography.CaseSensitiveForms" Value="True"/>
+        </Style>
+
+        <Style x:Key="BaselineTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
+            <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+        </Style>
+
+        <Style x:Key="HeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+            <Setter Property="FontSize" Value="42"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="TextTrimming" Value="WordEllipsis"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform X="-1" Y="0"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PageHeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextStyle}">
+            <Setter Property="Margin" Value="0,5,10,0"/>
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="LineHeight" Value="40" />
+        </Style>
+        <Style x:Key="SectionHeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextStyle}">
+            <Setter Property="Margin" Value="0,0,10,10"/>
+            <Setter Property="FontSize" Value="26" />
+        </Style>
+        <Style x:Key="SeriesHeader" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextStyle}">
+            <Setter Property="Margin" Value="0,0,10,10"/>
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+
+        
+        <Style x:Key="ChartStyle" TargetType="chart:ChartBase">
+            <Setter Property="Margin" Value="0 0 10 10"/>
+            <Setter Property="Background" Value="#99FFFFFF"/>
+            <Setter Property="Foreground" Value="#FF666666"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Height" Value="400"/>
+        </Style>
+
+        <chart:ResourceDictionaryCollection x:Key="CustomPalette">
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="Brush1" Color="#FF6685A2" />
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="Brush2" Color="#FF1D97E3" />
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="Brush3" Color="#FFFF2900" />
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="Brush4" Color="#FFFF8000" />
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="Brush4" Color="Gray" />
+            </ResourceDictionary>
+        </chart:ResourceDictionaryCollection>
+
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition />
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0"
-        ItemsSource="{Binding Path=AssociateSales}" Width="Auto">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Associate" DisplayMemberBinding="{Binding SalesAssociate}"/>
-                    <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}"/>
-                    <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding NumberSales}"/>
-                    <GridViewColumn Header="Total Sales" DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}"/>
-                    <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}"/>
-                    <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding AverageItemsPerSale}"/>
-                    <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}"/>
-                    <GridViewColumn Header="Profit Margin" DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <chart:StackedBarChart 
+                                  ChartTitle="Associate Sales" 
+                                    ChartSubTitle="Cost vs. Margin"
+                                SeriesSource="{Binding ChartData}"
+                               
+                                      
+                                Grid.Column="0"
+                                >
+                <chart:StackedBarChart.SeriesTemplate>
+                    <DataTemplate>
+                        <chart:ChartSeries 
+			                                Caption="{Binding DisplayName}"
+                                            DisplayMember="Category"
+                                            ValueMember="Number"
+                                            ItemsSource="{Binding Path=Items}" />
+                    </DataTemplate>
+                </chart:StackedBarChart.SeriesTemplate>
+                <chart:StackedBarChart.ItemTemplate>
+                    <DataTemplate>
+                        <chart:ChartSeries 
+			                                Caption="{Binding DisplayName}"
+                                            DisplayMember="SalesAssociate"
+                                            ValueMember="TotalSales"
+                                            ItemsSource="{Binding Path=Items}" />
+                    </DataTemplate>
+                </chart:StackedBarChart.ItemTemplate>
+
+            </chart:StackedBarChart>
+            <ListView Grid.Column="1"
+                    ItemsSource="{Binding Path=AssociateSales}" Width="Auto">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Associate" DisplayMemberBinding="{Binding SalesAssociate}"/>
+                        <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}"/>
+                        <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding NumberSales}"/>
+                        <GridViewColumn Header="Total Sales" DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}"/>
+                        <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}"/>
+                        <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding AverageItemsPerSale}"/>
+                        <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}"/>
+                        <GridViewColumn Header="Profit Margin" DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
             <TextBlock FontSize="20" Padding="10,0,30,0">Sales Dashboard</TextBlock>
             <Label Content="Start:"/>
             <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}"></DatePicker>

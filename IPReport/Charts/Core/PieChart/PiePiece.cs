@@ -373,7 +373,7 @@
                     LayoutSegment(startAngle, endAngle, radius, 0.25, center, true);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -613,7 +613,7 @@
                 //this.Children.Add(segmentLabel);
                 */
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }

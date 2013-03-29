@@ -42,7 +42,7 @@ namespace De.TorstenMandelkow.MetroChart
             DependencyProperty.Register("Caption",
             typeof(string),
             typeof(ChartSeries),
-            new PropertyMetadata("WpfSimpleChart"));
+            new PropertyMetadata("Dammit"));
         
         public ChartSeries()
         {   

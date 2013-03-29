@@ -28,7 +28,7 @@
     using System.Windows.Data;
 #endif
 
-    public abstract class ChartBase : Control, INotifyPropertyChanged
+    public abstract class ChartBase : ItemsControl, INotifyPropertyChanged
     {
         #region Fields
 
@@ -159,12 +159,14 @@
                 {
                     if (SeriesTemplate != null)
                     {
-                        ChartSeries series = SeriesTemplate.LoadContent() as ChartSeries;
+                        //ChartSeries series = SeriesTemplate.LoadContent() as ChartSeries;
+                        ChartSeries series = LoadDataTemplate<ChartSeries>(SeriesTemplate, item);
 
                         if (series != null)
                         {
                             // set data context
                             series.DataContext = item;
+
                             this.Series.Add(series);
                         }
                     }
@@ -173,13 +175,32 @@
             UpdateGroupedSeries();
         }
 
-        
+        private static T LoadDataTemplate<T>(DataTemplate template, object dataContext)
+            where T : FrameworkElement
+        {
+            DependencyObject element = template.LoadContent();
+            T view = element as T;
+            view.DataContext = dataContext;
+
+            var enumerator = element.GetLocalValueEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var bind = enumerator.Current;
+
+                if (bind.Value is BindingExpression)
+                {
+                    view.SetBinding(bind.Property, ((BindingExpression)bind.Value).ParentBinding);
+                }
+            }
+
+            return view;
+        }
 
         public static readonly DependencyProperty SeriesTemplateProperty =
            DependencyProperty.Register("SeriesTemplate",
            typeof(DataTemplate),
            typeof(ChartBase),
-           new PropertyMetadata(null));
+           new FrameworkPropertyMetadata(null));
 
         public IEnumerable SeriesSource
         {
@@ -616,7 +637,7 @@
                                 }
                             }                           
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                         }
                     }
@@ -822,7 +843,7 @@
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 
@@ -929,7 +950,7 @@
                 }
                 //UpdateMaxValue(maxValue);                        
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 

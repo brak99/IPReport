@@ -14,6 +14,25 @@ using System.Collections.ObjectModel;
 
 namespace IPReport.ViewModel
 {
+    public class SalesChartData
+    {
+        public string Category { get; set; }
+        public decimal Number { get; set; }
+    }
+    public class SeriesData
+    {
+        public SeriesData()
+        {
+            Items = new ObservableCollection<SalesChartData>();
+        }
+
+        public string DisplayName { get; set; }
+
+        public string Description { get; set; }
+
+        public ObservableCollection<SalesChartData> Items { get; set; }
+    }
+
     public class AssociateSales : INotifyPropertyChanged
     {
         private string _salesAssociate;
@@ -163,7 +182,12 @@ namespace IPReport.ViewModel
 
         //TODO: need ignore list to exclude used and *something else*
         //TODO: for sales dashboard...need double click to show items for sales
-        //TODO: need lookup for inventory to calc margin...that or is cost in receipt?  in receipt there is SalesReceiptItemRet which has Cost
+        //TODO: need lookup for inventory to calc margin...that or is cost in receipt?  in receipt there is SalesReceiptItemRet which has Cost, but margin coming out diff than QB report
+        //TODO: Graph total sales
+        //TODO: sales $ per hour, cost $ per hour stacked graph
+        //            or total sales $, cost $ stacked graph
+        //TODO: add very light lines to grid report
+
 
         private DateTime? _startDate;
         public DateTime? StartDate
@@ -193,6 +217,17 @@ namespace IPReport.ViewModel
            
             }
         }
+        private SeriesData _costSeries = new SeriesData();
+        private SeriesData _marginSeries = new SeriesData();
+
+        private ObservableCollection<SeriesData> _chartData = new ObservableCollection<SeriesData>();
+        public ObservableCollection<SeriesData> ChartData
+        {
+            get
+            {
+                return _chartData;
+            }
+        }
 
         public ObservableCollection<AssociateSales> AssociateSales
         {
@@ -216,6 +251,13 @@ namespace IPReport.ViewModel
             StartDate = DateUtil.StartOfWeek(DateTime.Now);
 
             EndDate = DateUtil.EndOfDay(DateTime.Now);
+
+            _costSeries.Description = "Cost";
+            _costSeries.DisplayName = "Cost";
+
+            _marginSeries.Description = "Margin";
+            _marginSeries.Description = "Margin";
+            PopulateChartData();
         }
 
         public void Update(object sender, RoutedEventArgs args)
@@ -225,7 +267,52 @@ namespace IPReport.ViewModel
                 PopulateSales();
                 PopulateTime();
                 PopulateAverages();
+                PopulateChartData();
             }
+        }
+
+        private void PopulateChartData()
+        {
+            _chartData.Clear();
+            _costSeries.Items.Clear();
+            _marginSeries.Items.Clear();
+
+            _chartData.Add(_costSeries);
+            _chartData.Add(_marginSeries);
+
+            foreach (AssociateSales associateSales in AssociateSales)
+            {
+                SalesChartData costData = new SalesChartData();
+                costData.Category = associateSales.SalesAssociate;
+                costData.Number = associateSales.TotalCost;
+
+                SalesChartData marginData = new SalesChartData();
+                marginData.Category = costData.Category;
+                marginData.Number = associateSales.TotalSales - associateSales.TotalCost;
+
+                _costSeries.Items.Add(costData);
+                _marginSeries.Items.Add(marginData);
+            }
+
+            //SeriesData series1 = new SeriesData();
+            //series1.Description = "Cost";
+            //series1.DisplayName = "Cost";
+            //series1.Items = new ObservableCollection<SalesChartData>();
+            //series1.Items.Add(new SalesChartData() { Category = "Scott", Number = 653.36m });
+            //series1.Items.Add(new SalesChartData() { Category = "Amy", Number = 243.50m });
+            //series1.Items.Add(new SalesChartData() { Category = "Morgan", Number = 565.60m });
+
+            //_chartData.Add(series1);
+
+            //SeriesData series2 = new SeriesData();
+            //series2.Description = "Margin";
+            //series2.DisplayName = "Margin";
+            //series2.Items = new ObservableCollection<SalesChartData>();
+            //series2.Items.Add(new SalesChartData() { Category = "Scott", Number = 234.50m });
+            //series2.Items.Add(new SalesChartData() { Category = "Amy", Number = 175.20m });
+            //series2.Items.Add(new SalesChartData() { Category = "Morgan", Number = 300.30m });
+
+            //_chartData.Add(series2);
         }
 
         private void PopulateAverages()
