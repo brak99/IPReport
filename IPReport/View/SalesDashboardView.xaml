@@ -4,9 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart"
+             xmlns:util="clr-namespace:IPReport.Util"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
     <UserControl.Resources>
+
+        <Style x:Key="alternatingStyle" TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#FFEFEFEF"></Setter>
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FFEFEFEF"/>
         <SolidColorBrush x:Key="ForegroundBrush" Color="#FF666666"/>
@@ -59,7 +72,7 @@
         
         <Style x:Key="ChartStyle" TargetType="chart:ChartBase">
             <Setter Property="Margin" Value="0 0 10 10"/>
-            <Setter Property="Background" Value="#99FFFFFF"/>
+            <!--<Setter Property="Background" Value="Transparent"/>-->
             <Setter Property="Foreground" Value="#FF666666"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontSize" Value="11"/>
@@ -98,10 +111,8 @@
             </Grid.ColumnDefinitions>
             <chart:StackedBarChart 
                                   ChartTitle="Associate Sales" 
-                                    ChartSubTitle="Cost vs. Margin"
+                                    ChartSubTitle="Cost $ / Net $"
                                 SeriesSource="{Binding ChartData}"
-                               
-                                      
                                 Grid.Column="0"
                                 >
                 <chart:StackedBarChart.SeriesTemplate>
@@ -125,17 +136,19 @@
 
             </chart:StackedBarChart>
             <ListView Grid.Column="1"
-                    ItemsSource="{Binding Path=AssociateSales}" Width="Auto">
+                      ItemContainerStyle="{StaticResource alternatingStyle}" AlternationCount="2"
+                    ItemsSource="{Binding Path=AssociateSales}" Width="Auto"
+                      util:GridViewSort.AutoSort="True">
                 <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Associate" DisplayMemberBinding="{Binding SalesAssociate}"/>
-                        <GridViewColumn Header="Hours" DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}"/>
-                        <GridViewColumn Header="Number of Sales" DisplayMemberBinding="{Binding NumberSales}"/>
-                        <GridViewColumn Header="Total Sales" DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}"/>
-                        <GridViewColumn Header="Average Per Sale" DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}"/>
-                        <GridViewColumn Header="Average Items Per Sale" DisplayMemberBinding="{Binding AverageItemsPerSale}"/>
-                        <GridViewColumn Header="Sales Per Hour" DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}"/>
-                        <GridViewColumn Header="Profit Margin" DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}"/>
+                    <GridView >
+                        <GridViewColumn Header="Associate    " DisplayMemberBinding="{Binding SalesAssociate}" util:GridViewSort.PropertyName="SalesAssociate"/>
+                        <GridViewColumn Header="Hours    " DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="HoursWorked"/>
+                        <GridViewColumn Header="Number of Sales    " DisplayMemberBinding="{Binding NumberSales}" util:GridViewSort.PropertyName="NumberSales"/>
+                        <GridViewColumn Header="Total Sales    " DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="TotalSales"/>
+                        <GridViewColumn Header="Average Per Sale    " DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePerSale"/>
+                        <GridViewColumn Header="Average Items Per Sale    " DisplayMemberBinding="{Binding AverageItemsPerSale}" util:GridViewSort.PropertyName="AverageItemsPerSale"/>
+                        <GridViewColumn Header="Sales Per Hour    " DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="SalesPerHour"/>
+                        <GridViewColumn Header="Profit Margin    " DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="ProfitMargin"/>
                     </GridView>
                 </ListView.View>
             </ListView>

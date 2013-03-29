@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </local:ResourceDictionaryCollection>
 
-    <SolidColorBrush x:Key="ChartBackground" Color="#99CCCCCC" />
+    <SolidColorBrush x:Key="ChartBackground" Color="Transparent" />
 
     <Style x:Key="SeriesTextStyle" TargetType="TextBlock">
         <Setter Property="LineHeight" Value="12" />
