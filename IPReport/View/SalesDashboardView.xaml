@@ -111,7 +111,7 @@
             </Grid.ColumnDefinitions>
             <chart:StackedBarChart 
                                   ChartTitle="Associate Sales" 
-                                    ChartSubTitle="Cost $ / Net $"
+                                    ChartSubTitle="Cost $ / Profit $"
                                 SeriesSource="{Binding ChartData}"
                                 Grid.Column="0"
                                 >
@@ -155,10 +155,10 @@
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <TextBlock FontSize="20" Padding="10,0,30,0">Sales Dashboard</TextBlock>
-            <Label Content="Start:"/>
-            <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}"></DatePicker>
-            <Label Content="End:"/>
-            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}"></DatePicker>
+            <Label Content="Start:" VerticalAlignment="Center"/>
+            <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}" Height="23" VerticalAlignment="Center"></DatePicker>
+            <Label Content="End:" VerticalAlignment="Center"/>
+            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}" Height="23" VerticalAlignment="Center"></DatePicker>
         </StackPanel>
     </Grid>
 </UserControl>
