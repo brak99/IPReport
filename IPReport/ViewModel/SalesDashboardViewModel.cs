@@ -217,15 +217,28 @@ namespace IPReport.ViewModel
            
             }
         }
-        private SeriesData _costSeries = new SeriesData();
-        private SeriesData _marginSeries = new SeriesData();
 
-        private ObservableCollection<SeriesData> _chartData = new ObservableCollection<SeriesData>();
-        public ObservableCollection<SeriesData> ChartData
+        private SeriesData _revenueCostSeries = new SeriesData();
+        private SeriesData _revenueProfitSeries = new SeriesData();
+
+        private ObservableCollection<SeriesData> _revenueData = new ObservableCollection<SeriesData>();
+        public ObservableCollection<SeriesData> RevenueData
         {
             get
             {
-                return _chartData;
+                return _revenueData;
+            }
+        }
+
+        private SeriesData _associateSalesCostSeries = new SeriesData();
+        private SeriesData _associateSalesMarginSeries = new SeriesData();
+
+        private ObservableCollection<SeriesData> _associateSalesData = new ObservableCollection<SeriesData>();
+        public ObservableCollection<SeriesData> AssociateSalesData
+        {
+            get
+            {
+                return _associateSalesData;
             }
         }
 
@@ -252,11 +265,17 @@ namespace IPReport.ViewModel
 
             EndDate = DateUtil.EndOfDay(DateTime.Now);
 
-            _costSeries.Description = "Cost";
-            _costSeries.DisplayName = "Cost";
+            _associateSalesCostSeries.Description = "Cost";
+            _associateSalesCostSeries.DisplayName = "Cost";
 
-            _marginSeries.Description = "Margin";
-            _marginSeries.Description = "Margin";
+            _associateSalesMarginSeries.Description = "Margin";
+            _associateSalesMarginSeries.Description = "Margin";
+
+            _revenueCostSeries.Description = "Cost";
+            _revenueCostSeries.DisplayName = "Cost";
+            _revenueProfitSeries.Description = "Margin";
+            _revenueProfitSeries.DisplayName = "Margin";
+
             PopulateChartData();
         }
 
@@ -273,26 +292,47 @@ namespace IPReport.ViewModel
 
         private void PopulateChartData()
         {
-            _chartData.Clear();
-            _costSeries.Items.Clear();
-            _marginSeries.Items.Clear();
+            _associateSalesData.Clear();
+            _associateSalesCostSeries.Items.Clear();
+            _associateSalesMarginSeries.Items.Clear();
 
-            _chartData.Add(_costSeries);
-            _chartData.Add(_marginSeries);
+            _associateSalesData.Add(_associateSalesCostSeries);
+            _associateSalesData.Add(_associateSalesMarginSeries);
+
+            _revenueData.Clear();
+            _revenueCostSeries.Items.Clear();
+            _revenueProfitSeries.Items.Clear();
+
+            _revenueData.Add(_revenueCostSeries);
+            _revenueData.Add(_revenueProfitSeries);
+
+            SalesChartData revenueCost = new SalesChartData();
+            SalesChartData revenueProfit = new SalesChartData();
+
+            revenueCost.Category = "Revenue $";
+            revenueCost.Number = 0.0m;
+
+            revenueProfit.Category = "Revenue $";
+            revenueProfit.Number = 0.0m;
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
                 SalesChartData costData = new SalesChartData();
                 costData.Category = associateSales.SalesAssociate;
                 costData.Number = associateSales.TotalCost;
+                revenueCost.Number += costData.Number;
 
                 SalesChartData marginData = new SalesChartData();
                 marginData.Category = costData.Category;
                 marginData.Number = associateSales.TotalSales - associateSales.TotalCost;
+                revenueProfit.Number += marginData.Number;
 
-                _costSeries.Items.Add(costData);
-                _marginSeries.Items.Add(marginData);
+                _associateSalesCostSeries.Items.Add(costData);
+                _associateSalesMarginSeries.Items.Add(marginData);
             }
+
+            _revenueProfitSeries.Items.Add(revenueProfit);
+            _revenueCostSeries.Items.Add(revenueCost);
 
             //SeriesData series1 = new SeriesData();
             //series1.Description = "Cost";

@@ -38,6 +38,7 @@ namespace IPReport.ViewModel
 			_salesForMonth = 0.0M;
 			_discountForMonth = 0.0M;
 			_retailValue = 0.0M;
+            _inventoryAdjustment = 0.0m;
 
 			_departments.CollectionChanged += OnDepartmentsChanged;
 		}
@@ -90,6 +91,12 @@ namespace IPReport.ViewModel
 			get { return _markupsForMonth; }
 			private set { _markupsForMonth = value; }
 		}
+        private decimal _inventoryAdjustment;
+        public decimal InventoryAdjustment
+        {
+            get { return _inventoryAdjustment; }
+            private set { _inventoryAdjustment = value; }
+        }
 		public override string DisplayName
 		{
 			get { return _departmentGroup.Name; }
@@ -220,7 +227,7 @@ namespace IPReport.ViewModel
 			otb += store + " ";
 			otb += reportDate.ToString("yyMM") + " ";  //TODO Check format
 			otb += DiscountForMonth + " ";
-			//Inventory adjustments
+            otb += InventoryAdjustment + " ";
 			otb += RetailValue + " ";
 			otb += "0" + " ";
 			otb += "0" + " ";
@@ -231,7 +238,7 @@ namespace IPReport.ViewModel
 			otb += TotalTransferredInForMonth + " ";
 			//vendor returns retail
 			//vendor return cost
-			//MTC user
+            otb += "Quickbooks" + " ";
 			otb += DateTime.Now.ToString("MM/dd/yy") + " ";
 			otb += "IPReport" + " ";
 			otb += "IPReport" + " ";

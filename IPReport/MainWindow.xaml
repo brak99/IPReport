@@ -67,7 +67,7 @@
 			<ribbon:RibbonTab x:Name="HomeTab" Header="Inventory" DataContext="{Binding Inventory}">
 				<ribbon:RibbonGroup x:Name="QuickBooks" Header="QuickBooks">
 					<ribbon:RibbonButton Label="Run Reports" LargeImageSource="Resources\login_big.png"
-										 Command="{Binding ConnectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+										 Command="{Binding ConnectCommand}" />
 					
 					<ribbon:RibbonButton Label="Report Date" LargeImageSource="Resources\calendar_big.png"
 										 Command="{Binding ReportDateCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />

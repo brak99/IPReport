@@ -24,27 +24,7 @@ namespace IPReport
 	{
 		public RequestProcessor requestProcessor = null;
 
-		private ICommand _connectCommand;
-		public ICommand ConnectCommand
-		{
-			get
-			{
-				if (_connectCommand == null)
-				{
-					_connectCommand = new DelegateCommand<object>(param => this.ConnectClick(param, null));
-				}
-
-				return _connectCommand;
-			}
-		}
-
-		private void ConnectClick(object sender, RoutedEventArgs e)
-		{
-			ServiceContainer.Instance.AddService<IRetailCost>(new InventoryRepository());
-			ServiceContainer.Instance.AddService<IItemDepartmentService>(new ItemDepartmentRepository());
-
-			//((MainWindowViewModel)DataContext).UpdateAll();
-		}
+		
 
 
 		private ICommand _debugConnectCommand;
@@ -61,7 +41,7 @@ namespace IPReport
 			}
 		}
 
-
+        
 		private void DebugConnectClick(object sender, RoutedEventArgs e)
 		{
 			ServiceContainer.Instance.AddService<IQuickBooksQueryService>(new FakeQBQueryService());
