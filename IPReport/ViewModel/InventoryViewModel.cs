@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using System.Collections.Specialized;
+using System.IO;
 
 namespace IPReport.ViewModel
 {
@@ -205,25 +206,40 @@ namespace IPReport.ViewModel
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
 
-                ISaveToOtb saveToOtb = collectionView.CurrentItem as ISaveToOtb;
-
-                if (saveToOtb != null)
+                foreach (WorkspaceViewModel workspaceViewModel in this.Workspaces)
                 {
-                    return true;
+                    ISaveToOtb saveToOtb = workspaceViewModel as ISaveToOtb;
+
+                    if (saveToOtb != null)
+                    {
+                        return true;
+                    }
                 }
 
                 return false;
             }
         }
+
         private void SaveToOtb(object sender, RoutedEventArgs args)
         {
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
 
-            ISaveToOtb saveToOtb = collectionView.CurrentItem as ISaveToOtb;
-
             string path = ServiceContainer.Instance.GetService<ISaveFilePath>().SaveFilePath("OTB File|*.txt", "Save as OTB");
+            using (Stream stream = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    foreach (WorkspaceViewModel workspaceViewModel in this.Workspaces)
+                    {
+                        ISaveToOtb saveToOtb = workspaceViewModel as ISaveToOtb;
 
-            saveToOtb.SaveToOtb(path);
+                        if (saveToOtb != null)
+                        {
+                            saveToOtb.SaveToOtb(writer);
+                        }
+                    }
+                }
+            }
         }
 
         #region Workspaces

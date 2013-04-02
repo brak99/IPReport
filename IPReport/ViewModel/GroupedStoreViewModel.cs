@@ -124,20 +124,14 @@ namespace IPReport.ViewModel
 			}
 		}
 
-		public void SaveToOtb(string path)
+		public void SaveToOtb(StreamWriter writer)
 		{
 			try
 			{
-				using (Stream stream = new FileStream(path, FileMode.OpenOrCreate))
+				foreach (DepartmentGroupViewModel department in _departmentGroups)
 				{
-					using (StreamWriter writer = new StreamWriter(stream))
-					{
-						foreach (DepartmentGroupViewModel department in _departmentGroups)
-						{
-							string departmentElement = department.ToOTB(_store.BuildingStoreNumber);
-							writer.WriteLine(departmentElement);
-						}
-					}
+					string departmentElement = department.ToOTB(_store.BuildingStoreNumber);
+					writer.WriteLine(departmentElement);
 				}
 			}
 			catch (System.Exception)
