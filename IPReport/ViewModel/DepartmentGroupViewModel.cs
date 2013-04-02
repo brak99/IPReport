@@ -97,6 +97,18 @@ namespace IPReport.ViewModel
             get { return _inventoryAdjustment; }
             private set { _inventoryAdjustment = value; }
         }
+        private decimal _vendorReturnsRetail;
+        public decimal VendorReturnsRetail
+        {
+            get { return _vendorReturnsRetail; }
+            private set { _vendorReturnsRetail = value; }
+        }
+        private decimal _vendorReturnsCost;
+        public decimal VendorReturnsCost
+        {
+            get { return _vendorReturnsCost; }
+            private set { _vendorReturnsCost = value; }
+        }
 		public override string DisplayName
 		{
 			get { return _departmentGroup.Name; }
@@ -222,22 +234,24 @@ namespace IPReport.ViewModel
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
 			DateTime reportDate = dateService.DateForReport();
 
+            string decimalSpecifier = "#.00";
+
 			string otb = "\"EC142\"" + " ";
 			otb += DisplayName + " ";
 			otb += store + " ";
 			otb += reportDate.ToString("yyMM") + " ";  //TODO Check format
-			otb += DiscountForMonth + " ";
-            otb += InventoryAdjustment + " ";
-			otb += RetailValue + " ";
+            otb += DiscountForMonth.ToString(decimalSpecifier) + " ";
+            otb += InventoryAdjustment.ToString(decimalSpecifier) + " ";
+            otb += RetailValue.ToString(decimalSpecifier) + " ";
 			otb += "0" + " ";
 			otb += "0" + " ";
-			otb += TotalReceivedForMonth + " ";
-			otb += TotalReceivedForMonthRetail + " ";
-			otb += SalesForMonth + " ";
-			otb += TotalTransferredOutForMonth + " ";
-			otb += TotalTransferredInForMonth + " ";
-			//vendor returns retail
-			//vendor return cost
+            otb += TotalReceivedForMonth.ToString(decimalSpecifier) + " ";
+            otb += TotalReceivedForMonthRetail.ToString(decimalSpecifier) + " ";
+            otb += SalesForMonth.ToString(decimalSpecifier) + " ";
+            otb += TotalTransferredOutForMonth.ToString(decimalSpecifier) + " ";
+            otb += TotalTransferredInForMonth.ToString(decimalSpecifier) + " ";
+            otb += VendorReturnsRetail.ToString(decimalSpecifier) + " ";
+            otb += VendorReturnsCost.ToString(decimalSpecifier) + " ";
             otb += "Quickbooks" + " ";
 			otb += DateTime.Now.ToString("MM/dd/yy") + " ";
 			otb += "IPReport" + " ";

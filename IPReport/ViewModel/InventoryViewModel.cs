@@ -225,7 +225,14 @@ namespace IPReport.ViewModel
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
 
             string path = ServiceContainer.Instance.GetService<ISaveFilePath>().SaveFilePath("OTB File|*.txt", "Save as OTB");
-            using (Stream stream = new FileStream(path, FileMode.OpenOrCreate))
+			FileMode fileMode = FileMode.Create;
+
+			if (File.Exists(path))
+			{
+				fileMode = FileMode.Truncate;
+			}
+
+            using (Stream stream = new FileStream(path, fileMode))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
