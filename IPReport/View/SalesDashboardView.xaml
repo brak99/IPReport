@@ -9,6 +9,8 @@
              d:DesignHeight="300" d:DesignWidth="600">
     <UserControl.Resources>
 
+       
+        
         <Style x:Key="alternatingStyle" TargetType="{x:Type ListViewItem}">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
@@ -138,7 +140,26 @@
                     </chart:StackedBarChart.ItemTemplate>
 
                 </chart:StackedBarChart>
-                <chart:StackedBarChart Grid.Row="1" ChartTitle="Revenue" 
+                <chart:BulletGraph x:Name="RevenueBulletGraph" Grid.Row="1" ChartTitle="Revenue" 
+                                    ChartSubTitle="Cost $ / Profit $"
+                                SeriesSource="{Binding RevenuePerformance.PerformanceRanges}" Margin="0,0,0,0">
+                    <chart:BulletGraph.SeriesTemplate>
+                        <DataTemplate>
+                            <chart:ChartSeries 
+			                                Caption="{Binding DisplayName}"
+                                            DisplayMember="Category"
+                                            ValueMember="Number"
+                                            PerformanceTargetMember="PerformanceTarget"
+                                            ActualPerformanceMember="ActualPerformance"
+                                            ActualPerformance="{Binding Path=ActualPerformance}"
+                                            PerformanceTarget="{Binding Path=PerformanceTarget}"
+                                            ItemsSource="{Binding Path=Items}" />
+                        </DataTemplate>
+                    </chart:BulletGraph.SeriesTemplate>
+                    
+
+                </chart:BulletGraph>
+                <!--<chart:StackedBarChart Grid.Row="1" ChartTitle="Revenue" 
                                     ChartSubTitle="Cost $ / Profit $"
                                 SeriesSource="{Binding RevenueData}" Margin="0,0,0,0">
                     <chart:StackedBarChart.SeriesTemplate>
@@ -160,7 +181,7 @@
                         </DataTemplate>
                     </chart:StackedBarChart.ItemTemplate>
 
-                </chart:StackedBarChart>
+                </chart:StackedBarChart>-->
                 <chart:StackedBarChart 
                     Grid.Row="2"
                                   ChartTitle="Associate Sales" 

@@ -320,6 +320,18 @@
             }
         }
 
+		//public double ActualPerformance
+		//{
+		//    get
+		//    {
+		//        if (_ReferencedObject == null)
+		//        {
+		//            return 0.0d;
+		//        }
+		//        return double.Parse(GetItemValue(_ReferencedObject, ActualPerformanceMember).ToString());
+		//    }
+		//}
+
         private string GetItemValue(object item, string propertyName)
         {
             if (item != null)

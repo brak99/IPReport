@@ -30,7 +30,11 @@ namespace IPReport.ViewModel
 
         public string Description { get; set; }
 
-        public ObservableCollection<SalesChartData> Items { get; set; }
+		public decimal PerformanceTarget { get; set; }
+
+		public decimal ActualPerformance { get; set; }
+		
+		public ObservableCollection<SalesChartData> Items { get; set; }
     }
 
     public class AssociateSales : INotifyPropertyChanged
@@ -230,8 +234,18 @@ namespace IPReport.ViewModel
             }
         }
 
+		private PerformanceTargetViewModel _revenuePerformance = PerformanceTargetViewModel.GetInstance();
+		public PerformanceTargetViewModel RevenuePerformance
+		{
+			get
+			{
+				return _revenuePerformance;
+			}
+		}
+
         private SeriesData _associateSalesCostSeries = new SeriesData();
         private SeriesData _associateSalesMarginSeries = new SeriesData();
+		private SeriesData _associateOtherSeries = new SeriesData();
 
         private ObservableCollection<SeriesData> _associateSalesData = new ObservableCollection<SeriesData>();
         public ObservableCollection<SeriesData> AssociateSalesData
@@ -292,28 +306,38 @@ namespace IPReport.ViewModel
 
         private void PopulateChartData()
         {
+			RevenuePerformance.Name = "Revenue";
+
             _associateSalesData.Clear();
             _associateSalesCostSeries.Items.Clear();
             _associateSalesMarginSeries.Items.Clear();
+			_associateOtherSeries.Items.Clear();
 
             _associateSalesData.Add(_associateSalesCostSeries);
             _associateSalesData.Add(_associateSalesMarginSeries);
+			_associateSalesData.Add(_associateOtherSeries);
 
-            _revenueData.Clear();
-            _revenueCostSeries.Items.Clear();
-            _revenueProfitSeries.Items.Clear();
+			//_revenueData.Clear();
+			//_revenueCostSeries.Items.Clear();
+			//_revenueProfitSeries.Items.Clear();
 
-            _revenueData.Add(_revenueCostSeries);
-            _revenueData.Add(_revenueProfitSeries);
+			//_revenueData.Add(_revenueCostSeries);
+			//_revenueData.Add(_revenueProfitSeries);
 
             SalesChartData revenueCost = new SalesChartData();
             SalesChartData revenueProfit = new SalesChartData();
+			SalesChartData theOtherThing = new SalesChartData();
 
-            revenueCost.Category = "Revenue $";
-            revenueCost.Number = 0.0m;
+			//revenueCost.Category = "Revenue $";
+			//revenueCost.Number = 0.0m;
 
-            revenueProfit.Category = "Revenue $";
-            revenueProfit.Number = 0.0m;
+			//revenueProfit.Category = "Revenue $";
+			//revenueProfit.Number = 0.0m;
+
+			//theOtherThing.Category = "stuff";
+			//theOtherThing.Number = 0.0m;
+
+			_revenuePerformance.ActualPerformance = 0.0m;
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
@@ -327,32 +351,23 @@ namespace IPReport.ViewModel
                 marginData.Number = associateSales.TotalSales - associateSales.TotalCost;
                 revenueProfit.Number += marginData.Number;
 
+				_revenuePerformance.ActualPerformance += associateSales.TotalSales;
+
+				SalesChartData otherData = new SalesChartData();
+				otherData.Category = costData.Category;
+				otherData.Number = 100m;
+				
+
                 _associateSalesCostSeries.Items.Add(costData);
                 _associateSalesMarginSeries.Items.Add(marginData);
+				_associateOtherSeries.Items.Add(otherData);
             }
 
-            _revenueProfitSeries.Items.Add(revenueProfit);
-            _revenueCostSeries.Items.Add(revenueCost);
+			//_revenueProfitSeries.Items.Add(revenueProfit);
+			//_revenueCostSeries.Items.Add(revenueCost);
 
-            //SeriesData series1 = new SeriesData();
-            //series1.Description = "Cost";
-            //series1.DisplayName = "Cost";
-            //series1.Items = new ObservableCollection<SalesChartData>();
-            //series1.Items.Add(new SalesChartData() { Category = "Scott", Number = 653.36m });
-            //series1.Items.Add(new SalesChartData() { Category = "Amy", Number = 243.50m });
-            //series1.Items.Add(new SalesChartData() { Category = "Morgan", Number = 565.60m });
-
-            //_chartData.Add(series1);
-
-            //SeriesData series2 = new SeriesData();
-            //series2.Description = "Margin";
-            //series2.DisplayName = "Margin";
-            //series2.Items = new ObservableCollection<SalesChartData>();
-            //series2.Items.Add(new SalesChartData() { Category = "Scott", Number = 234.50m });
-            //series2.Items.Add(new SalesChartData() { Category = "Amy", Number = 175.20m });
-            //series2.Items.Add(new SalesChartData() { Category = "Morgan", Number = 300.30m });
-
-            //_chartData.Add(series2);
+			_revenuePerformance.PerformanceTarget = 5000;
+			
         }
 
         private void PopulateAverages()

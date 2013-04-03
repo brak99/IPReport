@@ -133,7 +133,10 @@
     <Compile Include="Charts\Controls\MinimalWidthTextBlock.cs" />
     <Compile Include="Charts\Controls\RowSeriesPanel.cs" />
     <Compile Include="Charts\Converters\DoubleToGridLengthPercent.cs" />
+    <Compile Include="Charts\Converters\PerformanceTargetToWidth.cs" />
+    <Compile Include="Charts\Converters\WidthsAndDataGroupToWidth.cs" />
     <Compile Include="Charts\Core\BarChart\BarPiece.cs" />
+    <Compile Include="Charts\Core\BarChart\BulletGraph.cs" />
     <Compile Include="Charts\Core\BarChart\ClusteredBarChart.cs" />
     <Compile Include="Charts\Core\BarChart\StackedBar100Chart.cs" />
     <Compile Include="Charts\Core\BarChart\StackedBarChart.cs" />
@@ -150,6 +153,8 @@
     <Compile Include="Charts\Core\Extensions.cs" />
     <Compile Include="Charts\Core\GroupedChartSeries.cs" />
     <Compile Include="Charts\Core\Legend.cs" />
+    <Compile Include="Charts\Core\PerformanceTargetDataPoint.cs" />
+    <Compile Include="Charts\Core\PerformanceTargetDataPointGroup.cs" />
     <Compile Include="Charts\Core\PieChart\PieChart.cs" />
     <Compile Include="Charts\Core\PieChart\PiePiece.cs" />
     <Compile Include="Charts\Core\ResourceDictionaryCollection.cs" />
@@ -209,6 +214,7 @@
     <Compile Include="ViewModel\InventoryViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\OnHandInventory.cs" />
+    <Compile Include="ViewModel\PerformanceTargetViewModel.cs" />
     <Compile Include="ViewModel\SalesDashboardViewModel.cs" />
     <Compile Include="ViewModel\StoreReportItem.cs" />
     <Compile Include="ViewModel\StoreSalesViewModel.cs" />

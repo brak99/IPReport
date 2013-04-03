@@ -869,7 +869,6 @@
             List<DataPointGroup> result = new List<DataPointGroup>();
             try
             {
-                ///sammle erst alle Gruppen zusammen
                 foreach (ChartSeries initialSeries in this.Series)
                 {
                     foreach (var seriesItem in initialSeries.Items)
@@ -878,7 +877,18 @@
                         DataPointGroup dataPointGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
                         if (dataPointGroup == null)
                         {
-                            dataPointGroup = new DataPointGroup();
+							if (String.IsNullOrEmpty(initialSeries.PerformanceTargetMember) ||
+								String.IsNullOrEmpty(initialSeries.ActualPerformanceMember))
+							{
+								dataPointGroup = new DataPointGroup();
+							}
+							else
+							{
+								dataPointGroup = new PerformanceTargetDataPointGroup();
+								((PerformanceTargetDataPointGroup)dataPointGroup).ActualPerformanceMember = initialSeries.ActualPerformanceMember;
+								((PerformanceTargetDataPointGroup)dataPointGroup).PerformanceTargetMember = initialSeries.PerformanceTargetMember;
+							}
+                            
                             dataPointGroup.Caption = seriesItemCaption;
                             dataPointGroup.PropertyChanged += dataPointGroup_PropertyChanged;
                             result.Add(dataPointGroup);
@@ -896,6 +906,7 @@
                                 datapoint.SeriesCaption = allSeries.Caption;
                                 datapoint.ValueMember = allSeries.ValueMember;
                                 datapoint.DisplayMember = allSeries.DisplayMember;
+								
                                 datapoint.ItemBrush = GetItemBrush(seriesIndex);
                                 datapoint.PropertyChanged += groupdItem_PropertyChanged;
 
@@ -942,6 +953,7 @@
 
                         //finde die gruppe mit dem Namen
                         DataPointGroup addToGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
+						addToGroup.ReferencedObject = series;
 
                         //finde in der Gruppe 
                         DataPoint groupdItem = addToGroup.DataPoints.Where(item => item.SeriesCaption == series.Caption).FirstOrDefault();

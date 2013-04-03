@@ -3,7 +3,9 @@
                     xmlns:local="clr-namespace:De.TorstenMandelkow.MetroChart">
 
     <local:DoubleToGridLengthPercent x:Key="doubleToGridLengthPercent"/>
-
+    <local:WidthsAndDataGroupToWidth x:Key="WidthsAndDataGroupToWidth"/>
+    <local:PerformanceTargetToWidth x:Key="PerformanceTargetToWidth"/>
+    
     <local:ResourceDictionaryCollection x:Key="DefaultPalette">
         <ResourceDictionary>
             <SolidColorBrush x:Key="Brush1" Color="#FF007C9C" />
@@ -605,7 +607,54 @@
         </Setter>
     </Style>
 
+    <Style x:Key="StackedBulletGraphBarPiece" TargetType="local:BarPiece">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:BarPiece">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="MouseOverHighlight" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="MouseOverHighlight" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualState x:Name="Unselected">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectionHighlight" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectionHighlight" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Slice" Width="auto" Height="auto">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <Border x:Name="SelectionHighlight" Background="#FFFFAA00" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0"/>
+                            </Grid>
+                        </Border>
 
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="PieChartChartAreaStyle" TargetType="local:ChartArea">
         <Setter Property="Template">
             <Setter.Value>
@@ -862,6 +911,76 @@
         </Setter>
     </Style>
 
+    <Style x:Key="BulletGraphPlotterAreaStyle" TargetType="local:PlotterArea" BasedOn="{StaticResource BarChartPlotterAreaStyle}">
+        <Setter Property="DataPointItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <local:FadingListView x:Name="itemsControl" ItemsSource="{Binding Path=DataPoints}" Margin="0 5 0 5" >
+                            <local:FadingListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <local:RowSeriesPanel />
+                                </ItemsPanelTemplate>
+                            </local:FadingListView.ItemsPanel>
+                            <local:FadingListView.ItemTemplate>
+                                <DataTemplate>
+                                    <local:BarPiece
+                                    Style="{StaticResource StackedBulletGraphBarPiece}"
+                                    Background="{Binding Path=ItemBrush}"                                                               
+                                    Percentage="{Binding Path=PercentageFromMaxDataPointGroupSum}"                                                                                                 
+                                    IsClickedByUser="{Binding Path=IsClickedByUser, Mode=TwoWay}"
+                                    IsSelected="{Binding Path=IsSelected}"
+                                    ClientWidth="{Binding Path=RealWidth, ElementName=itemsControl}"
+                                    ClientHeight="{Binding Path=RealHeight, ElementName=itemsControl}" >
+                                    </local:BarPiece>
+                                </DataTemplate>
+                            </local:FadingListView.ItemTemplate>
+                        </local:FadingListView>
+                        <Grid Margin="0,5,0,5" x:Name="PerformanceBarGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <!-- TODO: Bind Width to performance value in graph -->
+                            <Rectangle Grid.Row="1" Fill="Black" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                <Rectangle.Width>
+                                    <MultiBinding Converter="{StaticResource WidthsAndDataGroupToWidth}">
+                                        <Binding />
+                                        <Binding ElementName="itemsControl" Path="RealWidth"/>
+                                    </MultiBinding>
+                                </Rectangle.Width>
+                            </Rectangle>
+                        </Grid>
+                        <Grid Margin="0,5,0,5" x:Name="TargetPerformanceGrid">
+                            <Grid.ColumnDefinitions>
+                                <!-- TODO: Bind column Width to performance target value in graph -->
+                                <ColumnDefinition>
+                                    <ColumnDefinition.Width>
+                                        <MultiBinding Converter="{StaticResource PerformanceTargetToWidth}">
+                                            <Binding />
+                                            <Binding ElementName="itemsControl" Path="RealWidth"/>
+                                        </MultiBinding>
+                                    </ColumnDefinition.Width>
+                                </ColumnDefinition>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="4*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Grid.Column="1" Grid.Row="1" Width="2" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Left"></Rectangle>
+                        </Grid>
+
+                    </Grid>
+
+
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="local:ClusteredBarChart" BasedOn="{StaticResource BaseChartStyle}">
         <Setter Property="ChartAreaStyle" Value="{StaticResource BarChartChartAreaStyle}" />
         <Setter Property="PlotterAreaStyle" Value="{StaticResource ClusteredBarChartPlotterAreaStyle}" />
@@ -874,7 +993,10 @@
         <Setter Property="ChartAreaStyle" Value="{StaticResource BarChartChartAreaStyle}" />
         <Setter Property="PlotterAreaStyle" Value="{StaticResource StackedBar100ChartPlotterAreaStyle}" />
     </Style>
-
+    <Style TargetType="local:BulletGraph" BasedOn="{StaticResource BaseChartStyle}">
+        <Setter Property="ChartAreaStyle" Value="{StaticResource BarChartChartAreaStyle}" />
+        <Setter Property="PlotterAreaStyle" Value="{StaticResource BulletGraphPlotterAreaStyle}" />
+    </Style>
     <!--  charting:PieDataPoint  -->
     <Style TargetType="local:PiePiece">
         <Setter Property="Background" Value="Transparent" />

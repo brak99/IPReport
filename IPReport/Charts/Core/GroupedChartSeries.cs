@@ -110,5 +110,25 @@
             if (PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+		private object _ReferencedObject;
+
+		public object ReferencedObject
+		{
+			get
+			{
+				return _ReferencedObject;
+			}
+			set
+			{
+				_ReferencedObject = value;
+				//RaisePropertyChangeEvent("Value");
+				//RaisePropertyChangeEvent("DisplayName");
+				//if (_ReferencedObject is INotifyPropertyChanged)
+				//{
+				//    (_ReferencedObject as INotifyPropertyChanged).PropertyChanged += DataPoint_PropertyChanged;
+				//}
+			}
+		}
     }
 }
