@@ -273,10 +273,10 @@
                             </Border>
                             <Border x:Name="PART_ChartArea" Grid.Row="1">
                                 <local:ChartArea Style="{TemplateBinding ChartAreaStyle}" 
-                                                 ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}"  
+                                                  
                                                 
                                                  ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" >
-                                    <!--<local:PlotterArea Style="{TemplateBinding PlotterAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" />-->
+                                    
                                     <local:PlotterArea Style="{TemplateBinding PlotterAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" Content="{Binding Path=DataPointGroups}"/>
                                 </local:ChartArea>
                             </Border>
@@ -395,7 +395,7 @@
                             </Grid.RenderTransform>
                         </Grid>
                         <Border x:Name="LegendArea" Grid.Row="3" Grid.ColumnSpan="3">
-                            <local:Legend ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" ItemsSource="{Binding Path=ChartLegendItems, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <local:Legend ItemsSource="{Binding Path=ChartLegendItems, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Border>
                     </Grid>
                 </ControlTemplate>
@@ -815,7 +815,7 @@
                             </Grid.RenderTransform>
                         </Grid>
                         <Border x:Name="LegendArea" Grid.Row="3" Grid.ColumnSpan="3" >
-                            <local:Legend ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" ItemsSource="{Binding Path=ChartLegendItems, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <local:Legend ItemsSource="{Binding Path=ChartLegendItems, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Border>
                     </Grid>
                 </ControlTemplate>

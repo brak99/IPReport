@@ -57,11 +57,6 @@ namespace De.TorstenMandelkow.MetroChart
             typeof(ChartBase),
             typeof(ChartArea),
             new PropertyMetadata(null));
-        public static readonly DependencyProperty ChartLegendItemStyleProperty =
-            DependencyProperty.Register("ChartLegendItemStyle",
-            typeof(Style),
-            typeof(ChartArea),
-            new PropertyMetadata(null));
 
         public ChartBase ParentChart
         {
@@ -69,19 +64,5 @@ namespace De.TorstenMandelkow.MetroChart
             set { SetValue(ParentChartProperty, value); }
         }
 
-        public ObservableCollection<string> GridLines
-        {
-            get
-            {
-                return ParentChart.GridLines;
-            }
-        }
-
-		
-        public Style ChartLegendItemStyle
-        {
-            get { return (Style)GetValue(ChartLegendItemStyleProperty); }
-            set { SetValue(ChartLegendItemStyleProperty, value); }
-        }
     }
 }
