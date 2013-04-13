@@ -155,8 +155,6 @@
     <Compile Include="Charts\Core\Extensions.cs" />
     <Compile Include="Charts\Core\GroupedChartSeries.cs" />
     <Compile Include="Charts\Core\Legend.cs" />
-    <Compile Include="Charts\Core\PerformanceTargetDataPoint.cs" />
-    <Compile Include="Charts\Core\PerformanceTargetDataPointGroup.cs" />
     <Compile Include="Charts\Core\PieChart\PieChart.cs" />
     <Compile Include="Charts\Core\PieChart\PiePiece.cs" />
     <Compile Include="Charts\Core\ResourceDictionaryCollection.cs" />
