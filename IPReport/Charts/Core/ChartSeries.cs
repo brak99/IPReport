@@ -2,12 +2,6 @@
 using System.Collections;
 namespace De.TorstenMandelkow.MetroChart
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Text;
-    using System.Collections.Specialized;
-
 #if NETFX_CORE
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
@@ -28,30 +22,8 @@ namespace De.TorstenMandelkow.MetroChart
 
     public class ChartSeries : ItemsControl
     { 
-		
-		public static readonly DependencyProperty CaptionProperty =
-			DependencyProperty.Register("Caption",
-			typeof(string),
-			typeof(ChartSeries),
-			new PropertyMetadata("Caption"));
-		
-
         public ChartSeries()
         {   
         }
-
-        public string Caption
-        {
-            get
-            {
-                return (string)GetValue(CaptionProperty);
-            }
-            set
-            {
-                SetValue(CaptionProperty, value);
-            }
-        }
-
-		
     }
 }

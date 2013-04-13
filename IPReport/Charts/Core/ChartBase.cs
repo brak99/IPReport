@@ -126,120 +126,8 @@
             typeof(Style),
             typeof(ChartBase),
             new PropertyMetadata(null));
-        public static readonly DependencyProperty SeriesProperty =
-            DependencyProperty.Register("Series",
-            typeof(ObservableCollection<ChartSeries>),
-            typeof(ChartBase),
-            new PropertyMetadata(null, new PropertyChangedCallback(OnSeriesChanged)));
-        public static readonly DependencyProperty InternalDataContextProperty = 
-            DependencyProperty.Register("InternalDataContext",
-            typeof(object),
-            typeof(ChartBase),
-            new PropertyMetadata(null, new PropertyChangedCallback(InternalDataContextChanged)));
-
-		
-	   // public static readonly DependencyProperty MaxDataPointValueProperty =
-	   //     DependencyProperty.Register("MaxDataPointValue",
-	   //     typeof(double),
-	   //     typeof(ChartBase),
-	   //     new PropertyMetadata(0.0, OnMaxDataPointValueChanged));
-
-	   // private static void OnMaxDataPointValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-	   // {
-	   //     (d as ChartBase).OnMaxDataPointValueChanged((double)e.NewValue);
-	   // }
-
-	   // protected virtual void OnMaxDataPointValueChanged(double p)
-	   // {
-            
-	   // }
-
-	   //public static readonly DependencyProperty MaxDataPointGroupSumProperty =
-	   //     DependencyProperty.Register("MaxDataPointGroupSum",
-	   //     typeof(double),
-	   //     typeof(ChartBase),
-	   //     new PropertyMetadata(0.0, OnMaxDataPointGroupSumChanged));
-
-	   //private static void OnMaxDataPointGroupSumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-	   //{
-	   //    (d as ChartBase).OnMaxDataPointGroupSumChanged((double)e.NewValue);
-	   //}
-
-	   //protected virtual void OnMaxDataPointGroupSumChanged(double p)
-	   //{
-           
-	   //}
-
-	   //public static readonly DependencyProperty SumOfDataPointGroupProperty =
-	   //     DependencyProperty.Register("SumOfDataPointGroup",
-	   //     typeof(double),
-	   //     typeof(ChartBase),
-	   //     new PropertyMetadata(0.0, OnSumOfDataPointGroupChanged));
-
-	   //private static void OnSumOfDataPointGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-	   //{
-	   //    (d as ChartBase).SumOfDataPointGroupChanged((double)e.NewValue);
-	   //}
-
-	   //private void SumOfDataPointGroupChanged(double p)
-	   //{
-           
-	   //}
-
-	   //public double SumOfDataPointGroup
-	   //{
-	   //    get { return (double)GetValue(SumOfDataPointGroupProperty); }
-	   //    set { SetValue(SumOfDataPointGroupProperty, value); }
-	   //}
 #endregion Fields
 
-        #region DataContext stuff
-
-        public static DependencyProperty DataContextWatcherProperty = DependencyProperty.Register(
-            "DataContextWatcher",
-            typeof(object),
-            typeof(ChartBase),
-            new PropertyMetadata(null, DataContextWatcher_Changed));
-
-        public static void DataContextWatcher_Changed(
-               DependencyObject sender,
-               DependencyPropertyChangedEventArgs args)
-        {
-            ChartBase senderControl = sender as ChartBase;
-            if (senderControl != null)
-            {
-                (senderControl as ChartBase).InternalDataContextChanged();
-            }
-        } 
-
-        private static void InternalDataContextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as ChartBase).InternalDataContextChanged();
-        }
-
-        private void InternalDataContextChanged()
-        {
-            UpdateDataContextOfSeries();
-        }
-
-        public object InternalDataContext
-        {
-            get { return GetValue(InternalDataContextProperty); }
-            set { SetValue(InternalDataContextProperty, value); }
-        }
-
-        private void UpdateDataContextOfSeries()
-        {
-            foreach (var newItem in this.Series)
-            {
-                if (newItem is FrameworkElement)
-                {
-                    (newItem as FrameworkElement).DataContext = this.DataContext;
-                }
-            }
-        }
-
-        #endregion
 
         #region INotifiy stuff
 
@@ -287,9 +175,6 @@
 #else
         private void Window1_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //new items added to a series, we may update them
-			//UpdateGroupedSeries();
-			//UpdateGroupedPieSeries();
         }
 #endif
         #endregion
@@ -298,9 +183,7 @@
 
         public ChartBase()
         {
-            Series = new ObservableCollection<ChartSeries>();
             InitializeChartComponent();
-
         }
 
         #endregion Constructors
@@ -347,25 +230,6 @@
             get { return (Style)GetValue(TitleStyleProperty); }
             set { SetValue(TitleStyleProperty, value); }
         }
-
-		//public double MaxDataPointValue
-		//{
-		//    get { return (double)GetValue(MaxDataPointValueProperty); }
-		//    set { SetValue(MaxDataPointValueProperty, value); }
-		//}
-
-		//public double MaxDataPointGroupSum
-		//{
-		//    get { return (double)GetValue(MaxDataPointGroupSumProperty); }
-		//    set { SetValue(MaxDataPointGroupSumProperty, value); }
-		//}
-
-        public ObservableCollection<ChartSeries> Series
-        {
-            get { return (ObservableCollection<ChartSeries>)GetValue(SeriesProperty); }
-            set { SetValue(SeriesProperty, value); }
-        }
-
 
         public object SelectedItem
         {
@@ -510,63 +374,6 @@
         }
 
         #endregion Properties
-
-		//public ObservableCollection<ChartLegendItemViewModel> ChartLegendItems
-		//{
-		//    get
-		//    {
-		//        int index = 0;
-		//        ObservableCollection<ChartLegendItemViewModel> result = new ObservableCollection<ChartLegendItemViewModel>();
-		//        foreach (ChartSeries series in Series)
-		//        {
-		//            result.Add(new ChartLegendItemViewModel() { Caption = series.Caption, ItemBrush = GetItemBrush(index) });
-		//            index++;
-		//        }
-		//        return result;
-		//    }
-		//}
-
-		//private string GetPropertyValue(object item, string propertyName)
-		//{
-		//    foreach (PropertyInfo info in item.GetType().GetAllProperties())
-		//    {
-		//        if (info.Name == propertyName)
-		//        {
-		//            object v = info.GetValue(item, null);
-		//            return v.ToString();
-		//        }
-		//    }
-		//    throw new Exception("Value not found");
-		//}
-
-		//private Brush GetItemBrush(int index)
-		//{
-		//    if (this.Palette != null)
-		//    {
-		//        int paletteCounter = 0;
-		//        foreach (var resDictionary in Palette)
-		//        {
-		//            if (paletteCounter == index)
-		//            {
-		//                try
-		//                {
-		//                    foreach (var entry in resDictionary.Values)
-		//                    {
-		//                        if (entry is Brush)
-		//                        {
-		//                            return entry as Brush;
-		//                        }
-		//                    }                           
-		//                }
-		//                catch (Exception)
-		//                {
-		//                }
-		//            }
-		//            paletteCounter++;
-		//        }
-		//    }
-		//    return new SolidColorBrush(Colors.Red);
-		//}
 
         private ObservableCollection<string> gridLines = new ObservableCollection<string>();
         public ObservableCollection<string> GridLines
@@ -756,13 +563,6 @@
         /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
         void observable_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            /*
-            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(this.DataContext);
-            if (myCollectionView != null)
-            {
-                myCollectionView.Refresh();
-            }
-            */
         }
 
         #endregion Methods
