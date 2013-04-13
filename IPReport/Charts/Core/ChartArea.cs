@@ -77,30 +77,7 @@ namespace De.TorstenMandelkow.MetroChart
             }
         }
 
-        public ObservableCollection<DataPointGroup> DataPointGroups
-        {
-            get
-            {
-                return ParentChart.DataPointGroups;
-            }
-        }
-
-        public ObservableCollection<DataPointGroup> GroupedPieSeries
-        {
-            get
-            {
-                return ParentChart.GroupedPieSeries;
-            }
-        }
-
-        public ObservableCollection<ChartLegendItemViewModel> ChartLegendItems
-        {
-            get
-            {
-                return ParentChart.ChartLegendItems;
-            }
-        } 
-
+		
         public Style ChartLegendItemStyle
         {
             get { return (Style)GetValue(ChartLegendItemStyleProperty); }

@@ -145,7 +145,7 @@
     <Compile Include="Charts\Core\ChartArea.cs" />
     <Compile Include="Charts\Core\ChartBase.cs" />
     <Compile Include="Charts\Core\ChartSeries.cs" />
-    <Compile Include="Charts\Core\ChartSeriesViewModel.cs" />
+    <Compile Include="Charts\Core\ChartLegendItemViewModel.cs" />
     <Compile Include="Charts\Core\ColumnChart\ClusteredColumnChart.cs" />
     <Compile Include="Charts\Core\ColumnChart\ColumnPiece.cs" />
     <Compile Include="Charts\Core\ColumnChart\StackedColumn100Chart.cs" />

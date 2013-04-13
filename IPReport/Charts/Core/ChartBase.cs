@@ -288,8 +288,8 @@
         private void Window1_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //new items added to a series, we may update them
-            UpdateGroupedSeries();
-            UpdateGroupedPieSeries();
+			//UpdateGroupedSeries();
+			//UpdateGroupedPieSeries();
         }
 #endif
         #endregion
@@ -511,62 +511,62 @@
 
         #endregion Properties
 
-        public ObservableCollection<ChartLegendItemViewModel> ChartLegendItems
-        {
-            get
-            {
-                int index = 0;
-                ObservableCollection<ChartLegendItemViewModel> result = new ObservableCollection<ChartLegendItemViewModel>();
-                foreach (ChartSeries series in Series)
-                {
-                    result.Add(new ChartLegendItemViewModel() { Caption = series.Caption, ItemBrush = GetItemBrush(index) });
-                    index++;
-                }
-                return result;
-            }
-        }
+		//public ObservableCollection<ChartLegendItemViewModel> ChartLegendItems
+		//{
+		//    get
+		//    {
+		//        int index = 0;
+		//        ObservableCollection<ChartLegendItemViewModel> result = new ObservableCollection<ChartLegendItemViewModel>();
+		//        foreach (ChartSeries series in Series)
+		//        {
+		//            result.Add(new ChartLegendItemViewModel() { Caption = series.Caption, ItemBrush = GetItemBrush(index) });
+		//            index++;
+		//        }
+		//        return result;
+		//    }
+		//}
 
-        private string GetPropertyValue(object item, string propertyName)
-        {
-            foreach (PropertyInfo info in item.GetType().GetAllProperties())
-            {
-                if (info.Name == propertyName)
-                {
-                    object v = info.GetValue(item, null);
-                    return v.ToString();
-                }
-            }
-            throw new Exception("Value not found");
-        }
+		//private string GetPropertyValue(object item, string propertyName)
+		//{
+		//    foreach (PropertyInfo info in item.GetType().GetAllProperties())
+		//    {
+		//        if (info.Name == propertyName)
+		//        {
+		//            object v = info.GetValue(item, null);
+		//            return v.ToString();
+		//        }
+		//    }
+		//    throw new Exception("Value not found");
+		//}
 
-        private Brush GetItemBrush(int index)
-        {
-            if (this.Palette != null)
-            {
-                int paletteCounter = 0;
-                foreach (var resDictionary in Palette)
-                {
-                    if (paletteCounter == index)
-                    {
-                        try
-                        {
-                            foreach (var entry in resDictionary.Values)
-                            {
-                                if (entry is Brush)
-                                {
-                                    return entry as Brush;
-                                }
-                            }                           
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                    paletteCounter++;
-                }
-            }
-            return new SolidColorBrush(Colors.Red);
-        }
+		//private Brush GetItemBrush(int index)
+		//{
+		//    if (this.Palette != null)
+		//    {
+		//        int paletteCounter = 0;
+		//        foreach (var resDictionary in Palette)
+		//        {
+		//            if (paletteCounter == index)
+		//            {
+		//                try
+		//                {
+		//                    foreach (var entry in resDictionary.Values)
+		//                    {
+		//                        if (entry is Brush)
+		//                        {
+		//                            return entry as Brush;
+		//                        }
+		//                    }                           
+		//                }
+		//                catch (Exception)
+		//                {
+		//                }
+		//            }
+		//            paletteCounter++;
+		//        }
+		//    }
+		//    return new SolidColorBrush(Colors.Red);
+		//}
 
         private ObservableCollection<string> gridLines = new ObservableCollection<string>();
         public ObservableCollection<string> GridLines
@@ -693,89 +693,6 @@
             }
         }
 
-		//protected abstract double GridLinesMaxValue
-		//{
-		//    get;
-		//}
-
-		//protected void UpdateGridLines()
-		//{
-		//    double distance = CalculateDistance(GridLinesMaxValue);
-		//    gridLines.Clear();
-		//    for (var i = distance; i <= GridLinesMaxValue; i += distance)
-		//    {
-		//        gridLines.Add(i.ToString());
-		//    }
-		//}
-
-        ObservableCollection<DataPointGroup> groupedPieSeries = new ObservableCollection<DataPointGroup>();
-        private void UpdateGroupedPieSeries()
-        {
-            //gruppiere die Series neu
-            List<DataPointGroup> result = new List<DataPointGroup>();
-            try
-            {
-                ///sammle erst alle Gruppen zusammen
-                foreach (ChartSeries initialSeries in this.Series)
-                {
-                    if (initialSeries.Items != null)
-                    {
-                        if (initialSeries.Items.Count > 0)
-                        {
-                            DataPointGroup addToGroup = new DataPointGroup();
-                            addToGroup.Caption = initialSeries.Caption;
-                            //addToGroup.PropertyChanged += addToGroup_PropertyChanged;
-                            result.Add(addToGroup);
-
-                            var groupBinding = new Binding();
-                            groupBinding.Source = this;
-                            groupBinding.Mode = BindingMode.TwoWay;
-                            groupBinding.Path = new PropertyPath("SelectedItem");
-                            BindingOperations.SetBinding(addToGroup, DataPointGroup.SelectedItemProperty, groupBinding);
-
-                            int seriesIndex = 0;
-                            foreach (var seriesItem in initialSeries.Items)
-                            {
-                                DataPoint groupdItem = new DataPoint();
-                                addToGroup.DataPoints.Add(groupdItem);
-
-                                groupdItem.SeriesCaption = initialSeries.Caption;
-								//groupdItem.ValueMember = initialSeries.ValueMember;
-								//groupdItem.DisplayMember = initialSeries.DisplayMember;
-                                groupdItem.ItemBrush = GetItemBrush(seriesIndex);
-                                groupdItem.ReferencedObject = (SalesChartData)seriesItem;
-
-                                var selectionBinding = new Binding();
-                                selectionBinding.Source = addToGroup;
-                                selectionBinding.Mode = BindingMode.OneWay;
-                                selectionBinding.Path = new PropertyPath("SelectedItem");
-                                BindingOperations.SetBinding(groupdItem, DataPoint.SelectedItemProperty, selectionBinding);
-
-								//var sumBinding = new Binding();
-								//sumBinding.Source = addToGroup;
-								//sumBinding.Mode = BindingMode.OneWay;
-								//sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
-								//BindingOperations.SetBinding(groupdItem, DataPoint.SumOfDataPointGroupProperty, sumBinding);
-
-                                
-                                seriesIndex++;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            //is there a whole change or only a change at the end??
-            groupedPieSeries.Clear();            
-            foreach (var item in result)
-            {
-                groupedPieSeries.Add(item);
-            }
-        }
-
         private void addToGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "SelectedItem")
@@ -783,178 +700,6 @@
 
             }
         }
-
-        ObservableCollection<DataPointGroup> groupedSeries = new ObservableCollection<DataPointGroup>();
-        private void UpdateGroupedSeries()
-        {            
-			//List<DataPointGroup> result = new List<DataPointGroup>();
-			//try
-			//{
-			//    foreach (ChartSeries initialSeries in this.Series)
-			//    {
-			//        //foreach (SeriesData seriesItem in initialSeries.Items)
-			//        foreach (var seriesItem in initialSeries.Items)
-			//        {
-			//            string seriesItemCaption = GetPropertyValue(seriesItem, initialSeries.DisplayMember); //Security
-			//            DataPointGroup dataPointGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
-			//            if (dataPointGroup == null)
-			//            {
-			//                if (String.IsNullOrEmpty(initialSeries.PerformanceTargetMember) ||
-			//                    String.IsNullOrEmpty(initialSeries.ActualPerformanceMember))
-			//                {
-			//                    dataPointGroup = new DataPointGroup();
-			//                }
-			//                else
-			//                {
-			//                    dataPointGroup = new PerformanceTargetDataPointGroup();
-			//                    ((PerformanceTargetDataPointGroup)dataPointGroup).ActualPerformanceMember = initialSeries.ActualPerformanceMember;
-			//                    ((PerformanceTargetDataPointGroup)dataPointGroup).PerformanceTargetMember = initialSeries.PerformanceTargetMember;
-			//                }
-                            
-			//                dataPointGroup.Caption = seriesItemCaption;
-			//                dataPointGroup.PropertyChanged += dataPointGroup_PropertyChanged;
-			//                result.Add(dataPointGroup);
-
-			//                var groupBinding = new Binding();
-			//                groupBinding.Source = this;
-			//                groupBinding.Mode = BindingMode.TwoWay;
-			//                groupBinding.Path = new PropertyPath("SelectedItem");
-			//                BindingOperations.SetBinding(dataPointGroup, DataPointGroup.SelectedItemProperty, groupBinding);
-
-			//                int seriesIndex = 0;
-			//                foreach (ChartSeries allSeries in this.Series)
-			//                {
-			//                    DataPoint datapoint = new DataPoint();
-			//                    datapoint.SeriesCaption = allSeries.Caption;
-			//                    datapoint.ValueMember = allSeries.ValueMember;
-			//                    datapoint.DisplayMember = allSeries.DisplayMember;
-								
-			//                    datapoint.ItemBrush = GetItemBrush(seriesIndex);
-			//                    datapoint.PropertyChanged += groupdItem_PropertyChanged;
-
-			//                    //Sende an Datapoints the maximalvalue des Charts mit (wichtig in clustered Column chart)
-			//                    //var maxDataPointValueBinding = new Binding();
-			//                    //maxDataPointValueBinding.Source = this;
-			//                    //maxDataPointValueBinding.Mode = BindingMode.OneWay;
-			//                    //maxDataPointValueBinding.Path = new PropertyPath("MaxDataPointValue");
-			//                    //BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointValueProperty, maxDataPointValueBinding);
-
-			//                    //Sende den Datapoints the höchste Summe einer DataPointGroup mit (wichtig für stacked chart)
-			//                    //var maxDataPointGroupSumBinding = new Binding();
-			//                    //maxDataPointGroupSumBinding.Source = this;
-			//                    //maxDataPointGroupSumBinding.Mode = BindingMode.OneWay;
-			//                    //maxDataPointGroupSumBinding.Path = new PropertyPath("MaxDataPointGroupSum");
-			//                    //BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointGroupSumProperty, maxDataPointGroupSumBinding);
-
-			//                    //Sende den Datapoint die Summe seiner Datagroup
-			//                    //var sumBinding = new Binding();
-			//                    //sumBinding.Source = dataPointGroup;
-			//                    //sumBinding.Mode = BindingMode.OneWay;
-			//                    //sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
-			//                    //BindingOperations.SetBinding(datapoint, DataPoint.SumOfDataPointGroupProperty, sumBinding);
-
-			//                    var selectionBinding = new Binding();
-			//                    selectionBinding.Source = dataPointGroup;
-			//                    selectionBinding.Mode = BindingMode.TwoWay;
-			//                    selectionBinding.Path = new PropertyPath("SelectedItem");
-			//                    BindingOperations.SetBinding(datapoint, DataPoint.SelectedItemProperty, selectionBinding);
-
-			//                    dataPointGroup.DataPoints.Add(datapoint);
-			//                    seriesIndex++;
-			//                }
-			//            }
-			//        }
-			//    }
-
-			//    ///gehe alle Series durch (Security, Naming etc.)
-			//    foreach (ChartSeries series in this.Series)
-			//    {
-			//        foreach (var seriesItem in series.Items)
-			//        {
-			//            string seriesItemCaption = GetPropertyValue(seriesItem, series.DisplayMember); //Security
-
-			//            //finde die gruppe mit dem Namen
-			//            DataPointGroup addToGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
-			//            addToGroup.ReferencedObject = series;
-
-			//            //finde in der Gruppe 
-			//            DataPoint groupdItem = addToGroup.DataPoints.Where(item => item.SeriesCaption == series.Caption).FirstOrDefault();
-			//            groupdItem.ReferencedObject = (SalesChartData)seriesItem;                        
-			//        }
-			//    }
-			//    //UpdateMaxValue(maxValue);                        
-			//}
-			//catch (Exception)
-			//{
-			//}
-
-			////finished, copy all to the array
-			//groupedSeries.Clear();
-			//foreach (var item in result)
-			//{
-			//    groupedSeries.Add(item);
-			//}
-			//RecalcSumOfDataPointGroup();
-        }
-
-		//void dataPointGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		//{
-		//    if (e.PropertyName == "SumOfDataPointGroup")
-		//    {
-		//        RecalcSumOfDataPointGroup();
-		//    }
-		//}
-
-		//private void RecalcSumOfDataPointGroup()
-		//{
-		//    double maxValue = 0.0;
-		//    foreach(var dataPointGroup in DataPointGroups)
-		//    {
-		//        if (dataPointGroup.SumOfDataPointGroup > maxValue)
-		//        {
-		//            maxValue = dataPointGroup.SumOfDataPointGroup;
-		//        }
-		//    }
-		//    MaxDataPointGroupSum = CalculateMaxValue(maxValue);
-		//}
-
-		//void groupdItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		//{
-		//    RecalcMaxDataPointValue();
-		//}
-
-		//private void RecalcMaxDataPointValue()
-		//{
-		//    double maxValue = 0.0;
-		//    foreach (var dataPointGroup in DataPointGroups)
-		//    {
-		//        foreach (var dataPoint in dataPointGroup.DataPoints)
-		//        {
-		//            if (dataPoint.Value > maxValue)
-		//            {
-		//                maxValue = dataPoint.Value;
-		//            }
-		//        }
-		//    }
-		//    MaxDataPointValue = CalculateMaxValue(maxValue);
-		//}
-
-        public ObservableCollection<DataPointGroup> DataPointGroups
-        {
-            get
-            {
-                return groupedSeries;                
-            }
-        }
-
-        public ObservableCollection<DataPointGroup> GroupedPieSeries
-        {
-            get
-            {
-                return groupedPieSeries;                
-            }
-        }        
-
 
         #region Methods
 
