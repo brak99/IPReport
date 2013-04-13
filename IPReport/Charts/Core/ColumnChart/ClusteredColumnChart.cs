@@ -62,13 +62,5 @@
 
         #endregion Constructors
 
-
-        public override bool IsUseNextBiggestMaxValue
-        {
-            get
-            {
-                return true;
-            }
-        }
     }
 }

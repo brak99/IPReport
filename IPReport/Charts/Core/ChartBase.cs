@@ -29,7 +29,7 @@
 	using IPReport.ViewModel;
 #endif
 
-    public abstract class ChartBase : ItemsControl, INotifyPropertyChanged
+    public abstract class ChartBase : ItemsControl
     {
         #region Fields
 
@@ -398,142 +398,7 @@
         /// </summary>
         /// <param name="newMaxValue"></param>
         /// <returns></returns>
-        private double CalculateMaxValue(double newMaxValue)
-        {
-            double bestMaxValue = 0.0;
-            int bestDivisor = 1;
 
-            GetBestValues(newMaxValue, ref bestMaxValue, ref bestDivisor);
-
-            return bestMaxValue;
-        }
-
-        private double CalculateDistance(double givenBestMaxValue)
-        {
-            double bestMaxValue = 0.0;
-            int bestDivisor = 1;
-            double distance = 0.0;
-
-            GetBestValues(givenBestMaxValue, ref bestMaxValue, ref bestDivisor);
-            distance = bestMaxValue / bestDivisor;
-
-            return distance;
-        }
-
-
-        private void GetBestValues(double wert, ref double bestMaxValue, ref int bestDivisor)
-        {
-            string wertString = wert.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            double tensBelowNull = 1;
-
-            if (wert <= 1)
-            {
-                //0.72  -> 0.8
-                //0.00145
-                //0.0007453 0> 7453
-
-                //count digits after comma
-                int digitsAfterComma = wertString.Replace("0.", "").Length;
-                tensBelowNull = Math.Pow(10, digitsAfterComma);
-                wert = wert * tensBelowNull;
-                wertString = wert.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            }
-            if (wertString.Contains("."))
-            {
-                wertString = wertString.Substring(0, wertString.IndexOf("."));
-            }
-            int digitsBeforeComma = wertString.Length;
-            int roundedValue = (int)Math.Ceiling(wert);
-            double tens = 0;
-            if (digitsBeforeComma > 2)
-            {
-                tens = Math.Pow(10, digitsBeforeComma - 2);
-                double wertWith2Digits = wert / tens;
-                roundedValue = (int)Math.Ceiling(wertWith2Digits);
-            }
-            else if (digitsBeforeComma == 1)
-            {
-                tens = 0.1;
-                double wertWith2Digits = wert / tens;
-                roundedValue = (int)Math.Ceiling(wertWith2Digits);
-            }
-
-            int finaldivisor = FindBestDivisor(ref roundedValue);
-
-            double roundedValueDouble = roundedValue / tensBelowNull;
-
-            if (tens > 0)
-            {
-                roundedValueDouble = roundedValueDouble * tens;
-            }
-
-            bestMaxValue = roundedValueDouble;
-            bestDivisor = finaldivisor;
-
-        }
-
-        private int FindBestDivisor(ref int roundedValue)
-        {
-            if (IsUseNextBiggestMaxValue)
-            {
-                roundedValue += 1;
-            }
-            while (true)
-            {
-                int[] divisors = new int[] { 2, 5, 10, 25 };
-                foreach (int divisor in divisors)
-                {
-                    int div = roundedValue % divisor;
-                    int mod = roundedValue / divisor;
-
-                    if ((roundedValue < 10) && (mod == 1))
-                    {
-                        return roundedValue;
-                    }
-
-                    if ((div == 0) && (mod <= 10))
-                    {
-                        return mod;
-                    }
-                }
-                roundedValue = roundedValue + 1;
-            }
-        }
-
-        private void addToGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "SelectedItem")
-            {
-
-            }
-        }
-
-        #region Methods
-
-
-        private void UpdateControls()
-        {
-            if (this.DataContext != null)
-            {
-                if (this.DataContext is IEnumerable)
-                {
-                    foreach (object item in (this.DataContext as IEnumerable))
-                    {
-                        if (item is INotifyPropertyChanged)
-                        {
-                            INotifyPropertyChanged observable = (INotifyPropertyChanged)item;
-                            observable.PropertyChanged += new PropertyChangedEventHandler(observable_PropertyChanged);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void RaisePropertyChangeEvent(String propertyName)
-        {
-            if (PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         /// <summary>
         /// Initializes the chart component.
@@ -556,31 +421,6 @@
             ChartColorMouseOver = chartMouseOverBrush;
         }
 
-         /// <summary>
-        /// Handles the PropertyChanged event of the observable control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
-        void observable_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-        }
-
-        #endregion Methods
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// In ColumnGrid we need some space above the column to show the number above the column,
-        /// this is not needed in StackedChart
-        /// </summary>
-        public virtual bool IsUseNextBiggestMaxValue
-        {
-            get
-            {
-                return false;
-            }
-        }
+      
     }
 }
