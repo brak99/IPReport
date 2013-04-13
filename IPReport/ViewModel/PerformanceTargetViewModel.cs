@@ -7,48 +7,6 @@ using IPReport.Charts.ViewModel;
 
 namespace IPReport.ViewModel
 {
-	//public class PerformanceRangeData
-	//{
-	//    public string Category { get; set; }
-	//    public decimal Number { get; set; }
-	//}
-	//public class PerformanceSeriesData : WorkspaceViewModel
-	//{
-	//    public PerformanceSeriesData()
-	//    {
-	//        Items = new ObservableCollection<PerformanceRangeData>();
-	//    }
-
-	//    public string DisplayName { get; set; }
-
-	//    public string Description { get; set; }
-
-	//    private decimal _actualPerformance;
-	//    public decimal ActualPerformance
-	//    {
-	//        get { return _actualPerformance; }
-	//        set 
-	//        { 
-	//            _actualPerformance = value;
-	//            OnPropertyChanged("ActualPerformance");
-
-	//        }
-	//    }
-
-	//    private decimal _performanceTarget;
-	//    public decimal PerformanceTarget
-	//    {
-	//        get { return _performanceTarget; }
-	//        set
-	//        {
-	//            _performanceTarget = value;
-	//            OnPropertyChanged("PerformanceTarget");
-
-	//        }
-	//    }
-	//    public ObservableCollection<PerformanceRangeData> Items { get; set; }
-	//}
-
 	public class PerformanceTargetViewModel : GroupedSeriesViewModel
 	{
 		public double PoorPerformance
@@ -139,24 +97,15 @@ namespace IPReport.ViewModel
 			_satisfactorySeries.Items.Clear();
 			_goodSeries.Items.Clear();
 
-			
-
-			//_performanceRanges.Add(_poorSeries);
-			//_performanceRanges.Add(_satisfactorySeries);
-			//_performanceRanges.Add(_goodSeries);
-
-			//PerformanceRangeData poorData = new PerformanceRangeData();
 			SalesChartData poorData = new SalesChartData();
 			poorData.Category = Name;
 			poorData.Number = PerformanceTarget * (decimal)PoorPerformance;
 
-			//PerformanceRangeData satisfactoryData = new PerformanceRangeData();
 			SalesChartData satisfactoryData = new SalesChartData();
 			satisfactoryData.Category = Name;
 			satisfactoryData.Number = PerformanceTarget * (decimal)SatisfactoryPerformance;
 			satisfactoryData.Number -= poorData.Number;
 
-			//PerformanceRangeData goodData = new PerformanceRangeData();
 			SalesChartData goodData = new SalesChartData();
 			goodData.Category = Name;
 			goodData.Number = PerformanceTarget * (decimal)GoodPerformance;
