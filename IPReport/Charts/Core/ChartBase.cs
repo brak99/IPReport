@@ -26,6 +26,7 @@
     using System.Windows.Media;
     using System.Windows.Controls;
     using System.Windows.Data;
+	using IPReport.ViewModel;
 #endif
 
     public abstract class ChartBase : ItemsControl, INotifyPropertyChanged
@@ -822,7 +823,7 @@
                                 groupdItem.ValueMember = initialSeries.ValueMember;
                                 groupdItem.DisplayMember = initialSeries.DisplayMember;
                                 groupdItem.ItemBrush = GetItemBrush(seriesIndex);
-                                groupdItem.ReferencedObject = seriesItem;
+                                groupdItem.ReferencedObject = (SalesChartData)seriesItem;
 
                                 var selectionBinding = new Binding();
                                 selectionBinding.Source = addToGroup;
@@ -830,11 +831,11 @@
                                 selectionBinding.Path = new PropertyPath("SelectedItem");
                                 BindingOperations.SetBinding(groupdItem, DataPoint.SelectedItemProperty, selectionBinding);
 
-                                var sumBinding = new Binding();
-                                sumBinding.Source = addToGroup;
-                                sumBinding.Mode = BindingMode.OneWay;
-                                sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
-                                BindingOperations.SetBinding(groupdItem, DataPoint.SumOfDataPointGroupProperty, sumBinding);
+								//var sumBinding = new Binding();
+								//sumBinding.Source = addToGroup;
+								//sumBinding.Mode = BindingMode.OneWay;
+								//sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
+								//BindingOperations.SetBinding(groupdItem, DataPoint.SumOfDataPointGroupProperty, sumBinding);
 
                                 
                                 seriesIndex++;
@@ -871,6 +872,7 @@
             {
                 foreach (ChartSeries initialSeries in this.Series)
                 {
+					//foreach (SeriesData seriesItem in initialSeries.Items)
                     foreach (var seriesItem in initialSeries.Items)
                     {
                         string seriesItemCaption = GetPropertyValue(seriesItem, initialSeries.DisplayMember); //Security
@@ -911,25 +913,25 @@
                                 datapoint.PropertyChanged += groupdItem_PropertyChanged;
 
                                 //Sende an Datapoints the maximalvalue des Charts mit (wichtig in clustered Column chart)
-                                var maxDataPointValueBinding = new Binding();
-                                maxDataPointValueBinding.Source = this;
-                                maxDataPointValueBinding.Mode = BindingMode.OneWay;
-                                maxDataPointValueBinding.Path = new PropertyPath("MaxDataPointValue");
-                                BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointValueProperty, maxDataPointValueBinding);
+								//var maxDataPointValueBinding = new Binding();
+								//maxDataPointValueBinding.Source = this;
+								//maxDataPointValueBinding.Mode = BindingMode.OneWay;
+								//maxDataPointValueBinding.Path = new PropertyPath("MaxDataPointValue");
+								//BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointValueProperty, maxDataPointValueBinding);
 
                                 //Sende den Datapoints the höchste Summe einer DataPointGroup mit (wichtig für stacked chart)
-                                var maxDataPointGroupSumBinding = new Binding();
-                                maxDataPointGroupSumBinding.Source = this;
-                                maxDataPointGroupSumBinding.Mode = BindingMode.OneWay;
-                                maxDataPointGroupSumBinding.Path = new PropertyPath("MaxDataPointGroupSum");
-                                BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointGroupSumProperty, maxDataPointGroupSumBinding);
+								//var maxDataPointGroupSumBinding = new Binding();
+								//maxDataPointGroupSumBinding.Source = this;
+								//maxDataPointGroupSumBinding.Mode = BindingMode.OneWay;
+								//maxDataPointGroupSumBinding.Path = new PropertyPath("MaxDataPointGroupSum");
+								//BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointGroupSumProperty, maxDataPointGroupSumBinding);
 
                                 //Sende den Datapoint die Summe seiner Datagroup
-                                var sumBinding = new Binding();
-                                sumBinding.Source = dataPointGroup;
-                                sumBinding.Mode = BindingMode.OneWay;
-                                sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
-                                BindingOperations.SetBinding(datapoint, DataPoint.SumOfDataPointGroupProperty, sumBinding);
+								//var sumBinding = new Binding();
+								//sumBinding.Source = dataPointGroup;
+								//sumBinding.Mode = BindingMode.OneWay;
+								//sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
+								//BindingOperations.SetBinding(datapoint, DataPoint.SumOfDataPointGroupProperty, sumBinding);
 
                                 var selectionBinding = new Binding();
                                 selectionBinding.Source = dataPointGroup;
@@ -957,7 +959,7 @@
 
                         //finde in der Gruppe 
                         DataPoint groupdItem = addToGroup.DataPoints.Where(item => item.SeriesCaption == series.Caption).FirstOrDefault();
-                        groupdItem.ReferencedObject = seriesItem;                        
+                        groupdItem.ReferencedObject = (SalesChartData)seriesItem;                        
                     }
                 }
                 //UpdateMaxValue(maxValue);                        

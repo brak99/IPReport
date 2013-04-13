@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:De.TorstenMandelkow.MetroChart">
+                    xmlns:local="clr-namespace:De.TorstenMandelkow.MetroChart"
+                    xmlns:converters="clr-namespace:IPReport.Charts.Converters">
 
     <local:DoubleToGridLengthPercent x:Key="doubleToGridLengthPercent"/>
     <local:WidthsAndDataGroupToWidth x:Key="WidthsAndDataGroupToWidth"/>
@@ -20,12 +21,21 @@
             <SolidColorBrush x:Key="Brush4" Color="#FF82B93A" />
         </ResourceDictionary>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="Brush4" Color="#FF638A2D" />
+            <SolidColorBrush x:Key="Brush5" Color="#FF638A2D" />
         </ResourceDictionary>
     </local:ResourceDictionaryCollection>
-
+    
     <SolidColorBrush x:Key="ChartBackground" Color="Transparent" />
-
+    <converters:IndexToColorConverter x:Key="IndexToColorConverter">
+        <converters:IndexToColorConverter.Values>
+            <SolidColorBrush x:Key="0" Color="#FF007C9C" />
+            <SolidColorBrush x:Key="1" Color="#FF019FCC" />
+            <SolidColorBrush x:Key="2" Color="#FF8FCD3E" />
+            <SolidColorBrush x:Key="3" Color="#FF82B93A" />
+            <SolidColorBrush x:Key="4" Color="#FF638A2D" />
+        </converters:IndexToColorConverter.Values>
+    </converters:IndexToColorConverter>
+    
     <Style x:Key="SeriesTextStyle" TargetType="TextBlock">
         <Setter Property="LineHeight" Value="12" />
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
@@ -258,12 +268,16 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Border Grid.Row="0" x:Name="PART_ChartTitle">
+                            <Border x:Name="PART_ChartTitle" Grid.Row="0">
                                 <local:ChartTitle Title="{TemplateBinding ChartTitle}" SubTitle="{TemplateBinding ChartSubTitle}" />
                             </Border>
                             <Border x:Name="PART_ChartArea" Grid.Row="1">
-                                <local:ChartArea Style="{TemplateBinding ChartAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}"  ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" >
-                                    <local:PlotterArea Style="{TemplateBinding PlotterAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <local:ChartArea Style="{TemplateBinding ChartAreaStyle}" 
+                                                 ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}"  
+                                                
+                                                 ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                                    <!--<local:PlotterArea Style="{TemplateBinding PlotterAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" />-->
+                                    <local:PlotterArea Style="{TemplateBinding PlotterAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" Content="{Binding Path=DataPointGroups}"/>
                                 </local:ChartArea>
                             </Border>
                         </Grid>
@@ -748,7 +762,7 @@
                                       Grid.Column="2"
                                       Canvas.ZIndex="-1"                                      
                                       Grid.Row="0">
-                            <local:FadingListView ItemsSource="{Binding Path=GridLines, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                            <local:FadingListView ItemsSource="{Binding Path=GridLines}">
                                 <local:FadingListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <local:EvenlyDistributedColumnsGrid Margin="0 0 10 0" />
@@ -768,7 +782,7 @@
                             Grid.Column="2" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"     
                             Grid.Row="0" Content="{TemplateBinding Content}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
                         <Grid x:Name="SeriesText" Grid.Column="0" Grid.Row="0">
-                            <local:FadingListView ItemsSource="{Binding Path=DataPointGroups, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                            <local:FadingListView ItemsSource="{Binding Path=DataPointGroups}">
                                 <local:FadingListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <local:EvenlyDistributedRowGrid Margin="0 0 5 0" />
@@ -782,7 +796,7 @@
                             </local:FadingListView>
                         </Grid>
                         <Grid x:Name="LeftLines" Grid.Column="2" Grid.Row="2">
-                            <local:FadingListView ItemsSource="{Binding Path=GridLines, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                            <local:FadingListView ItemsSource="{Binding Path=GridLines}">
                                 <local:FadingListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <local:EvenlyDistributedColumnsGrid Margin="10 0 2 0" />
@@ -814,7 +828,7 @@
                 <ControlTemplate TargetType="local:PlotterArea">
                     <local:FadingListView   
                         x:Name="itemsPanel"                                                  
-                        ItemsSource="{Binding Path=ParentChart.DataPointGroups, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        ItemsSource="{Binding Path=DataPointGroups}"
                         ItemTemplate="{TemplateBinding DataPointItemTemplate}">
                         <local:FadingListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -867,13 +881,14 @@
                         <local:FadingListView.ItemTemplate>
                             <DataTemplate>
                                 <local:BarPiece
-                                    Style="{StaticResource StackedBarPiece}"
-                                    Background="{Binding Path=ItemBrush}"                                                               
+                                    Style="{StaticResource StackedBarPiece}"                                                        
+                                    Background="{Binding Path=SeriesNumber, Converter={StaticResource IndexToColorConverter}}"
                                     Percentage="{Binding Path=PercentageFromMaxDataPointGroupSum}"                                                                                                 
                                     IsClickedByUser="{Binding Path=IsClickedByUser, Mode=TwoWay}"
                                     IsSelected="{Binding Path=IsSelected}"
                                     ClientWidth="{Binding Path=RealWidth, ElementName=itemsControl}"
                                     ClientHeight="{Binding Path=RealHeight, ElementName=itemsControl}" >
+                                    
                                 </local:BarPiece>
                             </DataTemplate>
                         </local:FadingListView.ItemTemplate>
@@ -926,7 +941,7 @@
                                 <DataTemplate>
                                     <local:BarPiece
                                     Style="{StaticResource StackedBulletGraphBarPiece}"
-                                    Background="{Binding Path=ItemBrush}"                                                               
+                                    Background="{Binding Path=SeriesNumber, Converter={StaticResource IndexToColorConverter}}"                                                              
                                     Percentage="{Binding Path=PercentageFromMaxDataPointGroupSum}"                                                                                                 
                                     IsClickedByUser="{Binding Path=IsClickedByUser, Mode=TwoWay}"
                                     IsSelected="{Binding Path=IsSelected}"
@@ -946,7 +961,8 @@
                             <Rectangle Grid.Row="1" Fill="Black" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                                 <Rectangle.Width>
                                     <MultiBinding Converter="{StaticResource WidthsAndDataGroupToWidth}">
-                                        <Binding />
+                                        <Binding Path="ActualPerformance"/>
+                                        <Binding Path="SumOfDataPointGroup"/>
                                         <Binding ElementName="itemsControl" Path="RealWidth"/>
                                     </MultiBinding>
                                 </Rectangle.Width>
@@ -958,7 +974,8 @@
                                 <ColumnDefinition>
                                     <ColumnDefinition.Width>
                                         <MultiBinding Converter="{StaticResource PerformanceTargetToWidth}">
-                                            <Binding />
+                                            <Binding Path="PerformanceTarget"/>
+                                            <Binding Path="SumOfDataPointGroup"/>
                                             <Binding ElementName="itemsControl" Path="RealWidth"/>
                                         </MultiBinding>
                                     </ColumnDefinition.Width>

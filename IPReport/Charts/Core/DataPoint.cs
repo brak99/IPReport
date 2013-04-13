@@ -1,4 +1,5 @@
-﻿namespace De.TorstenMandelkow.MetroChart
+﻿using IPReport.ViewModel;
+namespace De.TorstenMandelkow.MetroChart
 {
     using System;
     using System.Collections.Generic;
@@ -24,31 +25,38 @@
     using System.Windows;
 #endif
 
-    public class DataPoint : DependencyObject, INotifyPropertyChanged
+	public interface IDataPoint
+	{
+		void SetStartValue(double value);
+		double GetStartValue();
+		double GetValue();
+	}
+
+    public class DataPoint : DependencyObject, INotifyPropertyChanged, IDataPoint
     {
-        public static readonly DependencyProperty MaxDataPointValueProperty =
-           DependencyProperty.Register("MaxDataPointValue",
-           typeof(double),
-           typeof(DataPoint),
-           new PropertyMetadata(0.0, new PropertyChangedCallback(MaxDataPointValueChanged)));
+		//public static readonly DependencyProperty MaxDataPointValueProperty =
+		//   DependencyProperty.Register("MaxDataPointValue",
+		//   typeof(double),
+		//   typeof(DataPoint),
+		//   new PropertyMetadata(0.0, new PropertyChangedCallback(MaxDataPointValueChanged)));
 
-        public static readonly DependencyProperty MaxDataPointGroupSumProperty =
-           DependencyProperty.Register("MaxDataPointGroupSum",
-           typeof(double),
-           typeof(DataPoint),
-           new PropertyMetadata(0.0, new PropertyChangedCallback(MaxDataPointGroupSumChanged)));
+		//public static readonly DependencyProperty MaxDataPointGroupSumProperty =
+		//   DependencyProperty.Register("MaxDataPointGroupSum",
+		//   typeof(double),
+		//   typeof(DataPoint),
+		//   new PropertyMetadata(0.0, new PropertyChangedCallback(MaxDataPointGroupSumChanged)));
 
-        public static readonly DependencyProperty SumOfDataPointGroupProperty =
-           DependencyProperty.Register("SumOfDataPointGroup",
-           typeof(double),
-           typeof(DataPoint),
-           new PropertyMetadata(0.0, new PropertyChangedCallback(SumOfDataPointGroupChanged)));
+		//public static readonly DependencyProperty SumOfDataPointGroupProperty =
+		//   DependencyProperty.Register("SumOfDataPointGroup",
+		//   typeof(double),
+		//   typeof(DataPoint),
+		//   new PropertyMetadata(0.0, new PropertyChangedCallback(SumOfDataPointGroupChanged)));
 
-        public static readonly DependencyProperty StartValueProperty =
-          DependencyProperty.Register("StartValue",
-          typeof(double),
-          typeof(DataPoint),
-          new PropertyMetadata(0.0));
+		//public static readonly DependencyProperty StartValueProperty =
+		//  DependencyProperty.Register("StartValue",
+		//  typeof(double),
+		//  typeof(DataPoint),
+		//  new PropertyMetadata(0.0));
         public static readonly DependencyProperty IsSelectedProperty =
           DependencyProperty.Register("IsSelected",
           typeof(bool),
@@ -128,14 +136,16 @@
         /// <summary>
         /// Contains the absolute StartValue of the item depending on the values of the previous items values
         /// </summary>
-        public double StartValue
-        {
-            get { return (double)GetValue(StartValueProperty); }
-            set
-            {
-                SetValue(StartValueProperty, value);
-            }
-        }
+		public double StartValue
+		{
+			//get { return (double)GetValue(StartValueProperty); }
+			//set
+			//{
+			//    SetValue(StartValueProperty, value);
+			//}
+			get;
+			set;
+		}
 
         private static void SumOfDataPointGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -215,8 +225,10 @@
         /// </summary>
         public double SumOfDataPointGroup
         {
-            get { return (double)GetValue(SumOfDataPointGroupProperty); }
-            set { SetValue(SumOfDataPointGroupProperty, value); }
+			//get { return (double)GetValue(SumOfDataPointGroupProperty); }
+			//set { SetValue(SumOfDataPointGroupProperty, value); }
+			get;
+			set;
         }
 
         /// <summary>
@@ -224,14 +236,18 @@
         /// </summary>
         public double MaxDataPointValue
         {
-            get { return (double)GetValue(MaxDataPointValueProperty); }
-            set { SetValue(MaxDataPointValueProperty, value); }
+			//get { return (double)GetValue(MaxDataPointValueProperty); }
+			//set { SetValue(MaxDataPointValueProperty, value); }
+			get;
+			set;
         }
 
         public double MaxDataPointGroupSum
         {
-            get { return (double)GetValue(MaxDataPointGroupSumProperty); }
-            set { SetValue(MaxDataPointGroupSumProperty, value); }
+			//get { return (double)GetValue(MaxDataPointGroupSumProperty); }
+			//set { SetValue(MaxDataPointGroupSumProperty, value); }
+			get;
+			set;
         }
 
         public string SeriesCaption
@@ -240,15 +256,22 @@
             set;
         }
 
+		public int SeriesNumber
+		{
+			get;
+			set;
+		}
+
         public Brush ItemBrush
         {
             get;
             set;
         }
 
-        private object _ReferencedObject;
+        //private object _ReferencedObject;
+		private SalesChartData _ReferencedObject;
 
-        public object ReferencedObject
+		public SalesChartData ReferencedObject
         {
             get
             {
@@ -296,7 +319,8 @@
                 {
                     return "";
                 }
-                return GetItemValue(_ReferencedObject, DisplayMember);
+                //return GetItemValue(_ReferencedObject, DisplayMember);
+				return _ReferencedObject.Category;
             }
         }
 
@@ -316,7 +340,8 @@
                 {
                     return 0.0d;
                 }
-                return double.Parse(GetItemValue(_ReferencedObject, ValueMember).ToString());
+                //return double.Parse(GetItemValue(_ReferencedObject, ValueMember).ToString());
+				return (double)_ReferencedObject.Number;
             }
         }
 
@@ -357,5 +382,19 @@
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+		public void SetStartValue(double value)
+		{
+			StartValue = value;
+		}
+
+		public double GetStartValue()
+		{
+			return StartValue;
+		}
+
+		public double GetValue()
+		{
+			return Value;
+		}
     }
 }

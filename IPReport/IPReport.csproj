@@ -101,6 +101,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -133,6 +134,7 @@
     <Compile Include="Charts\Controls\MinimalWidthTextBlock.cs" />
     <Compile Include="Charts\Controls\RowSeriesPanel.cs" />
     <Compile Include="Charts\Converters\DoubleToGridLengthPercent.cs" />
+    <Compile Include="Charts\Converters\IndexToColorConverter.cs" />
     <Compile Include="Charts\Converters\PerformanceTargetToWidth.cs" />
     <Compile Include="Charts\Converters\WidthsAndDataGroupToWidth.cs" />
     <Compile Include="Charts\Core\BarChart\BarPiece.cs" />
@@ -158,6 +160,8 @@
     <Compile Include="Charts\Core\PieChart\PieChart.cs" />
     <Compile Include="Charts\Core\PieChart\PiePiece.cs" />
     <Compile Include="Charts\Core\ResourceDictionaryCollection.cs" />
+    <Compile Include="Charts\ViewModel\ChartSeriesViewModel.cs" />
+    <Compile Include="Charts\ViewModel\GroupedSeriesViewModel.cs" />
     <Compile Include="DataAccess\TimeEntryRepository.cs" />
     <Compile Include="DataAccess\DepartmentGroupsRepository.cs" />
     <Compile Include="DataAccess\DepartmentRepository.cs" />
@@ -214,6 +218,7 @@
     <Compile Include="ViewModel\InventoryViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\OnHandInventory.cs" />
+    <Compile Include="ViewModel\PerformanceChartSeriesViewModel.cs" />
     <Compile Include="ViewModel\PerformanceTargetViewModel.cs" />
     <Compile Include="ViewModel\SalesDashboardViewModel.cs" />
     <Compile Include="ViewModel\StoreReportItem.cs" />

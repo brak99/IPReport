@@ -42,7 +42,7 @@ namespace De.TorstenMandelkow.MetroChart
             DependencyProperty.Register("Caption",
             typeof(string),
             typeof(ChartSeries),
-            new PropertyMetadata("Dammit"));
+            new PropertyMetadata("Caption"));
 		public static readonly DependencyProperty PerformanceTargetMemberProperty =
 			DependencyProperty.Register("PerformanceTargetMember",
 			typeof(string),

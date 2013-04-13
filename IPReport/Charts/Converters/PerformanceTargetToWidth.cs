@@ -12,12 +12,13 @@ namespace De.TorstenMandelkow.MetroChart
 	{
 		public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
-			double? realWidth = values[1] as double?;
-			PerformanceTargetDataPointGroup performanceTargetDataPointGroup = values[0] as PerformanceTargetDataPointGroup;
+			decimal? performanceTarget = values[0] as decimal?;
+			double? sumOfDataPointGroup = values[1] as double?;
+			double? realWidth = values[2] as double?;
 
-			if (realWidth.HasValue && performanceTargetDataPointGroup != null)
+			if (realWidth.HasValue && performanceTarget.HasValue && sumOfDataPointGroup.HasValue)
 			{
-				double width = realWidth.Value * (performanceTargetDataPointGroup.PerformanceTarget / performanceTargetDataPointGroup.SumOfDataPointGroup);
+				double width = realWidth.Value * ((double)(performanceTarget.Value) / sumOfDataPointGroup.Value);
 				GridLength gridLength = new GridLength(width, GridUnitType.Pixel);
 				
 

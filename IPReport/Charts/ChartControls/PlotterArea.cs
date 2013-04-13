@@ -62,34 +62,22 @@ namespace De.TorstenMandelkow.MetroChart
             typeof(PlotterArea),
             new PropertyMetadata(null));
 
-        public static readonly DependencyProperty DataPointItemsPanelProperty =
-            DependencyProperty.Register("DataPointItemsPanel",
-            typeof(ItemsPanelTemplate),
-            typeof(PlotterArea),
-            new PropertyMetadata(null));
-
         public DataTemplate DataPointItemTemplate
         {
             get { return (DataTemplate)GetValue(DataPointItemTemplateProperty); }
             set { SetValue(DataPointItemTemplateProperty, value); }
         }
 
-        public ItemsPanelTemplate DataPointItemsPanel
-        {
-            get { return (ItemsPanelTemplate)GetValue(DataPointItemsPanelProperty); }
-            set { SetValue(DataPointItemsPanelProperty, value); }
-        }
+		//public static readonly DependencyProperty ParentChartProperty =
+		//    DependencyProperty.Register("ParentChart",
+		//    typeof(ChartBase),
+		//    typeof(PlotterArea),
+		//    new PropertyMetadata(null));
 
-        public static readonly DependencyProperty ParentChartProperty =
-            DependencyProperty.Register("ParentChart",
-            typeof(ChartBase),
-            typeof(PlotterArea),
-            new PropertyMetadata(null));
-
-        public ChartBase ParentChart
-        {
-            get { return (ChartBase)GetValue(ParentChartProperty); }
-            set { SetValue(ParentChartProperty, value); }
-        }
+		//public ChartBase ParentChart
+		//{
+		//    get { return (ChartBase)GetValue(ParentChartProperty); }
+		//    set { SetValue(ParentChartProperty, value); }
+		//}
     }
 }

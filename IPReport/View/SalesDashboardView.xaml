@@ -6,7 +6,7 @@
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart"
              xmlns:util="clr-namespace:IPReport.Util"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>
 
        
@@ -141,9 +141,17 @@
 
                 </chart:StackedBarChart>
                 <chart:BulletGraph x:Name="RevenueBulletGraph" Grid.Row="1" ChartTitle="Revenue" 
+                                   DataContext="{Binding RevenuePerformance}"
                                     ChartSubTitle="Cost $ / Profit $"
-                                SeriesSource="{Binding RevenuePerformance.PerformanceRanges}" Margin="0,0,0,0">
-                    <chart:BulletGraph.SeriesTemplate>
+                                SeriesSource="{Binding PerformanceRanges}" Margin="0,0,0,0">
+                    <chart:BulletGraph.ItemTemplate>
+                        <DataTemplate>
+                            <chart:ChartSeries 
+			                                Caption="{Binding DisplayName}"
+                                            ItemsSource="{Binding Path=Items}" />
+                        </DataTemplate>
+                    </chart:BulletGraph.ItemTemplate>
+                    <!--<chart:BulletGraph.SeriesTemplate>
                         <DataTemplate>
                             <chart:ChartSeries 
 			                                Caption="{Binding DisplayName}"
@@ -155,9 +163,7 @@
                                             PerformanceTarget="{Binding Path=PerformanceTarget}"
                                             ItemsSource="{Binding Path=Items}" />
                         </DataTemplate>
-                    </chart:BulletGraph.SeriesTemplate>
-                    
-
+                    </chart:BulletGraph.SeriesTemplate>-->
                 </chart:BulletGraph>
                 <!--<chart:StackedBarChart Grid.Row="1" ChartTitle="Revenue" 
                                     ChartSubTitle="Cost $ / Profit $"
@@ -182,13 +188,13 @@
                     </chart:StackedBarChart.ItemTemplate>
 
                 </chart:StackedBarChart>-->
-                <chart:StackedBarChart 
+                <chart:StackedBarChart DataContext="{Binding Path=RevenuePerformance2}"
                     Grid.Row="2"
                                   ChartTitle="Associate Sales" 
                                     ChartSubTitle="Cost $ / Profit $"
-                                SeriesSource="{Binding AssociateSalesData}"
+                                SeriesSource="{Binding Series}"
                                 >
-                    <chart:StackedBarChart.SeriesTemplate>
+                    <!--<chart:StackedBarChart.SeriesTemplate>
                         <DataTemplate>
                             <chart:ChartSeries 
 			                                Caption="{Binding DisplayName}"
@@ -196,13 +202,11 @@
                                             ValueMember="Number"
                                             ItemsSource="{Binding Path=Items}" />
                         </DataTemplate>
-                    </chart:StackedBarChart.SeriesTemplate>
+                    </chart:StackedBarChart.SeriesTemplate>-->
                     <chart:StackedBarChart.ItemTemplate>
                         <DataTemplate>
                             <chart:ChartSeries 
 			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="SalesAssociate"
-                                            ValueMember="TotalSales"
                                             ItemsSource="{Binding Path=Items}" />
                         </DataTemplate>
                     </chart:StackedBarChart.ItemTemplate>

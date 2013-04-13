@@ -121,25 +121,25 @@
         }
 #endif
 
-        Border slice = null;
+        Border _slice = null;
         private void InternalOnApplyTemplate()
         {
-            slice = this.GetTemplateChild("Slice") as Border;
-            if (slice != null)
+            _slice = this.GetTemplateChild("Slice") as Border;
+            if (_slice != null)
             {
 #if NETFX_CORE
-                slice.PointerPressed += delegate
+                _slice.PointerPressed += delegate
 #else
-                slice.MouseLeftButtonUp += delegate
+                _slice.MouseLeftButtonUp += delegate
 #endif
                 {
                     InternalMousePressed();
                 };
 
 #if NETFX_CORE
-                slice.PointerMoved += delegate
+                _slice.PointerMoved += delegate
 #else
-                slice.MouseMove += delegate
+                _slice.MouseMove += delegate
 #endif
                 {
                     //InternalMouseMoved();
@@ -249,9 +249,9 @@
                 }
 
                 double startWidth = 0;
-                if (slice.Width > 0)
+                if (_slice.Width > 0)
                 {
-                    startWidth = slice.Width;
+                    startWidth = _slice.Width;
                 }
 
                 DoubleAnimation scaleAnimation = new DoubleAnimation();
@@ -262,7 +262,7 @@
                 Storyboard storyScaleX = new Storyboard();
                 storyScaleX.Children.Add(scaleAnimation);
                 
-                Storyboard.SetTarget(storyScaleX, slice);
+                Storyboard.SetTarget(storyScaleX, _slice);
 
 #if NETFX_CORE
                 scaleAnimation.EnableDependentAnimation = true;

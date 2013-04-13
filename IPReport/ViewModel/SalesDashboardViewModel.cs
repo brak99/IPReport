@@ -11,6 +11,7 @@ using IPReport.Util;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using IPReport.Charts.ViewModel;
 
 namespace IPReport.ViewModel
 {
@@ -30,12 +31,15 @@ namespace IPReport.ViewModel
 
         public string Description { get; set; }
 
+		public ObservableCollection<SalesChartData> Items { get; set; }
+    }
+
+	public class PerformanceSeriesData : SeriesData
+	{
 		public decimal PerformanceTarget { get; set; }
 
 		public decimal ActualPerformance { get; set; }
-		
-		public ObservableCollection<SalesChartData> Items { get; set; }
-    }
+	}
 
     public class AssociateSales : INotifyPropertyChanged
     {
@@ -243,6 +247,15 @@ namespace IPReport.ViewModel
 			}
 		}
 
+		public GroupedSeriesViewModel _revenuePerformance2 = GroupedSeriesViewModel.GetInstance();
+		public GroupedSeriesViewModel RevenuePerformance2
+		{
+			get
+			{
+				return _revenuePerformance2;
+			}
+		}
+
         private SeriesData _associateSalesCostSeries = new SeriesData();
         private SeriesData _associateSalesMarginSeries = new SeriesData();
 		private SeriesData _associateOtherSeries = new SeriesData();
@@ -283,7 +296,7 @@ namespace IPReport.ViewModel
             _associateSalesCostSeries.DisplayName = "Cost";
 
             _associateSalesMarginSeries.Description = "Margin";
-            _associateSalesMarginSeries.Description = "Margin";
+			_associateSalesMarginSeries.DisplayName = "Margin";
 
             _revenueCostSeries.Description = "Cost";
             _revenueCostSeries.DisplayName = "Cost";
@@ -307,6 +320,12 @@ namespace IPReport.ViewModel
         private void PopulateChartData()
         {
 			RevenuePerformance.Name = "Revenue";
+
+			_revenuePerformance2.Series.Clear();
+			SeriesData costSeriesData = new SeriesData();
+			costSeriesData.DisplayName = "Cost";
+			SeriesData marginSeriesData = new SeriesData();
+			marginSeriesData.DisplayName = "Margin";
 
             _associateSalesData.Clear();
             _associateSalesCostSeries.Items.Clear();
@@ -351,20 +370,35 @@ namespace IPReport.ViewModel
                 marginData.Number = associateSales.TotalSales - associateSales.TotalCost;
                 revenueProfit.Number += marginData.Number;
 
+				
 				_revenuePerformance.ActualPerformance += associateSales.TotalSales;
 
 				SalesChartData otherData = new SalesChartData();
 				otherData.Category = costData.Category;
 				otherData.Number = 100m;
-				
+
+				SalesChartData costData2 = new SalesChartData();
+				costData2.Category = costData.Category;
+				costData2.Number = costData.Number;
+
+				SalesChartData marginData2 = new SalesChartData();
+				marginData2.Category = marginData.Category;
+				marginData2.Number = marginData.Number;
 
                 _associateSalesCostSeries.Items.Add(costData);
                 _associateSalesMarginSeries.Items.Add(marginData);
 				_associateOtherSeries.Items.Add(otherData);
+
+				costSeriesData.Items.Add(costData);
+				marginSeriesData.Items.Add(marginData);
+
             }
 
 			//_revenueProfitSeries.Items.Add(revenueProfit);
 			//_revenueCostSeries.Items.Add(revenueCost);
+
+			_revenuePerformance2.Series.Add(costSeriesData);
+			_revenuePerformance2.Series.Add(marginSeriesData);
 
 			_revenuePerformance.PerformanceTarget = 5000;
 			
