@@ -183,7 +183,7 @@
 
         public ChartBase()
         {
-            InitializeChartComponent();
+
         }
 
         #endregion Constructors
@@ -384,43 +384,7 @@
             }
         }
 
-        /// <summary>
-        /// take a number, e.g.
-        /// 43456 -> 50000
-        /// 1324 -> 1400
-        /// 123 -> 130
-        /// 8 -> 10
-        /// 23 -> 30
-        /// 82 -> 90
-        /// 92 -> 100
-        /// 1.5 -> 2
-        /// 33 -> 40
-        /// </summary>
-        /// <param name="newMaxValue"></param>
-        /// <returns></returns>
-
-
-        /// <summary>
-        /// Initializes the chart component.
-        /// </summary>
-        private void InitializeChartComponent()
-        {
-            LinearGradientBrush chartBrush = new LinearGradientBrush();
-            chartBrush.StartPoint = new Point(0, 0.032);
-            chartBrush.EndPoint = new Point(0, 1);
-            chartBrush.GradientStops.Add(new GradientStop() { Color = Color.FromArgb(255, 186, 218, 243), Offset = 1 });
-            chartBrush.GradientStops.Add(new GradientStop() { Color = Color.FromArgb(255, 208, 240, 252), Offset = 0 });
-
-            LinearGradientBrush chartMouseOverBrush = new LinearGradientBrush();
-            chartMouseOverBrush.StartPoint = new Point(0, 0.03);
-            chartMouseOverBrush.EndPoint = new Point(0, 1);
-            chartMouseOverBrush.GradientStops.Add(new GradientStop() { Color = Color.FromArgb(255, 202, 233, 255), Offset = 1 });
-            chartMouseOverBrush.GradientStops.Add(new GradientStop() { Color = Color.FromArgb(255, 221, 245, 255), Offset = 0 });
-
-            ChartColor = chartBrush;
-            ChartColorMouseOver = chartMouseOverBrush;
-        }
-
-      
+        
+		
     }
 }
