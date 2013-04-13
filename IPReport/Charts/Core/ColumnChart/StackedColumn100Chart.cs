@@ -54,12 +54,5 @@
 #endif
         }
 
-        protected override double GridLinesMaxValue
-        {
-            get
-            {
-                return 100.0;
-            }
-        }
     }
 }

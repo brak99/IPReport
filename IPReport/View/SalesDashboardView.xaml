@@ -119,22 +119,12 @@
                 </Grid.RowDefinitions>
                 <chart:StackedBarChart Grid.Row="0" ChartTitle="YTD Revenue" 
                                     ChartSubTitle="Cost $ / Profit $"
-                                SeriesSource="{Binding RevenueData}" Margin="0,0,0,0">
-                    <chart:StackedBarChart.SeriesTemplate>
-                        <DataTemplate>
-                            <chart:ChartSeries 
-			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="Category"
-                                            ValueMember="Number"
-                                            ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:StackedBarChart.SeriesTemplate>
+                                Margin="0,0,0,0">
+                    
                     <chart:StackedBarChart.ItemTemplate>
                         <DataTemplate>
                             <chart:ChartSeries 
 			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="SalesAssociate"
-                                            ValueMember="TotalSales"
                                             ItemsSource="{Binding Path=Items}" />
                         </DataTemplate>
                     </chart:StackedBarChart.ItemTemplate>
@@ -143,7 +133,7 @@
                 <chart:BulletGraph x:Name="RevenueBulletGraph" Grid.Row="1" ChartTitle="Revenue" 
                                    DataContext="{Binding RevenuePerformance}"
                                     ChartSubTitle="Cost $ / Profit $"
-                                SeriesSource="{Binding PerformanceRanges}" Margin="0,0,0,0">
+                                Margin="0,0,0,0">
                     <chart:BulletGraph.ItemTemplate>
                         <DataTemplate>
                             <chart:ChartSeries 
@@ -151,58 +141,14 @@
                                             ItemsSource="{Binding Path=Items}" />
                         </DataTemplate>
                     </chart:BulletGraph.ItemTemplate>
-                    <!--<chart:BulletGraph.SeriesTemplate>
-                        <DataTemplate>
-                            <chart:ChartSeries 
-			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="Category"
-                                            ValueMember="Number"
-                                            PerformanceTargetMember="PerformanceTarget"
-                                            ActualPerformanceMember="ActualPerformance"
-                                            ActualPerformance="{Binding Path=ActualPerformance}"
-                                            PerformanceTarget="{Binding Path=PerformanceTarget}"
-                                            ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:BulletGraph.SeriesTemplate>-->
+                    
                 </chart:BulletGraph>
-                <!--<chart:StackedBarChart Grid.Row="1" ChartTitle="Revenue" 
-                                    ChartSubTitle="Cost $ / Profit $"
-                                SeriesSource="{Binding RevenueData}" Margin="0,0,0,0">
-                    <chart:StackedBarChart.SeriesTemplate>
-                        <DataTemplate>
-                            <chart:ChartSeries 
-			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="Category"
-                                            ValueMember="Number"
-                                            ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:StackedBarChart.SeriesTemplate>
-                    <chart:StackedBarChart.ItemTemplate>
-                        <DataTemplate>
-                            <chart:ChartSeries 
-			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="SalesAssociate"
-                                            ValueMember="TotalSales"
-                                            ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:StackedBarChart.ItemTemplate>
-
-                </chart:StackedBarChart>-->
+                
                 <chart:StackedBarChart DataContext="{Binding Path=RevenuePerformance2}"
                     Grid.Row="2"
                                   ChartTitle="Associate Sales" 
                                     ChartSubTitle="Cost $ / Profit $"
-                                SeriesSource="{Binding Series}"
                                 >
-                    <!--<chart:StackedBarChart.SeriesTemplate>
-                        <DataTemplate>
-                            <chart:ChartSeries 
-			                                Caption="{Binding DisplayName}"
-                                            DisplayMember="Category"
-                                            ValueMember="Number"
-                                            ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:StackedBarChart.SeriesTemplate>-->
                     <chart:StackedBarChart.ItemTemplate>
                         <DataTemplate>
                             <chart:ChartSeries 

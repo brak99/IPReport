@@ -57,12 +57,5 @@
 
         #endregion Constructors
 
-        protected override double GridLinesMaxValue
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
     }
 }

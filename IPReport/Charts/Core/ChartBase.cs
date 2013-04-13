@@ -137,136 +137,60 @@
             typeof(ChartBase),
             new PropertyMetadata(null, new PropertyChangedCallback(InternalDataContextChanged)));
 
-        public static readonly DependencyProperty SeriesSourceProperty =
-           DependencyProperty.Register("SeriesSource",
-           typeof(IEnumerable),
-           typeof(ChartBase),
-           new PropertyMetadata(null, OnSeriesSourceChanged));
+		
+	   // public static readonly DependencyProperty MaxDataPointValueProperty =
+	   //     DependencyProperty.Register("MaxDataPointValue",
+	   //     typeof(double),
+	   //     typeof(ChartBase),
+	   //     new PropertyMetadata(0.0, OnMaxDataPointValueChanged));
 
-        private static void OnSeriesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            IEnumerable oldValue = (IEnumerable)e.OldValue;
-            IEnumerable newValue = (IEnumerable)e.NewValue;
-            ChartBase source = (ChartBase)d;
-            source.OnSeriesSourceChanged(oldValue, newValue);
-        }
+	   // private static void OnMaxDataPointValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	   // {
+	   //     (d as ChartBase).OnMaxDataPointValueChanged((double)e.NewValue);
+	   // }
 
-        private void OnSeriesSourceChanged(IEnumerable oldValue, IEnumerable newValue)
-        {
-            this.Series.Clear();
-            if (newValue != null)
-            {
-                foreach (object item in newValue)
-                {
-                    if (SeriesTemplate != null)
-                    {
-                        //ChartSeries series = SeriesTemplate.LoadContent() as ChartSeries;
-                        ChartSeries series = LoadDataTemplate<ChartSeries>(SeriesTemplate, item);
-
-                        if (series != null)
-                        {
-                            // set data context
-                            series.DataContext = item;
-
-                            this.Series.Add(series);
-                        }
-                    }
-                }
-            }
-            UpdateGroupedSeries();
-        }
-
-        private static T LoadDataTemplate<T>(DataTemplate template, object dataContext)
-            where T : FrameworkElement
-        {
-            DependencyObject element = template.LoadContent();
-            T view = element as T;
-            view.DataContext = dataContext;
-
-            var enumerator = element.GetLocalValueEnumerator();
-            while (enumerator.MoveNext())
-            {
-                var bind = enumerator.Current;
-
-                if (bind.Value is BindingExpression)
-                {
-                    view.SetBinding(bind.Property, ((BindingExpression)bind.Value).ParentBinding);
-                }
-            }
-
-            return view;
-        }
-
-        public static readonly DependencyProperty SeriesTemplateProperty =
-           DependencyProperty.Register("SeriesTemplate",
-           typeof(DataTemplate),
-           typeof(ChartBase),
-           new FrameworkPropertyMetadata(null));
-
-        public IEnumerable SeriesSource
-        {
-            get { return (IEnumerable)GetValue(SeriesSourceProperty); }
-            set { SetValue(SeriesSourceProperty, value); }
-        }
-        public DataTemplate SeriesTemplate
-        {
-            get { return (DataTemplate)GetValue(SeriesTemplateProperty); }
-            set { SetValue(SeriesTemplateProperty, value); }
-        }
-
-        public static readonly DependencyProperty MaxDataPointValueProperty =
-            DependencyProperty.Register("MaxDataPointValue",
-            typeof(double),
-            typeof(ChartBase),
-            new PropertyMetadata(0.0, OnMaxDataPointValueChanged));
-
-        private static void OnMaxDataPointValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as ChartBase).OnMaxDataPointValueChanged((double)e.NewValue);
-        }
-
-        protected virtual void OnMaxDataPointValueChanged(double p)
-        {
+	   // protected virtual void OnMaxDataPointValueChanged(double p)
+	   // {
             
-        }
+	   // }
 
-       public static readonly DependencyProperty MaxDataPointGroupSumProperty =
-            DependencyProperty.Register("MaxDataPointGroupSum",
-            typeof(double),
-            typeof(ChartBase),
-            new PropertyMetadata(0.0, OnMaxDataPointGroupSumChanged));
+	   //public static readonly DependencyProperty MaxDataPointGroupSumProperty =
+	   //     DependencyProperty.Register("MaxDataPointGroupSum",
+	   //     typeof(double),
+	   //     typeof(ChartBase),
+	   //     new PropertyMetadata(0.0, OnMaxDataPointGroupSumChanged));
 
-       private static void OnMaxDataPointGroupSumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-       {
-           (d as ChartBase).OnMaxDataPointGroupSumChanged((double)e.NewValue);
-       }
+	   //private static void OnMaxDataPointGroupSumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	   //{
+	   //    (d as ChartBase).OnMaxDataPointGroupSumChanged((double)e.NewValue);
+	   //}
 
-       protected virtual void OnMaxDataPointGroupSumChanged(double p)
-       {
+	   //protected virtual void OnMaxDataPointGroupSumChanged(double p)
+	   //{
            
-       }
+	   //}
 
-       public static readonly DependencyProperty SumOfDataPointGroupProperty =
-            DependencyProperty.Register("SumOfDataPointGroup",
-            typeof(double),
-            typeof(ChartBase),
-            new PropertyMetadata(0.0, OnSumOfDataPointGroupChanged));
+	   //public static readonly DependencyProperty SumOfDataPointGroupProperty =
+	   //     DependencyProperty.Register("SumOfDataPointGroup",
+	   //     typeof(double),
+	   //     typeof(ChartBase),
+	   //     new PropertyMetadata(0.0, OnSumOfDataPointGroupChanged));
 
-       private static void OnSumOfDataPointGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-       {
-           (d as ChartBase).SumOfDataPointGroupChanged((double)e.NewValue);
-       }
+	   //private static void OnSumOfDataPointGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	   //{
+	   //    (d as ChartBase).SumOfDataPointGroupChanged((double)e.NewValue);
+	   //}
 
-       private void SumOfDataPointGroupChanged(double p)
-       {
+	   //private void SumOfDataPointGroupChanged(double p)
+	   //{
            
-       }
+	   //}
 
-       public double SumOfDataPointGroup
-       {
-           get { return (double)GetValue(SumOfDataPointGroupProperty); }
-           set { SetValue(SumOfDataPointGroupProperty, value); }
-       }
+	   //public double SumOfDataPointGroup
+	   //{
+	   //    get { return (double)GetValue(SumOfDataPointGroupProperty); }
+	   //    set { SetValue(SumOfDataPointGroupProperty, value); }
+	   //}
 #endregion Fields
 
         #region DataContext stuff
@@ -377,10 +301,6 @@
             Series = new ObservableCollection<ChartSeries>();
             InitializeChartComponent();
 
-            SetBinding(DataContextWatcherProperty, new Binding());
-            
-
-            UpdateGridLines();
         }
 
         #endregion Constructors
@@ -428,17 +348,17 @@
             set { SetValue(TitleStyleProperty, value); }
         }
 
-        public double MaxDataPointValue
-        {
-            get { return (double)GetValue(MaxDataPointValueProperty); }
-            set { SetValue(MaxDataPointValueProperty, value); }
-        }
+		//public double MaxDataPointValue
+		//{
+		//    get { return (double)GetValue(MaxDataPointValueProperty); }
+		//    set { SetValue(MaxDataPointValueProperty, value); }
+		//}
 
-        public double MaxDataPointGroupSum
-        {
-            get { return (double)GetValue(MaxDataPointGroupSumProperty); }
-            set { SetValue(MaxDataPointGroupSumProperty, value); }
-        }
+		//public double MaxDataPointGroupSum
+		//{
+		//    get { return (double)GetValue(MaxDataPointGroupSumProperty); }
+		//    set { SetValue(MaxDataPointGroupSumProperty, value); }
+		//}
 
         public ObservableCollection<ChartSeries> Series
         {
@@ -773,20 +693,20 @@
             }
         }
 
-        protected abstract double GridLinesMaxValue
-        {
-            get;
-        }
+		//protected abstract double GridLinesMaxValue
+		//{
+		//    get;
+		//}
 
-        protected void UpdateGridLines()
-        {
-            double distance = CalculateDistance(GridLinesMaxValue);
-            gridLines.Clear();
-            for (var i = distance; i <= GridLinesMaxValue; i += distance)
-            {
-                gridLines.Add(i.ToString());
-            }
-        }
+		//protected void UpdateGridLines()
+		//{
+		//    double distance = CalculateDistance(GridLinesMaxValue);
+		//    gridLines.Clear();
+		//    for (var i = distance; i <= GridLinesMaxValue; i += distance)
+		//    {
+		//        gridLines.Add(i.ToString());
+		//    }
+		//}
 
         ObservableCollection<DataPointGroup> groupedPieSeries = new ObservableCollection<DataPointGroup>();
         private void UpdateGroupedPieSeries()
@@ -820,8 +740,8 @@
                                 addToGroup.DataPoints.Add(groupdItem);
 
                                 groupdItem.SeriesCaption = initialSeries.Caption;
-                                groupdItem.ValueMember = initialSeries.ValueMember;
-                                groupdItem.DisplayMember = initialSeries.DisplayMember;
+								//groupdItem.ValueMember = initialSeries.ValueMember;
+								//groupdItem.DisplayMember = initialSeries.DisplayMember;
                                 groupdItem.ItemBrush = GetItemBrush(seriesIndex);
                                 groupdItem.ReferencedObject = (SalesChartData)seriesItem;
 
@@ -867,157 +787,157 @@
         ObservableCollection<DataPointGroup> groupedSeries = new ObservableCollection<DataPointGroup>();
         private void UpdateGroupedSeries()
         {            
-            List<DataPointGroup> result = new List<DataPointGroup>();
-            try
-            {
-                foreach (ChartSeries initialSeries in this.Series)
-                {
-					//foreach (SeriesData seriesItem in initialSeries.Items)
-                    foreach (var seriesItem in initialSeries.Items)
-                    {
-                        string seriesItemCaption = GetPropertyValue(seriesItem, initialSeries.DisplayMember); //Security
-                        DataPointGroup dataPointGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
-                        if (dataPointGroup == null)
-                        {
-							if (String.IsNullOrEmpty(initialSeries.PerformanceTargetMember) ||
-								String.IsNullOrEmpty(initialSeries.ActualPerformanceMember))
-							{
-								dataPointGroup = new DataPointGroup();
-							}
-							else
-							{
-								dataPointGroup = new PerformanceTargetDataPointGroup();
-								((PerformanceTargetDataPointGroup)dataPointGroup).ActualPerformanceMember = initialSeries.ActualPerformanceMember;
-								((PerformanceTargetDataPointGroup)dataPointGroup).PerformanceTargetMember = initialSeries.PerformanceTargetMember;
-							}
+			//List<DataPointGroup> result = new List<DataPointGroup>();
+			//try
+			//{
+			//    foreach (ChartSeries initialSeries in this.Series)
+			//    {
+			//        //foreach (SeriesData seriesItem in initialSeries.Items)
+			//        foreach (var seriesItem in initialSeries.Items)
+			//        {
+			//            string seriesItemCaption = GetPropertyValue(seriesItem, initialSeries.DisplayMember); //Security
+			//            DataPointGroup dataPointGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
+			//            if (dataPointGroup == null)
+			//            {
+			//                if (String.IsNullOrEmpty(initialSeries.PerformanceTargetMember) ||
+			//                    String.IsNullOrEmpty(initialSeries.ActualPerformanceMember))
+			//                {
+			//                    dataPointGroup = new DataPointGroup();
+			//                }
+			//                else
+			//                {
+			//                    dataPointGroup = new PerformanceTargetDataPointGroup();
+			//                    ((PerformanceTargetDataPointGroup)dataPointGroup).ActualPerformanceMember = initialSeries.ActualPerformanceMember;
+			//                    ((PerformanceTargetDataPointGroup)dataPointGroup).PerformanceTargetMember = initialSeries.PerformanceTargetMember;
+			//                }
                             
-                            dataPointGroup.Caption = seriesItemCaption;
-                            dataPointGroup.PropertyChanged += dataPointGroup_PropertyChanged;
-                            result.Add(dataPointGroup);
+			//                dataPointGroup.Caption = seriesItemCaption;
+			//                dataPointGroup.PropertyChanged += dataPointGroup_PropertyChanged;
+			//                result.Add(dataPointGroup);
 
-                            var groupBinding = new Binding();
-                            groupBinding.Source = this;
-                            groupBinding.Mode = BindingMode.TwoWay;
-                            groupBinding.Path = new PropertyPath("SelectedItem");
-                            BindingOperations.SetBinding(dataPointGroup, DataPointGroup.SelectedItemProperty, groupBinding);
+			//                var groupBinding = new Binding();
+			//                groupBinding.Source = this;
+			//                groupBinding.Mode = BindingMode.TwoWay;
+			//                groupBinding.Path = new PropertyPath("SelectedItem");
+			//                BindingOperations.SetBinding(dataPointGroup, DataPointGroup.SelectedItemProperty, groupBinding);
 
-                            int seriesIndex = 0;
-                            foreach (ChartSeries allSeries in this.Series)
-                            {
-                                DataPoint datapoint = new DataPoint();
-                                datapoint.SeriesCaption = allSeries.Caption;
-                                datapoint.ValueMember = allSeries.ValueMember;
-                                datapoint.DisplayMember = allSeries.DisplayMember;
+			//                int seriesIndex = 0;
+			//                foreach (ChartSeries allSeries in this.Series)
+			//                {
+			//                    DataPoint datapoint = new DataPoint();
+			//                    datapoint.SeriesCaption = allSeries.Caption;
+			//                    datapoint.ValueMember = allSeries.ValueMember;
+			//                    datapoint.DisplayMember = allSeries.DisplayMember;
 								
-                                datapoint.ItemBrush = GetItemBrush(seriesIndex);
-                                datapoint.PropertyChanged += groupdItem_PropertyChanged;
+			//                    datapoint.ItemBrush = GetItemBrush(seriesIndex);
+			//                    datapoint.PropertyChanged += groupdItem_PropertyChanged;
 
-                                //Sende an Datapoints the maximalvalue des Charts mit (wichtig in clustered Column chart)
-								//var maxDataPointValueBinding = new Binding();
-								//maxDataPointValueBinding.Source = this;
-								//maxDataPointValueBinding.Mode = BindingMode.OneWay;
-								//maxDataPointValueBinding.Path = new PropertyPath("MaxDataPointValue");
-								//BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointValueProperty, maxDataPointValueBinding);
+			//                    //Sende an Datapoints the maximalvalue des Charts mit (wichtig in clustered Column chart)
+			//                    //var maxDataPointValueBinding = new Binding();
+			//                    //maxDataPointValueBinding.Source = this;
+			//                    //maxDataPointValueBinding.Mode = BindingMode.OneWay;
+			//                    //maxDataPointValueBinding.Path = new PropertyPath("MaxDataPointValue");
+			//                    //BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointValueProperty, maxDataPointValueBinding);
 
-                                //Sende den Datapoints the höchste Summe einer DataPointGroup mit (wichtig für stacked chart)
-								//var maxDataPointGroupSumBinding = new Binding();
-								//maxDataPointGroupSumBinding.Source = this;
-								//maxDataPointGroupSumBinding.Mode = BindingMode.OneWay;
-								//maxDataPointGroupSumBinding.Path = new PropertyPath("MaxDataPointGroupSum");
-								//BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointGroupSumProperty, maxDataPointGroupSumBinding);
+			//                    //Sende den Datapoints the höchste Summe einer DataPointGroup mit (wichtig für stacked chart)
+			//                    //var maxDataPointGroupSumBinding = new Binding();
+			//                    //maxDataPointGroupSumBinding.Source = this;
+			//                    //maxDataPointGroupSumBinding.Mode = BindingMode.OneWay;
+			//                    //maxDataPointGroupSumBinding.Path = new PropertyPath("MaxDataPointGroupSum");
+			//                    //BindingOperations.SetBinding(datapoint, DataPoint.MaxDataPointGroupSumProperty, maxDataPointGroupSumBinding);
 
-                                //Sende den Datapoint die Summe seiner Datagroup
-								//var sumBinding = new Binding();
-								//sumBinding.Source = dataPointGroup;
-								//sumBinding.Mode = BindingMode.OneWay;
-								//sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
-								//BindingOperations.SetBinding(datapoint, DataPoint.SumOfDataPointGroupProperty, sumBinding);
+			//                    //Sende den Datapoint die Summe seiner Datagroup
+			//                    //var sumBinding = new Binding();
+			//                    //sumBinding.Source = dataPointGroup;
+			//                    //sumBinding.Mode = BindingMode.OneWay;
+			//                    //sumBinding.Path = new PropertyPath("SumOfDataPointGroup");
+			//                    //BindingOperations.SetBinding(datapoint, DataPoint.SumOfDataPointGroupProperty, sumBinding);
 
-                                var selectionBinding = new Binding();
-                                selectionBinding.Source = dataPointGroup;
-                                selectionBinding.Mode = BindingMode.TwoWay;
-                                selectionBinding.Path = new PropertyPath("SelectedItem");
-                                BindingOperations.SetBinding(datapoint, DataPoint.SelectedItemProperty, selectionBinding);
+			//                    var selectionBinding = new Binding();
+			//                    selectionBinding.Source = dataPointGroup;
+			//                    selectionBinding.Mode = BindingMode.TwoWay;
+			//                    selectionBinding.Path = new PropertyPath("SelectedItem");
+			//                    BindingOperations.SetBinding(datapoint, DataPoint.SelectedItemProperty, selectionBinding);
 
-                                dataPointGroup.DataPoints.Add(datapoint);
-                                seriesIndex++;
-                            }
-                        }
-                    }
-                }
+			//                    dataPointGroup.DataPoints.Add(datapoint);
+			//                    seriesIndex++;
+			//                }
+			//            }
+			//        }
+			//    }
 
-                ///gehe alle Series durch (Security, Naming etc.)
-                foreach (ChartSeries series in this.Series)
-                {
-                    foreach (var seriesItem in series.Items)
-                    {
-                        string seriesItemCaption = GetPropertyValue(seriesItem, series.DisplayMember); //Security
+			//    ///gehe alle Series durch (Security, Naming etc.)
+			//    foreach (ChartSeries series in this.Series)
+			//    {
+			//        foreach (var seriesItem in series.Items)
+			//        {
+			//            string seriesItemCaption = GetPropertyValue(seriesItem, series.DisplayMember); //Security
 
-                        //finde die gruppe mit dem Namen
-                        DataPointGroup addToGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
-						addToGroup.ReferencedObject = series;
+			//            //finde die gruppe mit dem Namen
+			//            DataPointGroup addToGroup = result.Where(group => group.Caption == seriesItemCaption).FirstOrDefault();
+			//            addToGroup.ReferencedObject = series;
 
-                        //finde in der Gruppe 
-                        DataPoint groupdItem = addToGroup.DataPoints.Where(item => item.SeriesCaption == series.Caption).FirstOrDefault();
-                        groupdItem.ReferencedObject = (SalesChartData)seriesItem;                        
-                    }
-                }
-                //UpdateMaxValue(maxValue);                        
-            }
-            catch (Exception)
-            {
-            }
+			//            //finde in der Gruppe 
+			//            DataPoint groupdItem = addToGroup.DataPoints.Where(item => item.SeriesCaption == series.Caption).FirstOrDefault();
+			//            groupdItem.ReferencedObject = (SalesChartData)seriesItem;                        
+			//        }
+			//    }
+			//    //UpdateMaxValue(maxValue);                        
+			//}
+			//catch (Exception)
+			//{
+			//}
 
-            //finished, copy all to the array
-            groupedSeries.Clear();
-            foreach (var item in result)
-            {
-                groupedSeries.Add(item);
-            }
-            RecalcSumOfDataPointGroup();
+			////finished, copy all to the array
+			//groupedSeries.Clear();
+			//foreach (var item in result)
+			//{
+			//    groupedSeries.Add(item);
+			//}
+			//RecalcSumOfDataPointGroup();
         }
 
-        void dataPointGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "SumOfDataPointGroup")
-            {
-                RecalcSumOfDataPointGroup();
-            }
-        }
+		//void dataPointGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		//{
+		//    if (e.PropertyName == "SumOfDataPointGroup")
+		//    {
+		//        RecalcSumOfDataPointGroup();
+		//    }
+		//}
 
-        private void RecalcSumOfDataPointGroup()
-        {
-            double maxValue = 0.0;
-            foreach(var dataPointGroup in DataPointGroups)
-            {
-                if (dataPointGroup.SumOfDataPointGroup > maxValue)
-                {
-                    maxValue = dataPointGroup.SumOfDataPointGroup;
-                }
-            }
-            MaxDataPointGroupSum = CalculateMaxValue(maxValue);
-        }
+		//private void RecalcSumOfDataPointGroup()
+		//{
+		//    double maxValue = 0.0;
+		//    foreach(var dataPointGroup in DataPointGroups)
+		//    {
+		//        if (dataPointGroup.SumOfDataPointGroup > maxValue)
+		//        {
+		//            maxValue = dataPointGroup.SumOfDataPointGroup;
+		//        }
+		//    }
+		//    MaxDataPointGroupSum = CalculateMaxValue(maxValue);
+		//}
 
-        void groupdItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            RecalcMaxDataPointValue();
-        }
+		//void groupdItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		//{
+		//    RecalcMaxDataPointValue();
+		//}
 
-        private void RecalcMaxDataPointValue()
-        {
-            double maxValue = 0.0;
-            foreach (var dataPointGroup in DataPointGroups)
-            {
-                foreach (var dataPoint in dataPointGroup.DataPoints)
-                {
-                    if (dataPoint.Value > maxValue)
-                    {
-                        maxValue = dataPoint.Value;
-                    }
-                }
-            }
-            MaxDataPointValue = CalculateMaxValue(maxValue);
-        }
+		//private void RecalcMaxDataPointValue()
+		//{
+		//    double maxValue = 0.0;
+		//    foreach (var dataPointGroup in DataPointGroups)
+		//    {
+		//        foreach (var dataPoint in dataPointGroup.DataPoints)
+		//        {
+		//            if (dataPoint.Value > maxValue)
+		//            {
+		//                maxValue = dataPoint.Value;
+		//            }
+		//        }
+		//    }
+		//    MaxDataPointValue = CalculateMaxValue(maxValue);
+		//}
 
         public ObservableCollection<DataPointGroup> DataPointGroups
         {

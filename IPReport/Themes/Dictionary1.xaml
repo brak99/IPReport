@@ -957,7 +957,6 @@
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
-                            <!-- TODO: Bind Width to performance value in graph -->
                             <Rectangle Grid.Row="1" Fill="Black" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                                 <Rectangle.Width>
                                     <MultiBinding Converter="{StaticResource WidthsAndDataGroupToWidth}">
@@ -970,7 +969,6 @@
                         </Grid>
                         <Grid Margin="0,5,0,5" x:Name="TargetPerformanceGrid">
                             <Grid.ColumnDefinitions>
-                                <!-- TODO: Bind column Width to performance target value in graph -->
                                 <ColumnDefinition>
                                     <ColumnDefinition.Width>
                                         <MultiBinding Converter="{StaticResource PerformanceTargetToWidth}">

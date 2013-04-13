@@ -53,18 +53,5 @@
             this.DefaultStyleKey = typeof(StackedColumnChart);
 #endif
         }
-
-        protected override double GridLinesMaxValue
-        {
-            get
-            {
-                return MaxDataPointGroupSum;
-            }
-        }
-
-        protected override void OnMaxDataPointGroupSumChanged(double p)
-        {
-            UpdateGridLines();
-        }
     }
 }

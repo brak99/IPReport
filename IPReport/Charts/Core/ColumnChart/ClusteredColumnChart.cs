@@ -62,18 +62,6 @@
 
         #endregion Constructors
 
-        protected override double GridLinesMaxValue
-        {
-            get
-            {
-                return MaxDataPointValue;
-            }
-        }
-
-        protected override void OnMaxDataPointValueChanged(double p)
-        {
-            UpdateGridLines();
-        }
 
         public override bool IsUseNextBiggestMaxValue
         {
