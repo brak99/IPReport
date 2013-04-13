@@ -247,12 +247,12 @@ namespace IPReport.ViewModel
 			}
 		}
 
-		public GroupedSeriesViewModel _revenuePerformance2 = GroupedSeriesViewModel.GetInstance();
-		public GroupedSeriesViewModel RevenuePerformance2
+		public GroupedSeriesViewModel _salesAssociatePerformance = GroupedSeriesViewModel.GetInstance();
+		public GroupedSeriesViewModel SalesAssociatePerformance
 		{
 			get
 			{
-				return _revenuePerformance2;
+				return _salesAssociatePerformance;
 			}
 		}
 
@@ -260,15 +260,7 @@ namespace IPReport.ViewModel
         private SeriesData _associateSalesMarginSeries = new SeriesData();
 		private SeriesData _associateOtherSeries = new SeriesData();
 
-        private ObservableCollection<SeriesData> _associateSalesData = new ObservableCollection<SeriesData>();
-        public ObservableCollection<SeriesData> AssociateSalesData
-        {
-            get
-            {
-                return _associateSalesData;
-            }
-        }
-
+        
         public ObservableCollection<AssociateSales> AssociateSales
         {
             get
@@ -310,6 +302,7 @@ namespace IPReport.ViewModel
         {
             if (StartDate.HasValue && EndDate.HasValue)
             {
+				ZeroOut();
                 PopulateSales();
                 PopulateTime();
                 PopulateAverages();
@@ -321,40 +314,19 @@ namespace IPReport.ViewModel
         {
 			RevenuePerformance.Name = "Revenue";
 
-			_revenuePerformance2.Series.Clear();
+			_salesAssociatePerformance.Series.Clear();
 			SeriesData costSeriesData = new SeriesData();
 			costSeriesData.DisplayName = "Cost";
 			SeriesData marginSeriesData = new SeriesData();
 			marginSeriesData.DisplayName = "Margin";
 
-            _associateSalesData.Clear();
             _associateSalesCostSeries.Items.Clear();
             _associateSalesMarginSeries.Items.Clear();
 			_associateOtherSeries.Items.Clear();
 
-            _associateSalesData.Add(_associateSalesCostSeries);
-            _associateSalesData.Add(_associateSalesMarginSeries);
-			_associateSalesData.Add(_associateOtherSeries);
-
-			//_revenueData.Clear();
-			//_revenueCostSeries.Items.Clear();
-			//_revenueProfitSeries.Items.Clear();
-
-			//_revenueData.Add(_revenueCostSeries);
-			//_revenueData.Add(_revenueProfitSeries);
-
             SalesChartData revenueCost = new SalesChartData();
             SalesChartData revenueProfit = new SalesChartData();
 			SalesChartData theOtherThing = new SalesChartData();
-
-			//revenueCost.Category = "Revenue $";
-			//revenueCost.Number = 0.0m;
-
-			//revenueProfit.Category = "Revenue $";
-			//revenueProfit.Number = 0.0m;
-
-			//theOtherThing.Category = "stuff";
-			//theOtherThing.Number = 0.0m;
 
 			_revenuePerformance.ActualPerformance = 0.0m;
 
@@ -397,8 +369,8 @@ namespace IPReport.ViewModel
 			//_revenueProfitSeries.Items.Add(revenueProfit);
 			//_revenueCostSeries.Items.Add(revenueCost);
 
-			_revenuePerformance2.Series.Add(costSeriesData);
-			_revenuePerformance2.Series.Add(marginSeriesData);
+			_salesAssociatePerformance.Series.Add(costSeriesData);
+			_salesAssociatePerformance.Series.Add(marginSeriesData);
 
 			_revenuePerformance.PerformanceTarget = 5000;
 			
@@ -474,6 +446,11 @@ namespace IPReport.ViewModel
             }
 
         }
+
+		private void ZeroOut()
+		{
+			_associateSales.Clear();
+		}
 
         private void PopulateSales()
         {

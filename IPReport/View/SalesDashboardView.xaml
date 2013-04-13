@@ -144,7 +144,7 @@
                     
                 </chart:BulletGraph>
                 
-                <chart:StackedBarChart DataContext="{Binding Path=RevenuePerformance2}"
+                <chart:StackedBarChart DataContext="{Binding Path=SalesAssociatePerformance}"
                     Grid.Row="2"
                                   ChartTitle="Associate Sales" 
                                     ChartSubTitle="Cost $ / Profit $"
