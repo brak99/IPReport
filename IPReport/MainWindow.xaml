@@ -89,8 +89,12 @@
                 <ribbon:RibbonGroup x:Name="QuickBooksSales" Header="QuickBooks">
                     <ribbon:RibbonButton Label="Update" LargeImageSource="Resources\refresh_big.png"
 										 Command="{Binding UpdateCommand}" />
+                    
                 </ribbon:RibbonGroup>
-                
+                <ribbon:RibbonGroup x:Name="SalesGroup" Header="Sales">
+                    <ribbon:RibbonButton Label="Settings" LargeImageSource="Resources\settings_big.png"
+										 Command="{Binding SettingsCommand}" />
+                </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab x:Name="DebugTab" Header="Debug">
 				<ribbon:RibbonGroup Header="Debugging">

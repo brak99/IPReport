@@ -226,6 +226,23 @@ namespace IPReport.ViewModel
             }
         }
 
+		private ICommand _settingsCommand;
+		public ICommand SettingsCommand
+		{
+			get
+			{
+				if (_settingsCommand == null)
+				{
+					_settingsCommand = new DelegateCommand<object>(param => this.Settings(param, null));
+				}
+
+				return _settingsCommand;
+
+			}
+		}
+
+		private SalesDashboardSettingsViewModel _settings = SalesDashboardSettingsViewModel.GetInstance();
+
         private SeriesData _revenueCostSeries = new SeriesData();
         private SeriesData _revenueProfitSeries = new SeriesData();
 
@@ -332,6 +349,14 @@ namespace IPReport.ViewModel
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
+				StringWrapper wrapper = new StringWrapper();
+				wrapper.Value = associateSales.SalesAssociate;
+
+				if (_settings.IgnoreList.Contains(wrapper))
+				{
+					continue;
+				}
+
                 SalesChartData costData = new SalesChartData();
                 costData.Category = associateSales.SalesAssociate;
                 costData.Number = associateSales.TotalCost;
@@ -504,5 +529,21 @@ namespace IPReport.ViewModel
                 associateSales.TotalCost += Convert.ToDecimal(item.Cost);
             }
         }
+
+		private void Settings(object sender, RoutedEventArgs args)
+		{
+			ISalesDashboardSettings settingsService = ServiceContainer.Instance.GetService<ISalesDashboardSettings>();
+
+			if (settingsService != null)
+			{
+				bool? result = settingsService.ShowDashboardSettings(_settings);
+
+				if (result.HasValue && result.Value == true)
+				{
+					_settings.Save();
+				}
+			}
+		}
+
     }
 }

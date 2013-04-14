@@ -20,12 +20,9 @@ namespace IPReport
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : ISaveFilePath
+	public partial class MainWindow : ISaveFilePath, ISalesDashboardSettings
 	{
 		public RequestProcessor requestProcessor = null;
-
-		
-
 
 		private ICommand _debugConnectCommand;
 		public ICommand DebugConnectCommand
@@ -118,6 +115,7 @@ namespace IPReport
 			ServiceContainer.Instance.AddService<IQuickBooksQueryService>(new QuickBooksQuery());
 			ServiceContainer.Instance.AddService<ISaveFilePath>(this);
 			ServiceContainer.Instance.AddService<IDateService>(new ReportDateService());
+			ServiceContainer.Instance.AddService<ISalesDashboardSettings>(this);
 		}
 
 		~MainWindow()
@@ -139,6 +137,16 @@ namespace IPReport
 			path = saveDialog.FileName;
 
 			return path;
+		}
+
+		public bool? ShowDashboardSettings(object dataContext)
+		{
+			SalesDashboardSettings settingsDialog = new SalesDashboardSettings();
+			settingsDialog.DataContext = dataContext;
+
+			bool? dialogResult = settingsDialog.ShowDialog();
+
+			return dialogResult;
 		}
 	}
 }

@@ -195,6 +195,7 @@
     <Compile Include="Util\IQuickBooksQueryService.cs" />
     <Compile Include="Util\IQuickBooksUpdate.cs" />
     <Compile Include="Util\IRetailCost.cs" />
+    <Compile Include="Util\ISalesDashboardSettings.cs" />
     <Compile Include="Util\ISaveFilePath.cs" />
     <Compile Include="Util\ISaveToCsv.cs" />
     <Compile Include="Util\ISaveToOtb.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="ViewModel\OnHandInventory.cs" />
     <Compile Include="ViewModel\PerformanceChartSeriesViewModel.cs" />
     <Compile Include="ViewModel\PerformanceTargetViewModel.cs" />
+    <Compile Include="ViewModel\SalesDashboardSettingsViewModel.cs" />
     <Compile Include="ViewModel\SalesDashboardViewModel.cs" />
     <Compile Include="ViewModel\StoreReportItem.cs" />
     <Compile Include="ViewModel\StoreSalesViewModel.cs" />
@@ -256,6 +258,9 @@
     </Compile>
     <Compile Include="View\InventoryView.xaml.cs">
       <DependentUpon>InventoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesDashboardSettings.xaml.cs">
+      <DependentUpon>SalesDashboardSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SalesDashboardView.xaml.cs">
       <DependentUpon>SalesDashboardView.xaml</DependentUpon>
@@ -320,6 +325,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\InventoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SalesDashboardSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -416,6 +425,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\settings_big.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
