@@ -33,6 +33,7 @@ namespace IPReport.ViewModel
 			}
 		}
 
+		
 		private PerformanceChartSeriesViewModel()
 		{
 

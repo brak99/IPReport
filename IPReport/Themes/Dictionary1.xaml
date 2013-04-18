@@ -973,7 +973,7 @@
                                     <ColumnDefinition.Width>
                                         <MultiBinding Converter="{StaticResource PerformanceTargetToWidth}">
                                             <Binding Path="PerformanceTarget"/>
-                                            <Binding Path="SumOfDataPointGroup"/>
+                                            <Binding Path="MaxSumOfDataPointGroup"/>
                                             <Binding ElementName="itemsControl" Path="RealWidth"/>
                                         </MultiBinding>
                                     </ColumnDefinition.Width>

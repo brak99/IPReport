@@ -102,6 +102,12 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>SQLite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>SQLite\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -201,7 +207,6 @@
     <Compile Include="Util\ISaveToOtb.cs" />
     <Compile Include="Util\ISaveToXml.cs" />
     <Compile Include="Util\IStatusUpdate.cs" />
-    <Compile Include="Util\ObservableDictionary.cs" />
     <Compile Include="Util\QuickBooksQuery.cs" />
     <Compile Include="Util\ReportDateService.cs" />
     <Compile Include="Util\ServiceContainer.cs" />

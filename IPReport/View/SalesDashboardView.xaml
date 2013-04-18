@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart"
              xmlns:util="clr-namespace:IPReport.Util"
+             xmlns:view="clr-namespace:IPReport.View"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>
-
-       
+        
+        <view:IntToMonthConverter x:Key="IntToMonthConverter"/>
         
         <Style x:Key="alternatingStyle" TargetType="{x:Type ListViewItem}">
             <Style.Triggers>
@@ -181,10 +182,21 @@
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <TextBlock FontSize="20" Padding="10,0,30,0">Sales Dashboard</TextBlock>
-            <Label Content="Start:" VerticalAlignment="Center"/>
+            <!--<Label Content="Start:" VerticalAlignment="Center"/>
             <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}" Height="23" VerticalAlignment="Center"></DatePicker>
             <Label Content="End:" VerticalAlignment="Center"/>
-            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}" Height="23" VerticalAlignment="Center"></DatePicker>
+            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}" Height="23" VerticalAlignment="Center"></DatePicker>-->
+            <Button Background="Transparent" Width="30" BorderBrush="LightGray">
+                <TextBlock Text="&lt;" FontSize="18"></TextBlock>
+            </Button>
+            <TextBlock VerticalAlignment="Center" Text=" " FontSize="16"/>
+            <TextBlock  VerticalAlignment="Center" Text="{Binding Path=ReportMonth, Converter={StaticResource IntToMonthConverter}}" FontSize="16"/>
+            <TextBlock VerticalAlignment="Center" Text="  " FontSize="16"/>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=StartDate.Year}" FontSize="16"/>
+            <TextBlock VerticalAlignment="Center" Text=" " FontSize="16"/>
+            <Button Background="Transparent" Width="30" BorderBrush="LightGray">
+                <TextBlock Text="&gt;" FontSize="18"></TextBlock>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

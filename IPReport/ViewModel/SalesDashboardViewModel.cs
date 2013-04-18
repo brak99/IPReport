@@ -191,15 +191,34 @@ namespace IPReport.ViewModel
         public DateTime? StartDate
         {
             get { return _startDate; }
-            set { _startDate = value; }
+            set 
+			{ 
+				_startDate = value;
+				UpdateRevenueTarget();
+			}
         }
 
         private DateTime? _endDate;
         public DateTime? EndDate
         {
             get { return _endDate; }
-            set { _endDate = value; }
+            set 
+			{ 
+				_endDate = value;
+				UpdateRevenueTarget();
+			}
         }
+
+		private int _reportMonth;
+		public int ReportMonth
+		{
+			get { return _reportMonth; }
+			set 
+			{ 
+				_reportMonth = value;
+				UpdateStartAndEndDates();
+			}
+		}
 
         private ICommand _updateCommand;
         public ICommand UpdateCommand
@@ -287,9 +306,10 @@ namespace IPReport.ViewModel
 
         protected SalesDashboardViewModel()
         {
-            StartDate = DateUtil.StartOfWeek(DateTime.Now);
+			ReportMonth = DateTime.Now.Month;
 
-            EndDate = DateUtil.EndOfDay(DateTime.Now);
+			UpdateStartAndEndDates();
+			
 
             _associateSalesCostSeries.Description = "Cost";
             _associateSalesCostSeries.DisplayName = "Cost";
@@ -303,8 +323,14 @@ namespace IPReport.ViewModel
             _revenueProfitSeries.DisplayName = "Margin";
 
             PopulateChartData();
+
         }
 
+		private void UpdateStartAndEndDates()
+		{
+			StartDate = new DateTime(DateTime.Now.Year, ReportMonth, 1);
+			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+		}
         public void Update(object sender, RoutedEventArgs args)
         {
             if (StartDate.HasValue && EndDate.HasValue)
@@ -395,8 +421,13 @@ namespace IPReport.ViewModel
 			_salesAssociatePerformance.Series.Add(marginSeriesData);
 
 			//_monthlyRevenuePerformance.PerformanceTarget = _settings.YearlyRevenue/12.0m;
-			
+			//_monthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ).Target;
         }
+
+		protected void UpdateRevenueTarget()
+		{
+			_monthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
+		}
 
         private void PopulateAverages()
         {
@@ -538,6 +569,7 @@ namespace IPReport.ViewModel
 				if (result.HasValue && result.Value == true)
 				{
 					_settings.Save();
+					UpdateRevenueTarget();
 				}
 			}
 		}
