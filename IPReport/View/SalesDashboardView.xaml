@@ -129,9 +129,9 @@
                     </chart:StackedBarChart.ItemTemplate>
 
                 </chart:StackedBarChart>
-                <chart:BulletGraph x:Name="RevenueBulletGraph" Grid.Row="1" ChartTitle="Revenue" 
-                                   DataContext="{Binding RevenuePerformance}"
-                                    ChartSubTitle="Cost $ / Profit $"
+                <chart:BulletGraph x:Name="RevenueBulletGraph" Grid.Row="1" ChartTitle="Monthly Revenue" 
+                                   DataContext="{Binding MonthlyRevenuePerformance}"
+                                    ChartSubTitle=""
                                 Margin="0,0,0,0">
                     <chart:BulletGraph.ItemTemplate>
                         <DataTemplate>

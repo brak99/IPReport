@@ -46,7 +46,15 @@ namespace IPReport.ViewModel
 
 		public void Refresh()
 		{
-			Departments.Clear();
+			try
+			{
+				App.Current.Dispatcher.Invoke((Action)(() => Departments.Clear()));
+			}
+			catch (System.Exception ex)
+			{
+				Departments.Clear();
+			}
+			
 
 			foreach (Department department in DepartmentRepository.Instance.Departments)
 			{

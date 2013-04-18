@@ -67,7 +67,7 @@ namespace IPReport.Test
 
 			store = testRepo.Stores[1];
 
-			Assert.AreEqual(false, store.Active);
+			Assert.AreEqual(true, store.Active);
 		}
 	}
 }

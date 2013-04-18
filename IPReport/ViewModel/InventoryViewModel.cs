@@ -227,26 +227,30 @@ namespace IPReport.ViewModel
             string path = ServiceContainer.Instance.GetService<ISaveFilePath>().SaveFilePath("OTB File|*.txt", "Save as OTB");
 			FileMode fileMode = FileMode.Create;
 
-			if (File.Exists(path))
+			if (!String.IsNullOrEmpty(path))
 			{
-				fileMode = FileMode.Truncate;
+				if (File.Exists(path))
+				{
+					fileMode = FileMode.Truncate;
+				}
+
+				using (Stream stream = new FileStream(path, fileMode))
+				{
+					using (StreamWriter writer = new StreamWriter(stream))
+					{
+						foreach (WorkspaceViewModel workspaceViewModel in this.Workspaces)
+						{
+							ISaveToOtb saveToOtb = workspaceViewModel as ISaveToOtb;
+
+							if (saveToOtb != null)
+							{
+								saveToOtb.SaveToOtb(writer);
+							}
+						}
+					}
+				}
 			}
-
-            using (Stream stream = new FileStream(path, fileMode))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    foreach (WorkspaceViewModel workspaceViewModel in this.Workspaces)
-                    {
-                        ISaveToOtb saveToOtb = workspaceViewModel as ISaveToOtb;
-
-                        if (saveToOtb != null)
-                        {
-                            saveToOtb.SaveToOtb(writer);
-                        }
-                    }
-                }
-            }
+			
         }
 
         #region Workspaces

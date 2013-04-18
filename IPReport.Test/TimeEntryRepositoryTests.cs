@@ -34,8 +34,7 @@ namespace IPReport.Test
 
             Assert.Greater(doc.ChildNodes.Count, 0);
 
-            string expectedQuery = @"<?xml version=""1.0"" encoding=""utf-8""?><?qbposxml version=""3.0""?><QBPOSXML><QBPOSXMLMsgsRq onError=""stopOnError""><TimeEntryQueryRq><ClockInTimeRangeFilter><FromClockInTime>2013-01-01T00:00:00</FromClockInTime><ToClockInTime>2013-01-02T00:00:00</ToClockInTime></ClockInTimeRangeFilter><ClockOutTimeRangeFilter><FromClockOutTime>2013-01-01T00:00:00</FromClockOutTime><ToClockOutTime>2013-01-02T00:00:00</ToClockOutTime></ClockOutTimeRangeFilter></TimeEntryQueryRq></QBPOSXMLMsgsRq></QBPOSXML>";
-
+			string expectedQuery = @"<?xml version=""1.0"" encoding=""utf-8""?><?qbposxml version=""3.0""?><QBPOSXML><QBPOSXMLMsgsRq onError=""stopOnError""><TimeEntryQueryRq><ClockInTimeRangeFilter><FromClockInTime>2013-01-01T00:00:00</FromClockInTime><ToClockInTime>2013-01-02T00:00:00</ToClockInTime></ClockInTimeRangeFilter></TimeEntryQueryRq></QBPOSXMLMsgsRq></QBPOSXML>";
             Assert.AreEqual(expectedQuery, doc.InnerXml);
 
         }
@@ -50,8 +49,7 @@ namespace IPReport.Test
 
             Assert.Greater(doc.ChildNodes.Count, 0);
 
-            string expectedQuery = @"<?xml version=""1.0"" encoding=""utf-8""?><?qbposxml version=""3.0""?><QBPOSXML><QBPOSXMLMsgsRq onError=""stopOnError""><TimeEntryQueryRq><ClockInTimeRangeFilter><FromClockInTime>2013-01-01T00:00:00</FromClockInTime><ToClockInTime>2013-01-02T00:00:00</ToClockInTime></ClockInTimeRangeFilter><ClockOutTimeRangeFilter><FromClockOutTime>2013-01-01T00:00:00</FromClockOutTime><ToClockOutTime>2013-01-02T00:00:00</ToClockOutTime></ClockOutTimeRangeFilter><StoreNumberFilter><MatchNumericCriterion>Equal</MatchNumericCriterion><StoreNumber>1</StoreNumber></StoreNumberFilter></TimeEntryQueryRq></QBPOSXMLMsgsRq></QBPOSXML>";
-
+			string expectedQuery = @"<?xml version=""1.0"" encoding=""utf-8""?><?qbposxml version=""3.0""?><QBPOSXML><QBPOSXMLMsgsRq onError=""stopOnError""><TimeEntryQueryRq><ClockInTimeRangeFilter><FromClockInTime>2013-01-01T00:00:00</FromClockInTime><ToClockInTime>2013-01-02T00:00:00</ToClockInTime></ClockInTimeRangeFilter><StoreNumberFilter><MatchNumericCriterion>Equal</MatchNumericCriterion><StoreNumber>1</StoreNumber></StoreNumberFilter></TimeEntryQueryRq></QBPOSXMLMsgsRq></QBPOSXML>";
             Assert.AreEqual(expectedQuery, doc.InnerXml);
         }
     }

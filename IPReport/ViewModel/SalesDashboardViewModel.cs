@@ -187,16 +187,6 @@ namespace IPReport.ViewModel
     // Sales Associate        Hours Worked       # of sales       % of total store sales       Total Sales $     Avg $ per sale      Avg Items Per Sale     Sales per hour     margin %
     public class SalesDashboardViewModel : WorkspaceViewModel
     {
-
-        //TODO: need ignore list to exclude used and *something else*
-        //TODO: for sales dashboard...need double click to show items for sales
-        //TODO: need lookup for inventory to calc margin...that or is cost in receipt?  in receipt there is SalesReceiptItemRet which has Cost, but margin coming out diff than QB report
-        //TODO: Graph total sales
-        //TODO: sales $ per hour, cost $ per hour stacked graph
-        //            or total sales $, cost $ stacked graph
-        //TODO: add very light lines to grid report
-
-
         private DateTime? _startDate;
         public DateTime? StartDate
         {
@@ -255,12 +245,12 @@ namespace IPReport.ViewModel
             }
         }
 
-		private PerformanceTargetViewModel _revenuePerformance = PerformanceTargetViewModel.GetInstance();
-		public PerformanceTargetViewModel RevenuePerformance
+		private PerformanceTargetViewModel _monthlyRevenuePerformance = PerformanceTargetViewModel.GetInstance();
+		public PerformanceTargetViewModel MonthlyRevenuePerformance
 		{
 			get
 			{
-				return _revenuePerformance;
+				return _monthlyRevenuePerformance;
 			}
 		}
 
@@ -329,7 +319,7 @@ namespace IPReport.ViewModel
 
         private void PopulateChartData()
         {
-			RevenuePerformance.Name = "Revenue";
+			MonthlyRevenuePerformance.Name = "Revenue";
 
 			_salesAssociatePerformance.Series.Clear();
 			SeriesData costSeriesData = new SeriesData();
@@ -345,18 +335,25 @@ namespace IPReport.ViewModel
             SalesChartData revenueProfit = new SalesChartData();
 			SalesChartData theOtherThing = new SalesChartData();
 
-			_revenuePerformance.ActualPerformance = 0.0m;
+			_monthlyRevenuePerformance.ActualPerformance = 0.0m;
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
 				StringWrapper wrapper = new StringWrapper();
 				wrapper.Value = associateSales.SalesAssociate;
 
-				if (_settings.IgnoreList.Contains(wrapper))
+				try
 				{
-					continue;
+					if (_settings.IgnoreList.First(ignore => ignore.Value == associateSales.SalesAssociate) != null)
+					{
+						continue;
+					}
 				}
-
+				catch (System.Exception)
+				{
+					
+				}
+				
                 SalesChartData costData = new SalesChartData();
                 costData.Category = associateSales.SalesAssociate;
                 costData.Number = associateSales.TotalCost;
@@ -368,7 +365,7 @@ namespace IPReport.ViewModel
                 revenueProfit.Number += marginData.Number;
 
 				
-				_revenuePerformance.ActualPerformance += associateSales.TotalSales;
+				_monthlyRevenuePerformance.ActualPerformance += associateSales.TotalSales;
 
 				SalesChartData otherData = new SalesChartData();
 				otherData.Category = costData.Category;
@@ -397,7 +394,7 @@ namespace IPReport.ViewModel
 			_salesAssociatePerformance.Series.Add(costSeriesData);
 			_salesAssociatePerformance.Series.Add(marginSeriesData);
 
-			_revenuePerformance.PerformanceTarget = 5000;
+			//_monthlyRevenuePerformance.PerformanceTarget = _settings.YearlyRevenue/12.0m;
 			
         }
 
