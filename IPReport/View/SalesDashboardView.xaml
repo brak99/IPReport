@@ -168,11 +168,11 @@
                         <GridView >
                             <GridViewColumn Header="Associate    " DisplayMemberBinding="{Binding SalesAssociate}" util:GridViewSort.PropertyName="SalesAssociate"/>
                             <GridViewColumn Header="Hours    " DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="HoursWorked"/>
-                            <GridViewColumn Header="Number of Sales    " DisplayMemberBinding="{Binding NumberSales}" util:GridViewSort.PropertyName="NumberSales"/>
-                            <GridViewColumn Header="Total Sales    " DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="TotalSales"/>
-                            <GridViewColumn Header="Average Per Sale    " DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePerSale"/>
-                            <GridViewColumn Header="Average Items Per Sale    " DisplayMemberBinding="{Binding AverageItemsPerSale}" util:GridViewSort.PropertyName="AverageItemsPerSale"/>
-                            <GridViewColumn Header="Sales Per Hour    " DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="SalesPerHour"/>
+                            <GridViewColumn Header="Sales    " DisplayMemberBinding="{Binding NumberSales}" util:GridViewSort.PropertyName="NumberSales"/>
+                            <GridViewColumn Header="Sales $    " DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="TotalSales"/>
+                            <GridViewColumn Header="$/Sale    " DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePerSale"/>
+                            <GridViewColumn Header="Items/Sale    " DisplayMemberBinding="{Binding AverageItemsPerSale, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="AverageItemsPerSale"/>
+                            <GridViewColumn Header="Sales/Hour    " DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="SalesPerHour"/>
                             <GridViewColumn Header="Profit Margin    " DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="ProfitMargin"/>
                         </GridView>
                     </ListView.View>

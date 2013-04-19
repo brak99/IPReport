@@ -17,6 +17,17 @@ using System.Globalization;
 
 namespace IPReport.ViewModel
 {
+	public class HoursForTheMonth
+	{
+		public int Month { get; set; }
+		private ObservableCollection<MonthlyHours> _hours = new ObservableCollection<MonthlyHours>();
+		public ObservableCollection<MonthlyHours> Hours { get { return _hours; } }
+	}
+	public class MonthlyHours
+	{
+		public string Associate { get; set; }
+		public decimal Hours { get; set; }
+	}
 	public class MonthTarget
 	{
 		public int Month { get; set; }
@@ -33,6 +44,7 @@ namespace IPReport.ViewModel
 
 		private const string LoginToIgnore = "LoginToIgnore";
 		private const string MonthlyRevenueTargetsName = "MonthlyRevenueTargets";
+		private const string MonthHoursWorked = "MonthHoursWorked";
 
 		private ObservableCollection<StringWrapper> _ignoreList;
 		public ObservableCollection<StringWrapper> IgnoreList
@@ -46,6 +58,22 @@ namespace IPReport.ViewModel
 			get { return _monthlyRevenueTargets; }
 			private set { _monthlyRevenueTargets = value; }
 		}
+		private ObservableCollection<HoursForTheMonth> _hoursForTheYear = new ObservableCollection<HoursForTheMonth>();
+
+		private ObservableCollection<MonthlyHours> _monthHours = new ObservableCollection<MonthlyHours>();
+		public ObservableCollection<MonthlyHours> MonthHours
+		{
+			get 
+			{ 
+				IReportMonth reportMonthService = ServiceContainer.Instance.GetService<IReportMonth>();
+				int reportMonth = reportMonthService.GetReportMonth();
+
+				ObservableCollection<MonthlyHours> monthlyHours = _hoursForTheYear.First(monthHours => monthHours.Month == reportMonth).Hours;
+
+				return monthlyHours;
+			}
+		}
+
 		protected SalesDashboardSettingsViewModel()
 		{
 			_ignoreList = new ObservableCollection<StringWrapper>();
@@ -77,6 +105,8 @@ namespace IPReport.ViewModel
 						LoadIgnoreList(settingsElement);
 
 						LoadMonthlyRevenueTargets(settingsElement);
+
+						LoadMonthHours(settingsElement);
 					}
 				}
 
@@ -109,6 +139,8 @@ namespace IPReport.ViewModel
 						AddIgnoreSettings(settingsElement);
 						
 						AddMonthlyRevenueTargets(settingsElement);
+
+						AddMonthHours(settingsElement);
 
 						groupsDocument.Save(stream);
 					}
@@ -197,5 +229,68 @@ namespace IPReport.ViewModel
 
 			IgnoreList.Remove(wrapper);
 		}
+
+		protected void LoadMonthHours(XElement settingsElement)
+		{
+			_hoursForTheYear.Clear();
+
+			XElement monthHoursWorkedElement = settingsElement.Element(MonthHoursWorked);
+			for (int i = 1; i < 13; i++)
+			{
+				HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
+				hoursForTheMonth.Month = i;
+
+				_hoursForTheYear.Add(hoursForTheMonth);
+
+				if (monthHoursWorkedElement != null)
+				{
+					XElement monthElement = monthHoursWorkedElement.Element(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i));
+					if (monthElement != null)
+					{
+						foreach (XNode associateHoursNode in monthElement.Nodes())
+						{
+							if (associateHoursNode.NodeType == XmlNodeType.Element)
+							{
+								XElement associateHours = (XElement)associateHoursNode;
+								hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = associateHours.Name.LocalName, Hours = Convert.ToDecimal(associateHours.Value) });
+							}
+							
+						}
+					}
+				}
+			}
+		}
+
+		protected void AddMonthHours(XElement settingsElement)
+		{
+			XElement monthHoursWorkedElement = new XElement(MonthHoursWorked);
+			settingsElement.Add(monthHoursWorkedElement);
+
+			for (int i = 1; i < 13; i++)
+			{
+				XElement hoursForTheMonthElement = new XElement(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i));
+				monthHoursWorkedElement.Add(hoursForTheMonthElement);
+
+				HoursForTheMonth hoursForTheMonth = null;
+				try
+				{
+					hoursForTheMonth = _hoursForTheYear.First(monthlyHours => monthlyHours.Month == i);
+				}
+				catch (System.Exception)
+				{
+					
+				}
+				if (hoursForTheMonth != null)
+				{
+					foreach (MonthlyHours monthlyHours in hoursForTheMonth.Hours)
+					{
+						XElement associateHoursElement = new XElement(monthlyHours.Associate);
+						associateHoursElement.Value = monthlyHours.Hours.ToString();
+						hoursForTheMonthElement.Add(associateHoursElement);
+					}
+				}
+			}
+		}
+
 	}
 }

@@ -221,6 +221,7 @@
     <Compile Include="ViewModel\EditDepartmentGroupViewModel.cs" />
     <Compile Include="ViewModel\GroupedStoreViewModel.cs" />
     <Compile Include="ViewModel\InventoryViewModel.cs" />
+    <Compile Include="ViewModel\IReportMonth.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\OnHandInventory.cs" />
     <Compile Include="ViewModel\PerformanceChartSeriesViewModel.cs" />

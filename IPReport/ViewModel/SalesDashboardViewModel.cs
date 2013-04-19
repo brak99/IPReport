@@ -185,7 +185,7 @@ namespace IPReport.ViewModel
         #endregion // INotifyPropertyChanged Members
     }
     // Sales Associate        Hours Worked       # of sales       % of total store sales       Total Sales $     Avg $ per sale      Avg Items Per Sale     Sales per hour     margin %
-    public class SalesDashboardViewModel : WorkspaceViewModel
+    public class SalesDashboardViewModel : WorkspaceViewModel, IReportMonth
     {
         private DateTime? _startDate;
         public DateTime? StartDate
@@ -218,6 +218,11 @@ namespace IPReport.ViewModel
 				_reportMonth = value;
 				UpdateStartAndEndDates();
 			}
+		}
+
+		public int GetReportMonth()
+		{
+			return ReportMonth;
 		}
 
         private ICommand _updateCommand;
@@ -324,6 +329,7 @@ namespace IPReport.ViewModel
 
             PopulateChartData();
 
+			ServiceContainer.Instance.AddService<IReportMonth>(this);
         }
 
 		private void UpdateStartAndEndDates()
@@ -420,8 +426,11 @@ namespace IPReport.ViewModel
 			_salesAssociatePerformance.Series.Add(costSeriesData);
 			_salesAssociatePerformance.Series.Add(marginSeriesData);
 
-			//_monthlyRevenuePerformance.PerformanceTarget = _settings.YearlyRevenue/12.0m;
-			//_monthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ).Target;
+			//TODO: fix this, this triggers the perf chart to recalc, set PerformanceTarget calls PerformanceTargetViewModel.CalculateRanges 
+			//  which changes the Series on GroupedSeriesViewModel which creates new ChartSeriesViewModels and sets the ActualPerformance.  Otherwise
+			//  ActualPerformance is 0
+			UpdateRevenueTarget();
+
         }
 
 		protected void UpdateRevenueTarget()
@@ -434,7 +443,7 @@ namespace IPReport.ViewModel
             foreach (AssociateSales associateSales in AssociateSales)
             {
                 associateSales.SalesPerHour = associateSales.HoursWorked == 0.0m ? 0.0m : (associateSales.NumberSales / associateSales.HoursWorked);
-                associateSales.AverageItemsPerSale = associateSales.NumberSales == 0.0m ? 0.0m : associateSales.TotalItems / associateSales.NumberSales;
+                associateSales.AverageItemsPerSale = associateSales.NumberSales == 0.0m ? 0.0m : (decimal)associateSales.TotalItems / (decimal)associateSales.NumberSales;
                 associateSales.AveragePerSale = associateSales.NumberSales == 0.0m ? 0.0m : associateSales.TotalSales / associateSales.NumberSales;
                 associateSales.ProfitMargin = associateSales.TotalCost == 0.0m ? 0.0m : ((associateSales.TotalSales - associateSales.TotalCost) / associateSales.TotalSales)*100.0m;
             }
