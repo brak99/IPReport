@@ -59,7 +59,10 @@ namespace IPReport.ViewModel
 			private set { _monthlyRevenueTargets = value; }
 		}
 		private ObservableCollection<HoursForTheMonth> _hoursForTheYear = new ObservableCollection<HoursForTheMonth>();
-
+		public ObservableCollection<HoursForTheMonth> HoursForTheYear
+		{
+			get { return _hoursForTheYear; }
+		}
 		private ObservableCollection<MonthlyHours> _monthHours = new ObservableCollection<MonthlyHours>();
 		public ObservableCollection<MonthlyHours> MonthHours
 		{
