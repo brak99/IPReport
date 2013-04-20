@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using IPReport.Charts.ViewModel;
+using De.TorstenMandelkow.MetroChart;
 
 namespace IPReport.ViewModel
 {
@@ -35,12 +36,6 @@ namespace IPReport.ViewModel
 			set;
 		}
 
-		//public string Name
-		//{
-		//    get;
-		//    set;
-		//}
-
 		public static new PerformanceTargetViewModel GetInstance()
 		{
 			return new PerformanceTargetViewModel();
@@ -51,51 +46,9 @@ namespace IPReport.ViewModel
 			PoorPerformance = 0.6;
 			SatisfactoryPerformance = .9;
 			GoodPerformance = 1.2;
-
-			_poorSeries.DisplayName = "Poor";
-			_satisfactorySeries.DisplayName = "Satisfactory";
-			_goodSeries.DisplayName = "Good";
 		}
-
-		//private decimal _actualPerformance;
-		//public decimal ActualPerformance
-		//{
-		//    get { return _actualPerformance; }
-		//    set
-		//    {
-		//        _actualPerformance = value;
-
-		//        _poorSeries.ActualPerformance = value;
-		//        _goodSeries.ActualPerformance = value;
-		//        _satisfactorySeries.ActualPerformance = value;
-		//    }
-		//}
-
-		//private decimal _performanceTarget;
-		//public decimal PerformanceTarget
-		//{
-		//    get {return _performanceTarget;}
-		//    set
-		//    {
-		//        _performanceTarget = value;
-		//        _poorSeries.PerformanceTarget = value;
-		//        _goodSeries.PerformanceTarget = value;
-		//        _satisfactorySeries.PerformanceTarget = value;
-		//        //AddPerformanceSeries();
-		//    }
-		//}
 
 		
-
-		private ObservableCollection<PerformanceSeriesData> _performanceRanges = new ObservableCollection<PerformanceSeriesData>();
-		public ObservableCollection<PerformanceSeriesData> PerformanceRanges
-		{
-			get { return _performanceRanges; }
-		}
-		private PerformanceSeriesData _poorSeries = new PerformanceSeriesData();
-		private PerformanceSeriesData _satisfactorySeries = new PerformanceSeriesData();
-		private PerformanceSeriesData _goodSeries = new PerformanceSeriesData();
-
 		public void AddPerformanceSeries(string name, decimal performanceTarget, decimal actualPerformance)
 		{
 			PerformanceSeriesData poorSeries = new PerformanceSeriesData();
@@ -160,41 +113,39 @@ namespace IPReport.ViewModel
 			return goodData;
 		}
 
-		//private void AddPerformanceSeries(string name)
-		//{
-		//    //Clear();
-
-		//    SalesChartData poorData = new SalesChartData();
-		//    poorData.Category = Name;
-		//    poorData.Number = PerformanceTarget * (decimal)PoorPerformance;
-
-		//    SalesChartData satisfactoryData = new SalesChartData();
-		//    satisfactoryData.Category = Name;
-		//    satisfactoryData.Number = PerformanceTarget * (decimal)SatisfactoryPerformance;
-		//    satisfactoryData.Number -= poorData.Number;
-
-		//    SalesChartData goodData = new SalesChartData();
-		//    goodData.Category = Name;
-		//    goodData.Number = PerformanceTarget * (decimal)GoodPerformance;
-		//    goodData.Number -= poorData.Number;
-		//    goodData.Number -= satisfactoryData.Number;
-
-		//    _poorSeries.Items.Add(poorData);
-		//    _satisfactorySeries.Items.Add(satisfactoryData);
-		//    _goodSeries.Items.Add(goodData);
-
-		//    Series.Add(_poorSeries);
-		//    Series.Add(_satisfactorySeries);
-		//    Series.Add(_goodSeries);
-		//}
-
 		public void Clear()
 		{
 			Series.Clear();
-			_performanceRanges.Clear();
-			_poorSeries.Items.Clear();
-			_satisfactorySeries.Items.Clear();
-			_goodSeries.Items.Clear();
+		}
+
+		protected override void AddApplicableSeries(ChartSeriesViewModel dataPointGroup, SalesChartData seriesItem)
+		{
+			int seriesIndex = 0;
+			foreach (SeriesData allSeries in Series)
+			{
+				//need to loop through the items in allSeries.Items and match the names
+				// what it's doing now is adding all in Series to each person so people
+				// are getting 30 SeriesData in the performanceviewmodel situation
+
+				bool shouldAdd = false;
+				foreach (SalesChartData salesChartData in allSeries.Items)
+				{
+					if (salesChartData.Category == dataPointGroup.Caption)
+					{
+						shouldAdd = true;
+						break;
+					}
+				}
+				if (shouldAdd)
+				{
+					DataPoint dataPoint = new DataPoint();
+					dataPoint.SeriesCaption = allSeries.DisplayName;
+					dataPointGroup.DataPoints.Add(dataPoint);
+					dataPoint.ReferencedObject = seriesItem;
+					dataPoint.SeriesNumber = seriesIndex++;
+				}
+				
+			}
 		}
 	}
 }

@@ -269,6 +269,12 @@ namespace IPReport.ViewModel
 			}
 		}
 
+		private PerformanceTargetViewModel _salesAssociateTargetPerformance = PerformanceTargetViewModel.GetInstance();
+		public IPReport.ViewModel.PerformanceTargetViewModel SalesAssociateTargetPerformance
+		{
+			get { return _salesAssociateTargetPerformance; }
+		}
+
 		public ObservableCollection<AssociateSales> AssociateSales
         {
             get
@@ -289,12 +295,12 @@ namespace IPReport.ViewModel
         protected SalesDashboardViewModel()
         {
 			ReportMonth = DateTime.Now.Month;
+			ServiceContainer.Instance.AddService<IReportMonth>(this);
 
 			UpdateStartAndEndDates();
 
             PopulateChartData();
-
-			ServiceContainer.Instance.AddService<IReportMonth>(this);
+			
         }
 
 		private void UpdateStartAndEndDates()
@@ -314,10 +320,24 @@ namespace IPReport.ViewModel
             }
         }
 
+		private decimal TotalHoursForTheMonth()
+		{
+			ObservableCollection<MonthlyHours> monthHours = _settings.MonthHours;
+
+			decimal totalHours = 0.0m;
+
+			foreach (MonthlyHours monthlyHours in monthHours)
+			{
+				totalHours += monthlyHours.Hours;
+			}
+
+			return totalHours;
+		}
+
         private void PopulateChartData()
         {
-			//MonthlyRevenuePerformance.Name = "Revenue";
 			MonthlyRevenuePerformance.Clear();
+			SalesAssociateTargetPerformance.Clear();
 
 			_salesAssociatePerformance.Series.Clear();
 			SeriesData costSeriesData = new SeriesData();
@@ -325,8 +345,11 @@ namespace IPReport.ViewModel
 			SeriesData marginSeriesData = new SeriesData();
 			marginSeriesData.DisplayName = "Margin";
 
-			//_monthlyRevenuePerformance.ActualPerformance = 0.0m;
 			decimal actualRevenuePerformance = 0.0m;
+
+			decimal totalHoursForTheMonth = TotalHoursForTheMonth();
+			decimal targetRevenue = _settings.MonthlyRevenueTargets.First(revenueTarget => revenueTarget.Month == ReportMonth).Target;
+			decimal targetDollarPerHour = targetRevenue / totalHoursForTheMonth;
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
@@ -359,6 +382,11 @@ namespace IPReport.ViewModel
 				costSeriesData.Items.Add(costData);
 				marginSeriesData.Items.Add(marginData);
 
+				MonthlyHours salesAssociateScheduledHours = _settings.MonthHours.First(monthHours => monthHours.Associate == associateSales.SalesAssociate);
+
+				decimal associateTarget = salesAssociateScheduledHours.Hours * targetDollarPerHour;
+
+				SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
             }
 
 			_salesAssociatePerformance.Series.Add(costSeriesData);
