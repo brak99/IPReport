@@ -13,6 +13,8 @@ using System.Windows.Data;
 using System.Collections.Specialized;
 using IPReport.Util;
 using System.Globalization;
+using IPReport.DataAccess;
+using IPReport.Model;
 
 
 namespace IPReport.ViewModel
@@ -236,32 +238,83 @@ namespace IPReport.ViewModel
 		protected void LoadMonthHours(XElement settingsElement)
 		{
 			_hoursForTheYear.Clear();
-
 			XElement monthHoursWorkedElement = settingsElement.Element(MonthHoursWorked);
+			//foreach month
 			for (int i = 1; i < 13; i++)
 			{
-				HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
-				hoursForTheMonth.Month = i;
-
-				_hoursForTheYear.Add(hoursForTheMonth);
+				HoursForTheMonth hoursForTheMonth = null;
 
 				if (monthHoursWorkedElement != null)
 				{
 					XElement monthElement = monthHoursWorkedElement.Element(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i));
 					if (monthElement != null)
 					{
-						foreach (XNode associateHoursNode in monthElement.Nodes())
-						{
-							if (associateHoursNode.NodeType == XmlNodeType.Element)
-							{
-								XElement associateHours = (XElement)associateHoursNode;
-								hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = associateHours.Name.LocalName, Hours = Convert.ToDecimal(associateHours.Value) });
-							}
-							
-						}
+						hoursForTheMonth = CreateAssociateHoursFromXElement(monthElement);
+					}
+
+					if (hoursForTheMonth.Hours.Count == 0)
+					{
+						hoursForTheMonth = CreateAssociateHoursFromLastMonth(i-1);
+					}
+					
+					if (hoursForTheMonth.Hours.Count == 0)
+					{
+						hoursForTheMonth = CreateAssociateHoursFromRepository();
 					}
 				}
+
+				hoursForTheMonth.Month = i;
+				_hoursForTheYear.Add(hoursForTheMonth);
 			}
+		}
+
+		private HoursForTheMonth CreateAssociateHoursFromXElement(XElement monthElement)
+		{
+			HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
+
+			foreach (XNode associateHoursNode in monthElement.Nodes())
+			{
+				if (associateHoursNode.NodeType == XmlNodeType.Element)
+				{
+					XElement associateHours = (XElement)associateHoursNode;
+					hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = associateHours.Name.LocalName, Hours = Convert.ToDecimal(associateHours.Value) });
+				}
+
+			}
+
+			return hoursForTheMonth;
+		}
+
+		private HoursForTheMonth CreateAssociateHoursFromLastMonth(int lastMonth)
+		{
+			HoursForTheMonth hoursLastMonth = _hoursForTheYear.First(MonthHours => MonthHours.Month == lastMonth);
+
+			HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
+			foreach (MonthlyHours monthlyHours in hoursLastMonth.Hours)
+			{
+				hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = monthlyHours.Associate, Hours = monthlyHours.Hours });
+			}
+
+			return hoursForTheMonth;
+
+			
+		}
+
+		private HoursForTheMonth CreateAssociateHoursFromRepository()
+		{
+			HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
+
+			//_hoursForTheYear.Add(hoursForTheMonth);
+
+			EmployeeRepository.Instance.Refresh();
+
+			//try adding from the repository
+			foreach (Employee employee in EmployeeRepository.Instance.Employees)
+			{
+				hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = employee.LoginName, Hours = 0.0m });
+			}
+
+			return hoursForTheMonth;
 		}
 
 		protected void AddMonthHours(XElement settingsElement)
@@ -292,6 +345,7 @@ namespace IPReport.ViewModel
 						hoursForTheMonthElement.Add(associateHoursElement);
 					}
 				}
+				
 			}
 		}
 

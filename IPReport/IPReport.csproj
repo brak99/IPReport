@@ -166,6 +166,7 @@
     <Compile Include="Charts\Core\ResourceDictionaryCollection.cs" />
     <Compile Include="Charts\ViewModel\ChartSeriesViewModel.cs" />
     <Compile Include="Charts\ViewModel\GroupedSeriesViewModel.cs" />
+    <Compile Include="DataAccess\EmployeeRepository.cs" />
     <Compile Include="DataAccess\TimeEntryRepository.cs" />
     <Compile Include="DataAccess\DepartmentGroupsRepository.cs" />
     <Compile Include="DataAccess\DepartmentRepository.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="DataAccess\TransferRepository.cs" />
     <Compile Include="DataAccess\VoucherRepository.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\DepartmentGroup.cs" />
     <Compile Include="Model\SalesOrder.cs" />
     <Compile Include="Model\SalesOrderItem.cs" />
