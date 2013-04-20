@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel;
 using System.Windows.Data;
-using System.Collections.Specialized;
 using IPReport.Util;
 using System.Globalization;
 using IPReport.DataAccess;
@@ -47,6 +43,8 @@ namespace IPReport.ViewModel
 		private const string LoginToIgnore = "LoginToIgnore";
 		private const string MonthlyRevenueTargetsName = "MonthlyRevenueTargets";
 		private const string MonthHoursWorked = "MonthHoursWorked";
+		private const int January = 1;
+		private const int December = 12;
 
 		private ObservableCollection<StringWrapper> _ignoreList;
 		public ObservableCollection<StringWrapper> IgnoreList
@@ -83,7 +81,7 @@ namespace IPReport.ViewModel
 		{
 			_ignoreList = new ObservableCollection<StringWrapper>();
 
-			for (int i = 1; i < 13; i++)
+			for (int i = January; i <= December; i++)
 			{
 				_monthlyRevenueTargets.Add(new MonthTarget() { Month = i, Target = 0.0m });
 			}
@@ -199,7 +197,7 @@ namespace IPReport.ViewModel
 			XElement monthlyTargetsElement = settingsElement.Element(MonthlyRevenueTargetsName);
 			if (monthlyTargetsElement != null)
 			{
-				for (int i = 1; i < 13; i++)
+				for (int i = January; i <= December; i++)
 				{
 					XElement monthTarget = monthlyTargetsElement.Element(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i));
 					decimal target = Convert.ToDecimal(monthTarget.Value);
@@ -240,7 +238,7 @@ namespace IPReport.ViewModel
 			_hoursForTheYear.Clear();
 			XElement monthHoursWorkedElement = settingsElement.Element(MonthHoursWorked);
 			//foreach month
-			for (int i = 1; i < 13; i++)
+			for (int i = January; i <= December; i++)
 			{
 				HoursForTheMonth hoursForTheMonth = null;
 
@@ -304,11 +302,8 @@ namespace IPReport.ViewModel
 		{
 			HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
 
-			//_hoursForTheYear.Add(hoursForTheMonth);
-
 			EmployeeRepository.Instance.Refresh();
 
-			//try adding from the repository
 			foreach (Employee employee in EmployeeRepository.Instance.Employees)
 			{
 				hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = employee.LoginName, Hours = 0.0m });
@@ -322,7 +317,7 @@ namespace IPReport.ViewModel
 			XElement monthHoursWorkedElement = new XElement(MonthHoursWorked);
 			settingsElement.Add(monthHoursWorkedElement);
 
-			for (int i = 1; i < 13; i++)
+			for (int i = January; i <= December; i++)
 			{
 				XElement hoursForTheMonthElement = new XElement(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i));
 				monthHoursWorkedElement.Add(hoursForTheMonthElement);
