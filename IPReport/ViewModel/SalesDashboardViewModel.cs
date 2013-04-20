@@ -34,13 +34,7 @@ namespace IPReport.ViewModel
 		public ObservableCollection<SalesChartData> Items { get; set; }
     }
 
-	public class PerformanceSeriesData : SeriesData
-	{
-		public decimal PerformanceTarget { get; set; }
-
-		public decimal ActualPerformance { get; set; }
-	}
-
+	
     public class AssociateSales : INotifyPropertyChanged
     {
         private string _salesAssociate;
@@ -194,7 +188,7 @@ namespace IPReport.ViewModel
             set 
 			{ 
 				_startDate = value;
-				UpdateRevenueTarget();
+				//UpdateRevenueTarget();
 			}
         }
 
@@ -205,7 +199,7 @@ namespace IPReport.ViewModel
             set 
 			{ 
 				_endDate = value;
-				UpdateRevenueTarget();
+				//UpdateRevenueTarget();
 			}
         }
 
@@ -257,18 +251,6 @@ namespace IPReport.ViewModel
 
 		private SalesDashboardSettingsViewModel _settings = SalesDashboardSettingsViewModel.GetInstance();
 
-        private SeriesData _revenueCostSeries = new SeriesData();
-        private SeriesData _revenueProfitSeries = new SeriesData();
-
-        private ObservableCollection<SeriesData> _revenueData = new ObservableCollection<SeriesData>();
-        public ObservableCollection<SeriesData> RevenueData
-        {
-            get
-            {
-                return _revenueData;
-            }
-        }
-
 		private PerformanceTargetViewModel _monthlyRevenuePerformance = PerformanceTargetViewModel.GetInstance();
 		public PerformanceTargetViewModel MonthlyRevenuePerformance
 		{
@@ -287,12 +269,7 @@ namespace IPReport.ViewModel
 			}
 		}
 
-        private SeriesData _associateSalesCostSeries = new SeriesData();
-        private SeriesData _associateSalesMarginSeries = new SeriesData();
-		private SeriesData _associateOtherSeries = new SeriesData();
-
-        
-        public ObservableCollection<AssociateSales> AssociateSales
+		public ObservableCollection<AssociateSales> AssociateSales
         {
             get
             {
@@ -314,18 +291,6 @@ namespace IPReport.ViewModel
 			ReportMonth = DateTime.Now.Month;
 
 			UpdateStartAndEndDates();
-			
-
-            _associateSalesCostSeries.Description = "Cost";
-            _associateSalesCostSeries.DisplayName = "Cost";
-
-            _associateSalesMarginSeries.Description = "Margin";
-			_associateSalesMarginSeries.DisplayName = "Margin";
-
-            _revenueCostSeries.Description = "Cost";
-            _revenueCostSeries.DisplayName = "Cost";
-            _revenueProfitSeries.Description = "Margin";
-            _revenueProfitSeries.DisplayName = "Margin";
 
             PopulateChartData();
 
@@ -351,7 +316,8 @@ namespace IPReport.ViewModel
 
         private void PopulateChartData()
         {
-			MonthlyRevenuePerformance.Name = "Revenue";
+			//MonthlyRevenuePerformance.Name = "Revenue";
+			MonthlyRevenuePerformance.Clear();
 
 			_salesAssociatePerformance.Series.Clear();
 			SeriesData costSeriesData = new SeriesData();
@@ -359,15 +325,8 @@ namespace IPReport.ViewModel
 			SeriesData marginSeriesData = new SeriesData();
 			marginSeriesData.DisplayName = "Margin";
 
-            _associateSalesCostSeries.Items.Clear();
-            _associateSalesMarginSeries.Items.Clear();
-			_associateOtherSeries.Items.Clear();
-
-            SalesChartData revenueCost = new SalesChartData();
-            SalesChartData revenueProfit = new SalesChartData();
-			SalesChartData theOtherThing = new SalesChartData();
-
-			_monthlyRevenuePerformance.ActualPerformance = 0.0m;
+			//_monthlyRevenuePerformance.ActualPerformance = 0.0m;
+			decimal actualRevenuePerformance = 0.0m;
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
@@ -389,39 +348,18 @@ namespace IPReport.ViewModel
                 SalesChartData costData = new SalesChartData();
                 costData.Category = associateSales.SalesAssociate;
                 costData.Number = associateSales.TotalCost;
-                revenueCost.Number += costData.Number;
 
                 SalesChartData marginData = new SalesChartData();
                 marginData.Category = costData.Category;
                 marginData.Number = associateSales.TotalSales - associateSales.TotalCost;
-                revenueProfit.Number += marginData.Number;
-
 				
-				_monthlyRevenuePerformance.ActualPerformance += associateSales.TotalSales;
-
-				SalesChartData otherData = new SalesChartData();
-				otherData.Category = costData.Category;
-				otherData.Number = 100m;
-
-				SalesChartData costData2 = new SalesChartData();
-				costData2.Category = costData.Category;
-				costData2.Number = costData.Number;
-
-				SalesChartData marginData2 = new SalesChartData();
-				marginData2.Category = marginData.Category;
-				marginData2.Number = marginData.Number;
-
-                _associateSalesCostSeries.Items.Add(costData);
-                _associateSalesMarginSeries.Items.Add(marginData);
-				_associateOtherSeries.Items.Add(otherData);
+				//_monthlyRevenuePerformance.ActualPerformance += associateSales.TotalSales;
+				actualRevenuePerformance += associateSales.TotalSales;
 
 				costSeriesData.Items.Add(costData);
 				marginSeriesData.Items.Add(marginData);
 
             }
-
-			//_revenueProfitSeries.Items.Add(revenueProfit);
-			//_revenueCostSeries.Items.Add(revenueCost);
 
 			_salesAssociatePerformance.Series.Add(costSeriesData);
 			_salesAssociatePerformance.Series.Add(marginSeriesData);
@@ -429,14 +367,29 @@ namespace IPReport.ViewModel
 			//TODO: fix this, this triggers the perf chart to recalc, set PerformanceTarget calls PerformanceTargetViewModel.CalculateRanges 
 			//  which changes the Series on GroupedSeriesViewModel which creates new ChartSeriesViewModels and sets the ActualPerformance.  Otherwise
 			//  ActualPerformance is 0
-			UpdateRevenueTarget();
+			//UpdateRevenueTarget();
+			decimal performanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
+			MonthlyRevenuePerformance.AddPerformanceSeries("revenue", performanceTarget, actualRevenuePerformance);
+
 
         }
 
-		protected void UpdateRevenueTarget()
+		protected void CalculateSalesAssociatePerformanceTargetData()
 		{
-			_monthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
+			decimal revenueTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
+			decimal totalHours = 0.0m;
+
+			HoursForTheMonth hoursForTheMonth = _settings.HoursForTheYear.First(monthHours => monthHours.Month == ReportMonth);
+
+			foreach (MonthlyHours monthlyHours in hoursForTheMonth.Hours)
+			{
+				totalHours += monthlyHours.Hours;
+			}
 		}
+		//protected void UpdateRevenueTarget()
+		//{
+		//    _monthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
+		//}
 
         private void PopulateAverages()
         {
@@ -578,7 +531,7 @@ namespace IPReport.ViewModel
 				if (result.HasValue && result.Value == true)
 				{
 					_settings.Save();
-					UpdateRevenueTarget();
+					//UpdateRevenueTarget();
 				}
 			}
 		}

@@ -151,8 +151,7 @@
                                 >
                     <chart:StackedBarChart.ItemTemplate>
                         <DataTemplate>
-                            <ItemsControl 
-                                            ItemsSource="{Binding Path=Items}" />
+                            <ItemsControl ItemsSource="{Binding Path=Items}" />
                         </DataTemplate>
                     </chart:StackedBarChart.ItemTemplate>
 
