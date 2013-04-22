@@ -196,15 +196,15 @@
             <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}" Height="23" VerticalAlignment="Center"></DatePicker>
             <Label Content="End:" VerticalAlignment="Center"/>
             <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}" Height="23" VerticalAlignment="Center"></DatePicker>-->
-            <Button Background="Transparent" Width="30" BorderBrush="LightGray">
+            <Button Background="Transparent" Width="30" BorderBrush="LightGray" Command="{Binding PreviousMonthCommand}">
                 <TextBlock Text="&lt;" FontSize="18"></TextBlock>
             </Button>
             <TextBlock VerticalAlignment="Center" Text=" " FontSize="16"/>
-            <TextBlock  VerticalAlignment="Center" Text="{Binding Path=ReportMonth, Converter={StaticResource IntToMonthConverter}}" FontSize="16"/>
+            <TextBlock  VerticalAlignment="Center" Text="{Binding Path=StartDate.Month, Converter={StaticResource IntToMonthConverter}}" FontSize="16"/>
             <TextBlock VerticalAlignment="Center" Text="  " FontSize="16"/>
             <TextBlock VerticalAlignment="Center" Text="{Binding Path=StartDate.Year}" FontSize="16"/>
             <TextBlock VerticalAlignment="Center" Text=" " FontSize="16"/>
-            <Button Background="Transparent" Width="30" BorderBrush="LightGray">
+            <Button Background="Transparent" Width="30" BorderBrush="LightGray" Command="{Binding NextMonthCommand}">
                 <TextBlock Text="&gt;" FontSize="18"></TextBlock>
             </Button>
         </StackPanel>

@@ -188,6 +188,7 @@ namespace IPReport.ViewModel
             set 
 			{ 
 				_startDate = value;
+				OnPropertyChanged("StartDate");
 				//UpdateRevenueTarget();
 			}
         }
@@ -199,6 +200,7 @@ namespace IPReport.ViewModel
             set 
 			{ 
 				_endDate = value;
+				OnPropertyChanged("EndDate");
 				//UpdateRevenueTarget();
 			}
         }
@@ -245,6 +247,36 @@ namespace IPReport.ViewModel
 				}
 
 				return _settingsCommand;
+
+			}
+		}
+
+		private ICommand _nextMonthCommand;
+		public ICommand NextMonthCommand
+		{
+			get
+			{
+				if (_nextMonthCommand == null)
+				{
+					_nextMonthCommand = new DelegateCommand<object>(param => this.NextMonth(param, null));
+				}
+
+				return _nextMonthCommand;
+
+			}
+		}
+
+		private ICommand _previousMonthCommand;
+		public ICommand PreviousMonthCommand
+		{
+			get
+			{
+				if (_previousMonthCommand == null)
+				{
+					_previousMonthCommand = new DelegateCommand<object>(param => this.PreviousMonth(param, null));
+				}
+
+				return _previousMonthCommand;
 
 			}
 		}
@@ -303,6 +335,19 @@ namespace IPReport.ViewModel
 			
         }
 
+		private void NextMonth(object sender, RoutedEventArgs args)
+		{
+			StartDate = StartDate.Value.AddMonths(1);
+			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+		
+		}
+
+		private void PreviousMonth(object sender, RoutedEventArgs args)
+		{
+			StartDate = StartDate.Value.AddMonths(-1);
+			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+		}
+
 		private void UpdateStartAndEndDates()
 		{
 			StartDate = new DateTime(DateTime.Now.Year, ReportMonth, 1);
@@ -326,11 +371,15 @@ namespace IPReport.ViewModel
 
 			decimal totalHours = 0.0m;
 
-			foreach (MonthlyHours monthlyHours in monthHours)
+			if (monthHours != null)
 			{
-				totalHours += monthlyHours.Hours;
-			}
+				foreach (MonthlyHours monthlyHours in monthHours)
+				{
+					totalHours += monthlyHours.Hours;
+				}
 
+			}
+			
 			return totalHours;
 		}
 
@@ -349,7 +398,7 @@ namespace IPReport.ViewModel
 
 			decimal totalHoursForTheMonth = TotalHoursForTheMonth();
 			decimal targetRevenue = _settings.MonthlyRevenueTargets.First(revenueTarget => revenueTarget.Month == ReportMonth).Target;
-			decimal targetDollarPerHour = targetRevenue / totalHoursForTheMonth;
+			decimal targetDollarPerHour = totalHoursForTheMonth != 0 ? targetRevenue / totalHoursForTheMonth : 0.0m;
 
             foreach (AssociateSales associateSales in AssociateSales)
             {
@@ -382,20 +431,20 @@ namespace IPReport.ViewModel
 				costSeriesData.Items.Add(costData);
 				marginSeriesData.Items.Add(marginData);
 
-				MonthlyHours salesAssociateScheduledHours = _settings.MonthHours.First(monthHours => monthHours.Associate == associateSales.SalesAssociate);
+				if (_settings.MonthHours != null)
+				{
+					MonthlyHours salesAssociateScheduledHours = _settings.MonthHours.First(monthHours => monthHours.Associate == associateSales.SalesAssociate);
 
-				decimal associateTarget = salesAssociateScheduledHours.Hours * targetDollarPerHour;
+					decimal associateTarget = salesAssociateScheduledHours.Hours * targetDollarPerHour;
 
-				SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
+					SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
+				}
+				
             }
 
 			_salesAssociatePerformance.Series.Add(costSeriesData);
 			_salesAssociatePerformance.Series.Add(marginSeriesData);
 
-			//TODO: fix this, this triggers the perf chart to recalc, set PerformanceTarget calls PerformanceTargetViewModel.CalculateRanges 
-			//  which changes the Series on GroupedSeriesViewModel which creates new ChartSeriesViewModels and sets the ActualPerformance.  Otherwise
-			//  ActualPerformance is 0
-			//UpdateRevenueTarget();
 			decimal performanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
 			MonthlyRevenuePerformance.AddPerformanceSeries("revenue", performanceTarget, actualRevenuePerformance);
 

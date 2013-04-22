@@ -27,7 +27,6 @@ namespace De.TorstenMandelkow.MetroChart
         public static readonly DependencyProperty SubTitleProperty =
             DependencyProperty.Register("SubTitle", typeof(string), typeof(ChartTitle),
             new PropertyMetadata(null));
-     
         static ChartTitle()
         {
 #if NETFX_CORE

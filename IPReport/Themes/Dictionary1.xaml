@@ -62,7 +62,20 @@
                 <ControlTemplate TargetType="local:ChartTitle">
                     <StackPanel Margin="0 0 0 10" HorizontalAlignment="Left">
                         <TextBlock Text="{TemplateBinding Title}" FontSize="26" FontWeight="Light" />
-                        <TextBlock Text="{TemplateBinding SubTitle}" Opacity="0.75" FontSize="14" FontWeight="Light" />
+                        <TextBlock Text="{TemplateBinding SubTitle}" Opacity="0.75" FontSize="14" FontWeight="Light" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
@@ -269,14 +282,11 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Border x:Name="PART_ChartTitle" Grid.Row="0">
-                                <local:ChartTitle Title="{TemplateBinding ChartTitle}" SubTitle="{TemplateBinding ChartSubTitle}" />
+                                <local:ChartTitle Title="{TemplateBinding ChartTitle}" SubTitle="{TemplateBinding ChartSubTitle}"/>
                             </Border>
                             <Border x:Name="PART_ChartArea" Grid.Row="1">
                                 <local:ChartArea Style="{TemplateBinding ChartAreaStyle}" 
-                                                  
-                                                
                                                  ParentChart="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" >
-                                    
                                     <local:PlotterArea Style="{TemplateBinding PlotterAreaStyle}" ChartLegendItemStyle="{TemplateBinding ChartLegendItemStyle}" Content="{Binding Path=DataPointGroups}"/>
                                 </local:ChartArea>
                             </Border>
@@ -961,7 +971,7 @@
                                 <Rectangle.Width>
                                     <MultiBinding Converter="{StaticResource WidthsAndDataGroupToWidth}">
                                         <Binding Path="ActualPerformance"/>
-                                        <Binding Path="SumOfDataPointGroup"/>
+                                        <Binding Path="MaxSumOfDataPointGroup"/>
                                         <Binding ElementName="itemsControl" Path="RealWidth"/>
                                     </MultiBinding>
                                 </Rectangle.Width>

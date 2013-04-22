@@ -71,7 +71,17 @@ namespace IPReport.ViewModel
 				IReportMonth reportMonthService = ServiceContainer.Instance.GetService<IReportMonth>();
 				int reportMonth = reportMonthService.GetReportMonth();
 
-				ObservableCollection<MonthlyHours> monthlyHours = _hoursForTheYear.First(monthHours => monthHours.Month == reportMonth).Hours;
+
+				ObservableCollection<MonthlyHours> monthlyHours = null;
+				
+				try
+				{
+					monthlyHours = _hoursForTheYear.First(monthHours => monthHours.Month == reportMonth).Hours;
+				}
+				catch (System.Exception ex)
+				{
+					
+				}
 
 				return monthlyHours;
 			}
@@ -255,10 +265,11 @@ namespace IPReport.ViewModel
 						hoursForTheMonth = CreateAssociateHoursFromLastMonth(i-1);
 					}
 					
-					if (hoursForTheMonth.Hours.Count == 0)
-					{
-						hoursForTheMonth = CreateAssociateHoursFromRepository();
-					}
+					
+				}
+				else if (hoursForTheMonth.Hours.Count == 0)
+				{
+					hoursForTheMonth = CreateAssociateHoursFromRepository();
 				}
 
 				hoursForTheMonth.Month = i;

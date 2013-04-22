@@ -19,10 +19,13 @@ namespace De.TorstenMandelkow.MetroChart
 			if (realWidth.HasValue && performanceTarget.HasValue && sumOfDataPointGroup.HasValue)
 			{
 				double width = realWidth.Value * ((double)(performanceTarget.Value) / sumOfDataPointGroup.Value);
-				GridLength gridLength = new GridLength(width, GridUnitType.Pixel);
-				
+				if (!double.IsNaN(width))
+				{
+					GridLength gridLength = new GridLength(width, GridUnitType.Pixel);
 
-				return gridLength;
+					return gridLength;
+				}
+				
 			}
 
 			return 0.0;
