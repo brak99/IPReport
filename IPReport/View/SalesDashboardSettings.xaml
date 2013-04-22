@@ -45,8 +45,7 @@
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
                                     <DataGrid ItemsSource="{Binding Path=Hours}" SelectionMode="Single"
-                                          AutoGenerateColumns="False"
-                                          >
+                                          AutoGenerateColumns="False" PreviewKeyDown="DataGrid_PreviewKeyDown">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Associate"  Width="*"  Binding="{Binding Path=Associate}"></DataGridTextColumn>
                                             <DataGridTextColumn Header="Hours"  Width="*"  Binding="{Binding Path=Hours}"></DataGridTextColumn>

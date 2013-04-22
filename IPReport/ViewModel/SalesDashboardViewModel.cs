@@ -339,13 +339,14 @@ namespace IPReport.ViewModel
 		{
 			StartDate = StartDate.Value.AddMonths(1);
 			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
-		
+			Update(null, null);
 		}
 
 		private void PreviousMonth(object sender, RoutedEventArgs args)
 		{
 			StartDate = StartDate.Value.AddMonths(-1);
 			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+			Update(null, null);
 		}
 
 		private void UpdateStartAndEndDates()

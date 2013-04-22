@@ -9,7 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>
-        
+        <!--<ResourceDictionary>
+            <SolidColorBrush x:Key="Brush1" Color="#FF007C9C" />
+        </ResourceDictionary>-->
         <view:IntToMonthConverter x:Key="IntToMonthConverter"/>
         
         <Style x:Key="alternatingStyle" TargetType="{x:Type ListViewItem}">

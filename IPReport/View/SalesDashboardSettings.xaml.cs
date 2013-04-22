@@ -32,5 +32,34 @@ namespace IPReport.View
 		{
 
 		}
+
+		private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			//try
+			//{
+			//    if (e.Key == Key.Enter)
+			//{	
+			//        e.Handled = true;
+			//        DataGrid dataGrid = sender as DataGrid;
+
+			//        int cellColumn = dataGrid.CurrentCell.Column.DisplayIndex;
+			//        dataGrid.CurrentCell = dataGrid.Ite
+			//        DataGridColumn leftmostColumn = dataGrid.ColumnFromDisplayIndex(0);
+			//        dataGrid.
+			//        //var cell = GetCell(dgIssuance, dgIssuance.Items.Count - 1, 2);
+			//        //if (cell != null)
+			//        //{
+			//        //    cell.IsSelected = true;
+			//        //    cell.Focus();
+			//        //    dg.BeginEdit();
+			//        //}
+			//    }
+			//}
+			//catch (Exception ex)
+			//{
+			//    //MessageBox(ex.Message, "Error", MessageType.Error);
+			//}
+		}
+
 	}
 }

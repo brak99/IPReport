@@ -9,10 +9,12 @@
     
     <local:ResourceDictionaryCollection x:Key="DefaultPalette">
         <ResourceDictionary>
-            <SolidColorBrush x:Key="Brush1" Color="#FF007C9C" />
+            <!--<SolidColorBrush x:Key="Brush1" Color="#FF007C9C" />-->
+            <SolidColorBrush x:Key="Brush1" Color="#FF5cabc0" />
         </ResourceDictionary>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="Brush2" Color="#FF019FCC" />
+            <!--<SolidColorBrush x:Key="Brush2" Color="#FF019FCC" />-->
+            <SolidColorBrush x:Key="Brush2" Color="#aF007C9C" />
         </ResourceDictionary>
         <ResourceDictionary>
             <SolidColorBrush x:Key="Brush3" Color="#FF8FCD3E" />
@@ -28,10 +30,15 @@
     <SolidColorBrush x:Key="ChartBackground" Color="Transparent" />
     <converters:IndexToColorConverter x:Key="IndexToColorConverter">
         <converters:IndexToColorConverter.Values>
-            <SolidColorBrush x:Key="0" Color="#FF007C9C" />
+            <!--<SolidColorBrush x:Key="0" Color="#FF007C9C" />
             <SolidColorBrush x:Key="1" Color="#FF019FCC" />
             <SolidColorBrush x:Key="2" Color="#FF8FCD3E" />
             <SolidColorBrush x:Key="3" Color="#FF82B93A" />
+            <SolidColorBrush x:Key="4" Color="#FF638A2D" />-->
+            <SolidColorBrush x:Key="0" Color="#FF5cabc0" />
+            <SolidColorBrush x:Key="1" Color="#FF85c1d0" />
+            <SolidColorBrush x:Key="2" Color="#FFadd5df" />
+            <SolidColorBrush x:Key="3" Color="#FFd6eaef" />
             <SolidColorBrush x:Key="4" Color="#FF638A2D" />
         </converters:IndexToColorConverter.Values>
     </converters:IndexToColorConverter>
