@@ -127,7 +127,7 @@ namespace IPReport.ViewModel
 			}
 			catch (System.Exception)
 			{
-
+				LoadMonthHours(new XElement("settings"));
 			}
 		}
 
@@ -259,17 +259,18 @@ namespace IPReport.ViewModel
 					{
 						hoursForTheMonth = CreateAssociateHoursFromXElement(monthElement);
 					}
-
-					if (hoursForTheMonth.Hours.Count == 0)
-					{
-						hoursForTheMonth = CreateAssociateHoursFromLastMonth(i-1);
-					}
-					
-					
+				} 
+				if (hoursForTheMonth == null || hoursForTheMonth.Hours.Count == 0)
+				{
+					hoursForTheMonth = CreateAssociateHoursFromLastMonth(i-1);
 				}
-				else if (hoursForTheMonth.Hours.Count == 0)
+				if (hoursForTheMonth == null || hoursForTheMonth.Hours.Count == 0)
 				{
 					hoursForTheMonth = CreateAssociateHoursFromRepository();
+				}
+				else
+				{
+					hoursForTheMonth = new HoursForTheMonth();
 				}
 
 				hoursForTheMonth.Month = i;
@@ -296,13 +297,23 @@ namespace IPReport.ViewModel
 
 		private HoursForTheMonth CreateAssociateHoursFromLastMonth(int lastMonth)
 		{
-			HoursForTheMonth hoursLastMonth = _hoursForTheYear.First(MonthHours => MonthHours.Month == lastMonth);
-
-			HoursForTheMonth hoursForTheMonth = new HoursForTheMonth();
-			foreach (MonthlyHours monthlyHours in hoursLastMonth.Hours)
+			HoursForTheMonth hoursForTheMonth = null;
+			
+			try
 			{
-				hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = monthlyHours.Associate, Hours = monthlyHours.Hours });
+				HoursForTheMonth hoursLastMonth = _hoursForTheYear.First(MonthHours => MonthHours.Month == lastMonth);
+
+				hoursForTheMonth = new HoursForTheMonth();
+				foreach (MonthlyHours monthlyHours in hoursLastMonth.Hours)
+				{
+					hoursForTheMonth.Hours.Add(new MonthlyHours() { Associate = monthlyHours.Associate, Hours = monthlyHours.Hours });
+				}
 			}
+			catch (System.Exception)
+			{
+				
+			}
+			
 
 			return hoursForTheMonth;
 

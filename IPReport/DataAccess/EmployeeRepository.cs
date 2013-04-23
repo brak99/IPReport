@@ -25,26 +25,22 @@ namespace IPReport.DataAccess
 
 			XmlDocument requestXmlDoc = CreateBaseDocument();
 
-			//Create the outer request envelope tag
-			XmlElement qbposxml = requestXmlDoc.CreateElement("QBPOSXML");
-			requestXmlDoc.AppendChild(qbposxml);
-
 			//Create the inner request envelope & any needed attributes
-			XmlElement qbposxmlmsgsrq = requestXmlDoc.CreateElement("QBPOSXMLMsgsRq");
-			qbposxml.AppendChild(qbposxmlmsgsrq);
-			qbposxmlmsgsrq.SetAttribute("onError", "stopOnError");
+			XmlElement qbposxmlmsgsrq = CreateXmlMsgRequest(requestXmlDoc);
 
-			XmlElement employeeQueryRequest = requestXmlDoc.CreateElement("EmployeeQueryRq ");
+			XmlElement employeeQueryRequest = requestXmlDoc.CreateElement("EmployeeQueryRq");
 			qbposxmlmsgsrq.AppendChild(employeeQueryRequest);
 
-			string employeesResponse = queryService.Query(requestXmlDoc.OuterXml);
+			if (queryService != null)
+			{
+				string employeesResponse = queryService.Query(requestXmlDoc.OuterXml);
 
-			SaveResponse(employeesResponse);
+				SaveResponse(employeesResponse);
 
-			//MessageBox.Show(departmentsResponse, "dept query");
-
-			//Parse the response XML string into an XmlDocument
-			PopulateEmployees(employeesResponse);
+				//Parse the response XML string into an XmlDocument
+				PopulateEmployees(employeesResponse);
+			}
+			
 		}
 
 		private void SaveResponse(string response)
