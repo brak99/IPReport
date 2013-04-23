@@ -54,12 +54,12 @@
             DependencyProperty.Register("ChartTitle",
             typeof(string),
             typeof(ChartBase),
-            new PropertyMetadata("WpfSimpleChart"));
+            new PropertyMetadata(""));
         public static readonly DependencyProperty ChartSubTitleProperty =
             DependencyProperty.Register("ChartSubTitle",
             typeof(string),
             typeof(ChartBase),
-            new PropertyMetadata("WpfSimpleChart"));
+            new PropertyMetadata(""));
         public static readonly DependencyProperty ChartBackgroundBorderColorProperty =
             DependencyProperty.Register("ChartBackgroundBorderColor",
             typeof(Brush),
@@ -110,11 +110,11 @@
             typeof(Thickness),
             typeof(ChartBase),
             new PropertyMetadata(new Thickness(20)));
-        public static readonly DependencyProperty PaletteProperty =
-            DependencyProperty.Register("Palette",
-            typeof(ResourceDictionaryCollection),
-            typeof(ChartBase),
-            new PropertyMetadata(null));
+		//public static readonly DependencyProperty PaletteProperty =
+		//    DependencyProperty.Register("Palette",
+		//    typeof(ResourceDictionaryCollection),
+		//    typeof(ChartBase),
+		//    new PropertyMetadata(null));
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register("SelectedItem",
             typeof(object),
@@ -235,12 +235,6 @@
         {
             get { return (object)GetValue(SelectedItemProperty); }
             set { SetValue(SelectedItemProperty, value); }
-        }
-
-        public ResourceDictionaryCollection Palette
-        {
-            get { return (ResourceDictionaryCollection)GetValue(PaletteProperty); }
-            set { SetValue(PaletteProperty, value); }
         }
 
         /// <summary>

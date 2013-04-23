@@ -178,6 +178,14 @@ namespace IPReport.ViewModel
 
         #endregion // INotifyPropertyChanged Members
     }
+
+	public class ItemSold
+	{
+		public int Quantity { get; set; }
+		public string Desc1 { get; set; }
+		public string Desc2 { get; set; }
+		public string Id { get; set; }
+	}
     // Sales Associate        Hours Worked       # of sales       % of total store sales       Total Sales $     Avg $ per sale      Avg Items Per Sale     Sales per hour     margin %
     public class SalesDashboardViewModel : WorkspaceViewModel, IReportMonth
     {
@@ -315,6 +323,18 @@ namespace IPReport.ViewModel
             }
         }
 
+		//protected List<ItemSold> _itemsSold = new List<ItemSold>();
+		//public List<ItemSold> ItemsSold
+		//{
+		//    get { return _itemsSold; }
+		//}
+		protected Dictionary<string, ItemSold> _itemsSold = new Dictionary<string, ItemSold>();
+
+		protected ObservableCollection<ItemSold> _topItemsSold = new ObservableCollection<ItemSold>();
+		public ObservableCollection<ItemSold> TopItemsSold
+		{
+			get { return _topItemsSold; }
+		}
         protected List<SalesReceipt> _salesReceipts = new List<SalesReceipt>();
         protected List<TimeEntry> _timeEntries = new List<TimeEntry>();
         protected ObservableCollection<AssociateSales> _associateSales = new ObservableCollection<AssociateSales>();
@@ -398,7 +418,7 @@ namespace IPReport.ViewModel
 			decimal actualRevenuePerformance = 0.0m;
 
 			decimal totalHoursForTheMonth = TotalHoursForTheMonth();
-			decimal targetRevenue = _settings.MonthlyRevenueTargets.First(revenueTarget => revenueTarget.Month == ReportMonth).Target;
+			decimal targetRevenue = _settings.MonthlyRevenueTargets.FirstOrDefault(revenueTarget => revenueTarget.Month == ReportMonth).Target;
 			decimal targetDollarPerHour = totalHoursForTheMonth != 0 ? targetRevenue / totalHoursForTheMonth : 0.0m;
 
             foreach (AssociateSales associateSales in AssociateSales)
@@ -434,13 +454,15 @@ namespace IPReport.ViewModel
 
 				if (_settings.MonthHours != null)
 				{
-					MonthlyHours salesAssociateScheduledHours = _settings.MonthHours.First(monthHours => monthHours.Associate == associateSales.SalesAssociate);
+					MonthlyHours salesAssociateScheduledHours = _settings.MonthHours.FirstOrDefault(monthHours => monthHours.Associate == associateSales.SalesAssociate);
 
-					decimal associateTarget = salesAssociateScheduledHours.Hours * targetDollarPerHour;
+					if (salesAssociateScheduledHours != null)
+					{
+						decimal associateTarget = salesAssociateScheduledHours.Hours * targetDollarPerHour;
 
-					SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
+						SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
+					}
 				}
-				
             }
 
 			_salesAssociatePerformance.Series.Add(costSeriesData);
@@ -543,6 +565,8 @@ namespace IPReport.ViewModel
 		private void ZeroOut()
 		{
 			_associateSales.Clear();
+			_itemsSold.Clear();
+			_topItemsSold.Clear();
 		}
 
         private void PopulateSales()
@@ -581,6 +605,8 @@ namespace IPReport.ViewModel
                     }
                     TotalUpCost(associateSales, salesReceipt);
                 }
+
+				GetTopItemsSold();
             }
         }
 
@@ -588,8 +614,48 @@ namespace IPReport.ViewModel
         {
             associateSales.TotalSales += Convert.ToDecimal(salesReceipt.Subtotal);
             associateSales.TotalItems += Convert.ToInt32(salesReceipt.ItemsCount);
+
+			Dictionary<string, object> testing = new Dictionary<string, object>();
+
+			foreach (SalesReceiptItem salesReceiptItem in salesReceipt.Items)
+			{
+				ItemSold itemSold;
+
+				if (_itemsSold.TryGetValue(salesReceiptItem.ListID, out itemSold))
+				{
+					itemSold.Quantity += (int)(Convert.ToDecimal(salesReceiptItem.Qty));
+				}
+				else
+				{
+					_itemsSold.Add(salesReceiptItem.ListID, new ItemSold()
+										{ 
+											Quantity = (int)(Convert.ToDecimal(salesReceiptItem.Qty)), 
+											Id = salesReceiptItem.ListID, 
+											Desc1 = salesReceiptItem.Desc1, 
+											Desc2 = salesReceiptItem.Desc2
+										}
+									);
+
+				}
+				
+			}
+
+			
         }
 
+		private void GetTopItemsSold()
+		{
+			_topItemsSold.Clear();
+
+			List<ItemSold> sortedList = _itemsSold.Values.ToList();
+			sortedList = sortedList.OrderByDescending(item => item.Quantity).ToList();
+
+			for (int i = 0; i < 10 && i < sortedList.Count; i++)
+			{
+				_topItemsSold.Add(sortedList[i]);
+			}
+			OnPropertyChanged("TopItemsSold");
+		}
         private void TotalUpCost(AssociateSales associateSales, SalesReceipt salesReceipt)
         {
             foreach (SalesReceiptItem item in salesReceipt.Items)

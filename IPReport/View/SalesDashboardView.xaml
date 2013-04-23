@@ -9,9 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>
-        <!--<ResourceDictionary>
-            <SolidColorBrush x:Key="Brush1" Color="#FF007C9C" />
-        </ResourceDictionary>-->
+       
         <view:IntToMonthConverter x:Key="IntToMonthConverter"/>
         
         <Style x:Key="alternatingStyle" TargetType="{x:Type ListViewItem}">
@@ -116,63 +114,84 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height ="125"/>
-                    <RowDefinition Height ="125"/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height ="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <chart:StackedBarChart Grid.Row="0" ChartTitle="YTD Revenue" 
-                                    ChartSubTitle="Cost $ / Profit $"
-                                Margin="0,0,0,0">
-                    
-                    <chart:StackedBarChart.ItemTemplate>
-                        <DataTemplate>
-                            <ItemsControl
-                                            ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:StackedBarChart.ItemTemplate>
-
-                </chart:StackedBarChart>
-                <chart:BulletGraph x:Name="RevenueBulletGraph" Grid.Row="1" ChartTitle="Monthly Revenue" 
-                                   DataContext="{Binding MonthlyRevenuePerformance}"
-                                    ChartSubTitle=""
-                                Margin="0,0,0,0">
-                    <chart:BulletGraph.ItemTemplate>
-                        <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:BulletGraph.ItemTemplate>
-                    
-                </chart:BulletGraph>
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="YTD Revenue" FontWeight="Light" FontSize="18"/>
+                    <TextBlock Text="Cost $ / Profit $" FontWeight="Light" FontSize="13" Margin="10,0,0,0"/>
+                    <chart:StackedBarChart Margin="0,0,0,0" Height="70">
+                        <chart:StackedBarChart.ItemTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding Path=Items}" />
+                            </DataTemplate>
+                        </chart:StackedBarChart.ItemTemplate>
+                    </chart:StackedBarChart>
+                </StackPanel>
                 
-                <chart:StackedBarChart DataContext="{Binding Path=SalesAssociatePerformance}"
-                    Grid.Row="2"
-                                  ChartTitle="Associate Sales" 
-                                    ChartSubTitle="Cost $ / Profit $"
-                                >
-                    <chart:StackedBarChart.ItemTemplate>
-                        <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:StackedBarChart.ItemTemplate>
+                <StackPanel Orientation="Vertical" Grid.Row="1">
+                    <TextBlock Text="Monthly Revenue" FontWeight="Light" FontSize="18"/>
+                    <chart:BulletGraph x:Name="RevenueBulletGraph"
+                                   DataContext="{Binding MonthlyRevenuePerformance}"
+                                Margin="0,0,0,0" Height="70">
+                        <chart:BulletGraph.ItemTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding Path=Items}" />
+                            </DataTemplate>
+                        </chart:BulletGraph.ItemTemplate>
 
-                </chart:StackedBarChart>
-                <chart:BulletGraph DataContext="{Binding Path=SalesAssociateTargetPerformance}"
-                    Grid.Row="3"
-                                  ChartTitle="Performance Targets" 
-                                    ChartSubTitle=""
-                                >
-                    <chart:BulletGraph.ItemTemplate>
-                        <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Path=Items}" />
-                        </DataTemplate>
-                    </chart:BulletGraph.ItemTemplate>
+                    </chart:BulletGraph>
+                </StackPanel>
+                
+                    
+                <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Stretch">
+                    <TextBlock Text="Associate Sales" FontWeight="Light" FontSize="18"/>
+                    <TextBlock Text="Cost $ / Profit $" FontWeight="Light" FontSize="13" Margin="10,0,0,0"/>
+                    
+                    <chart:StackedBarChart DataContext="{Binding Path=SalesAssociatePerformance}">
+                        <chart:StackedBarChart.ItemTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding Path=Items}" />
+                            </DataTemplate>
+                        </chart:StackedBarChart.ItemTemplate>
 
-                </chart:BulletGraph>
+                    </chart:StackedBarChart>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Orientation="Vertical">
+                    <TextBlock Text="Performance Targets" FontWeight="Light" FontSize="18"/>
+                    <chart:BulletGraph DataContext="{Binding Path=SalesAssociateTargetPerformance}">
+                        <chart:BulletGraph.ItemTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding Path=Items}" />
+                            </DataTemplate>
+                        </chart:BulletGraph.ItemTemplate>
+
+                    </chart:BulletGraph>
+                </StackPanel>
+                
             </Grid>
             <StackPanel Grid.Column="1">
-                <TextBlock Text="Performance" FontSize="26" FontWeight="Light"/>
-                <ListView Grid.Column="1"
+                <TextBlock Text="Top 10 Items Sold" FontSize="18" FontWeight="Light"/>
+                <ListView
+                      ItemContainerStyle="{StaticResource alternatingStyle}" AlternationCount="2"
+                    ItemsSource="{Binding Path=TopItemsSold}" Width="Auto">
+                    <!--<ListView.Style>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Style>
+                    </ListView.Style>-->
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="Item    " DisplayMemberBinding="{Binding Desc1}" />
+                            <GridViewColumn Header="# Sold    " DisplayMemberBinding="{Binding Quantity}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <TextBlock Text="Performance" FontSize="18" FontWeight="Light"/>
+                <ListView
                       ItemContainerStyle="{StaticResource alternatingStyle}" AlternationCount="2"
                     ItemsSource="{Binding Path=AssociateSales}" Width="Auto"
                       util:GridViewSort.AutoSort="True">

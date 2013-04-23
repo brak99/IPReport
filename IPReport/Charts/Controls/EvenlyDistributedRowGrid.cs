@@ -40,6 +40,8 @@
             //Size minimumSize = new Size(40.0, 1000.0);
 
             double largestElementWidth = 0.0;
+			double totalHeight = 0.0;
+
             foreach (UIElement child in Children)
             {
                 child.Measure(availableSize);
@@ -47,12 +49,24 @@
                 {
                     largestElementWidth = child.DesiredSize.Width;
                 }
+				totalHeight += child.DesiredSize.Height;
             }
             Size result = base.MeasureOverride(availableSize);
             if (largestElementWidth > 0.0)
             {
-                return new Size(largestElementWidth, result.Height);
+				result.Width = largestElementWidth;
             }
+
+			if (totalHeight < availableSize.Height)
+			{
+				result.Height = totalHeight;
+			}
+
+			if (result.Height > availableSize.Height)
+			{
+				result.Height = availableSize.Height;
+			}
+
             return result;
         }
 

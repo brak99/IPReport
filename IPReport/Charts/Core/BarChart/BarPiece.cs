@@ -308,6 +308,10 @@
              * */
          }
 
+		 protected override Size MeasureOverride(Size availableSize)
+		 {
+			 return base.MeasureOverride(availableSize);
+		 }
         #endregion Methods
     }
 }

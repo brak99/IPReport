@@ -7,34 +7,9 @@
     <local:WidthsAndDataGroupToWidth x:Key="WidthsAndDataGroupToWidth"/>
     <local:PerformanceTargetToWidth x:Key="PerformanceTargetToWidth"/>
     
-    <local:ResourceDictionaryCollection x:Key="DefaultPalette">
-        <ResourceDictionary>
-            <!--<SolidColorBrush x:Key="Brush1" Color="#FF007C9C" />-->
-            <SolidColorBrush x:Key="Brush1" Color="#FF5cabc0" />
-        </ResourceDictionary>
-        <ResourceDictionary>
-            <!--<SolidColorBrush x:Key="Brush2" Color="#FF019FCC" />-->
-            <SolidColorBrush x:Key="Brush2" Color="#aF007C9C" />
-        </ResourceDictionary>
-        <ResourceDictionary>
-            <SolidColorBrush x:Key="Brush3" Color="#FF8FCD3E" />
-        </ResourceDictionary>
-        <ResourceDictionary>
-            <SolidColorBrush x:Key="Brush4" Color="#FF82B93A" />
-        </ResourceDictionary>
-        <ResourceDictionary>
-            <SolidColorBrush x:Key="Brush5" Color="#FF638A2D" />
-        </ResourceDictionary>
-    </local:ResourceDictionaryCollection>
-    
     <SolidColorBrush x:Key="ChartBackground" Color="Transparent" />
     <converters:IndexToColorConverter x:Key="IndexToColorConverter">
         <converters:IndexToColorConverter.Values>
-            <!--<SolidColorBrush x:Key="0" Color="#FF007C9C" />
-            <SolidColorBrush x:Key="1" Color="#FF019FCC" />
-            <SolidColorBrush x:Key="2" Color="#FF8FCD3E" />
-            <SolidColorBrush x:Key="3" Color="#FF82B93A" />
-            <SolidColorBrush x:Key="4" Color="#FF638A2D" />-->
             <SolidColorBrush x:Key="0" Color="#FF5cabc0" />
             <SolidColorBrush x:Key="1" Color="#FF85c1d0" />
             <SolidColorBrush x:Key="2" Color="#FFadd5df" />
@@ -68,7 +43,20 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:ChartTitle">
                     <StackPanel Margin="0 0 0 10" HorizontalAlignment="Left">
-                        <TextBlock Text="{TemplateBinding Title}" FontSize="26" FontWeight="Light" />
+                        <TextBlock Text="{TemplateBinding Title}" FontSize="26" FontWeight="Light" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <TextBlock Text="{TemplateBinding SubTitle}" Opacity="0.75" FontSize="14" FontWeight="Light" >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -269,7 +257,7 @@
         <Setter Property="Background" Value="{StaticResource ChartBackground}" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Palette" Value="{StaticResource DefaultPalette}" />
+        <!--<Setter Property="Palette" Value="{StaticResource DefaultPalette}" />-->
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="5,0,0,0" />
         <Setter Property="FontSize" Value="11" />
