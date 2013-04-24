@@ -323,11 +323,6 @@ namespace IPReport.ViewModel
             }
         }
 
-		//protected List<ItemSold> _itemsSold = new List<ItemSold>();
-		//public List<ItemSold> ItemsSold
-		//{
-		//    get { return _itemsSold; }
-		//}
 		protected Dictionary<string, ItemSold> _itemsSold = new Dictionary<string, ItemSold>();
 
 		protected ObservableCollection<ItemSold> _topItemsSold = new ObservableCollection<ItemSold>();
@@ -421,6 +416,8 @@ namespace IPReport.ViewModel
 			decimal targetRevenue = _settings.MonthlyRevenueTargets.FirstOrDefault(revenueTarget => revenueTarget.Month == ReportMonth).Target;
 			decimal targetDollarPerHour = totalHoursForTheMonth != 0 ? targetRevenue / totalHoursForTheMonth : 0.0m;
 
+			IStatusUpdate statusUpdate = ServiceContainer.Instance.GetService<IStatusUpdate>();
+
             foreach (AssociateSales associateSales in AssociateSales)
             {
 				StringWrapper wrapper = new StringWrapper();
@@ -428,7 +425,7 @@ namespace IPReport.ViewModel
 
 				try
 				{
-					if (_settings.IgnoreList.First(ignore => ignore.Value == associateSales.SalesAssociate) != null)
+					if (_settings.IgnoreList.FirstOrDefault(ignore => ignore.Value == associateSales.SalesAssociate) != null)
 					{
 						continue;
 					}
@@ -437,7 +434,12 @@ namespace IPReport.ViewModel
 				{
 					
 				}
-				
+
+				if (statusUpdate != null)
+				{
+					statusUpdate.UpdateStatus("Calculating sales data for " + associateSales.SalesAssociate);
+				}
+
                 SalesChartData costData = new SalesChartData();
                 costData.Category = associateSales.SalesAssociate;
                 costData.Number = associateSales.TotalCost;
@@ -508,7 +510,7 @@ namespace IPReport.ViewModel
 
             try
             {
-                associateSales = AssociateSales.First(associate => associate.SalesAssociate == salesAssociate);
+                associateSales = AssociateSales.FirstOrDefault(associate => associate.SalesAssociate == salesAssociate);
             }
             catch (InvalidOperationException)
             {

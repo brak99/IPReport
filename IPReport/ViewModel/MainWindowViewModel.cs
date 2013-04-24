@@ -54,7 +54,7 @@ namespace IPReport.ViewModel
 			private set
 			{
 				_workingOn = value;
-				base.OnPropertyChanged("WorkingOn");
+				OnPropertyChanged("WorkingOn");
 			}
 		}
 	}

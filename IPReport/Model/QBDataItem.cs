@@ -28,7 +28,11 @@ namespace IPReport.Model
 			try
 			{
 				XmlElement element = _node[attributeName];
-				returnValue = element.InnerText;
+				if (element != null)
+				{
+					returnValue = element.InnerText;
+				}
+				
 			}
 			catch (System.Exception)
 			{
