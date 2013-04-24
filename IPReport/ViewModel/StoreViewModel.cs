@@ -127,11 +127,14 @@ namespace IPReport.ViewModel
 
 			XmlNodeList inventoryNodeList = InventoryRepository.GetInventory(departmentValue.ListId);
 
-			foreach (XmlNode node in inventoryNodeList)
+			if (inventoryNodeList != null)
 			{
-				ItemInventory itemInventory = new ItemInventory(node);
+				foreach (XmlNode node in inventoryNodeList)
+				{
+					ItemInventory itemInventory = new ItemInventory(node);
 
-				AddToInventory(itemInventory, departmentValue);
+					AddToInventory(itemInventory, departmentValue);
+				}
 			}
 		}
 
@@ -246,7 +249,10 @@ namespace IPReport.ViewModel
 
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
 
-			XmlNodeList salesList = SalesRepository.GetSales(dateService.DateForReport(), _store.StoreNumber);
+			DateTime startDate = dateService.DateForReport();
+			startDate = DateUtil.FirstDayOfMonthFromDateTime(startDate);
+
+			XmlNodeList salesList = SalesRepository.GetSales(startDate, _store.StoreNumber);
 
 			if (salesList != null)
 			{
