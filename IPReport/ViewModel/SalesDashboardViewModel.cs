@@ -409,7 +409,15 @@ namespace IPReport.ViewModel
         private void PopulateChartData()
         {
 			MonthlyRevenuePerformance.Clear();
+			MonthlyRevenuePerformance.GoodPerformance = (double)_settings.GoodPerformance;
+			MonthlyRevenuePerformance.SatisfactoryPerformance = (double)_settings.SatisfactoryPerformance;
+			MonthlyRevenuePerformance.PoorPerformance = (double)_settings.PoorPerformance;
+
 			SalesAssociateTargetPerformance.Clear();
+
+			SalesAssociateTargetPerformance.GoodPerformance = (double)_settings.GoodPerformance;
+			SalesAssociateTargetPerformance.SatisfactoryPerformance = (double)_settings.SatisfactoryPerformance;
+			SalesAssociateTargetPerformance.PoorPerformance = (double)_settings.PoorPerformance;
 
 			_salesAssociatePerformance.Series.Clear();
 			SeriesData costSeriesData = new SeriesData();
@@ -430,16 +438,9 @@ namespace IPReport.ViewModel
 				StringWrapper wrapper = new StringWrapper();
 				wrapper.Value = associateSales.SalesAssociate;
 
-				try
+				if (_settings.IgnoreList.FirstOrDefault(ignore => ignore.Value == associateSales.SalesAssociate) != null)
 				{
-					if (_settings.IgnoreList.FirstOrDefault(ignore => ignore.Value == associateSales.SalesAssociate) != null)
-					{
-						continue;
-					}
-				}
-				catch (System.Exception)
-				{
-					
+					continue;
 				}
 
 				if (statusUpdate != null)
@@ -685,7 +686,7 @@ namespace IPReport.ViewModel
 				if (result.HasValue && result.Value == true)
 				{
 					_settings.Save();
-					//UpdateRevenueTarget();
+					Update(null, null);
 				}
 			}
 		}

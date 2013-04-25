@@ -291,7 +291,7 @@ namespace IPReport.ViewModel
 				{
 					hoursForTheMonth = CreateAssociateHoursFromRepository();
 				}
-				else
+				if (hoursForTheMonth == null || hoursForTheMonth.Hours.Count == 0)
 				{
 					hoursForTheMonth = new HoursForTheMonth();
 				}

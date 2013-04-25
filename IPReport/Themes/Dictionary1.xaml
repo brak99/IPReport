@@ -19,14 +19,15 @@
     </converters:IndexToColorConverter>
     
     <Style x:Key="SeriesTextStyle" TargetType="TextBlock">
-        <Setter Property="LineHeight" Value="12" />
+        <!--<Setter Property="LineHeight" Value="12" />-->
+        <Setter Property="LineHeight" Value="8" />
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
         <Setter Property="TextAlignment" Value="Center" />
     </Style>
     <Style x:Key="NumberStyle" TargetType="TextBlock" BasedOn="{StaticResource SeriesTextStyle}">
         <Setter Property="TextAlignment" Value="Center" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Margin" Value="0 3 0 3" />
+        <Setter Property="Margin" Value="0 3 0 0" />
         <Setter Property="Opacity" Value="0.75" />
     </Style>
     <Style x:Key="LeftNumbers" TargetType="TextBlock" BasedOn="{StaticResource SeriesTextStyle}">
@@ -666,6 +667,7 @@
                             <Grid>
                                 <Border Background="{TemplateBinding Background}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                                 <Border x:Name="SelectionHighlight" Background="#FFFFAA00" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0"/>
+                                <Rectangle Fill="Transparent" Height="10" Width="1"/>
                             </Grid>
                         </Border>
 
@@ -877,7 +879,7 @@
         <Setter Property="DataPointItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <local:FadingListView x:Name="itemsControl" ItemsSource="{Binding Path=DataPoints}" Margin="0 5 0 5" >
+                    <local:FadingListView x:Name="itemsControl" ItemsSource="{Binding Path=DataPoints}" Margin="0 2 0 2" >
                         <local:FadingListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <local:RowSeriesPanel />
@@ -936,7 +938,7 @@
             <Setter.Value>
                 <DataTemplate>
                     <Grid>
-                        <local:FadingListView x:Name="itemsControl" ItemsSource="{Binding Path=DataPoints}" Margin="0 5 0 5" >
+                        <local:FadingListView x:Name="itemsControl" ItemsSource="{Binding Path=DataPoints}" Margin="0 2 0 2" >
                             <local:FadingListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <local:RowSeriesPanel />
@@ -956,7 +958,7 @@
                                 </DataTemplate>
                             </local:FadingListView.ItemTemplate>
                         </local:FadingListView>
-                        <Grid Margin="0,5,0,5" x:Name="PerformanceBarGrid">
+                        <Grid Margin="0,1,0,1" x:Name="PerformanceBarGrid">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="1*"/>
@@ -972,7 +974,7 @@
                                 </Rectangle.Width>
                             </Rectangle>
                         </Grid>
-                        <Grid Margin="0,5,0,5" x:Name="TargetPerformanceGrid">
+                        <Grid Margin="0,1,0,1" x:Name="TargetPerformanceGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition>
                                     <ColumnDefinition.Width>
