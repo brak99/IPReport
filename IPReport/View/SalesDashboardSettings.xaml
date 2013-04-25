@@ -8,6 +8,7 @@
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
         <view:IntToMonthConverter x:Key="IntToMonthConverter"/>
+        <view:DecimalToPercentConverter x:Key="DecimalToPercentConverter"/>
     </Window.Resources>
     
     <Grid>
@@ -58,19 +59,48 @@
             </Border>
 
             <Border BorderThickness="1" BorderBrush="Black" Margin="5,5,5,5" Grid.Column="1">
+                
+                    
+                
                 <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5,5,5,5">
-                    <TextBlock FontWeight="Bold">Revenue Targets</TextBlock>
+                    <Border BorderThickness="1" BorderBrush="Black">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontWeight="Bold">Revenue Targets</TextBlock>
 
-                    <DataGrid ItemsSource="{Binding MonthlyRevenueTargets}" SelectionMode="Single"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False" CanUserDeleteRows="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn IsReadOnly="True" Header="Month"  Width="*"  Binding="{Binding Path=Month, Converter={StaticResource IntToMonthConverter}}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Target($)"  Width="*"  Binding="{Binding Path=Target}"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <DataGrid ItemsSource="{Binding MonthlyRevenueTargets}" SelectionMode="Single"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False" CanUserDeleteRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn IsReadOnly="True" Header="Month"  Width="*"  Binding="{Binding Path=Month, Converter={StaticResource IntToMonthConverter}}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Target($)"  Width="*"  Binding="{Binding Path=Target}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="Black">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontWeight="Bold">Performance Ranges</TextBlock>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0">Poor %</TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="0">Satistfactory %</TextBlock>
+                                <TextBlock Grid.Row="2" Grid.Column="0">Good %</TextBlock>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=PoorPerformance, Converter={StaticResource DecimalToPercentConverter}, StringFormat={}{0:###.#}}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=SatisfactoryPerformance, Converter={StaticResource DecimalToPercentConverter}, StringFormat={}{0:###.#}}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=GoodPerformance, Converter={StaticResource DecimalToPercentConverter}, StringFormat={}{0:###.#}}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
-                </Border>
+            </Border>
         </Grid>
        
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5,5,5,5" FlowDirection="RightToLeft">

@@ -11,6 +11,7 @@ using IPReport.Util;
 using System.Globalization;
 using IPReport.DataAccess;
 using IPReport.Model;
+using System.Collections.Generic;
 
 
 namespace IPReport.ViewModel
@@ -46,6 +47,24 @@ namespace IPReport.ViewModel
 		private const int January = 1;
 		private const int December = 12;
 
+		private decimal _poorPerformance = 0.6m;
+		public decimal PoorPerformance
+		{
+			get { return _poorPerformance; }
+			set { _poorPerformance = value; }
+		}
+		private decimal _satisfactoryPerformance = 0.9m;
+		public decimal SatisfactoryPerformance
+		{
+			get { return _satisfactoryPerformance; }
+			set { _satisfactoryPerformance = value; }
+		}
+		private decimal _goodPerformance = 1.2m;
+		public decimal GoodPerformance
+		{
+			get { return _goodPerformance; }
+			set { _goodPerformance = value; }
+		}
 		private ObservableCollection<StringWrapper> _ignoreList;
 		public ObservableCollection<StringWrapper> IgnoreList
 		{
@@ -120,6 +139,8 @@ namespace IPReport.ViewModel
 						LoadMonthlyRevenueTargets(settingsElement);
 
 						LoadMonthHours(settingsElement);
+
+						LoadPerformanceCategories(settingsElement);
 					}
 				}
 
@@ -154,6 +175,8 @@ namespace IPReport.ViewModel
 						AddMonthlyRevenueTargets(settingsElement);
 
 						AddMonthHours(settingsElement);
+
+						AddPerformanceCategories(settingsElement);
 
 						groupsDocument.Save(stream);
 					}
@@ -301,7 +324,7 @@ namespace IPReport.ViewModel
 			
 			try
 			{
-				HoursForTheMonth hoursLastMonth = _hoursForTheYear.First(MonthHours => MonthHours.Month == lastMonth);
+				HoursForTheMonth hoursLastMonth = _hoursForTheYear.FirstOrDefault(MonthHours => MonthHours.Month == lastMonth);
 
 				hoursForTheMonth = new HoursForTheMonth();
 				foreach (MonthlyHours monthlyHours in hoursLastMonth.Hours)
@@ -364,6 +387,51 @@ namespace IPReport.ViewModel
 				}
 				
 			}
+		}
+
+
+		protected void LoadPerformanceCategories(XElement settingsElement)
+		{
+			XElement performanceCategoriesElement = settingsElement.Element("performanceCategories");
+			if (performanceCategoriesElement != null)
+			{
+				IEnumerable<XElement> categorySettings = performanceCategoriesElement.Elements("poor");
+				if (categorySettings.Count() > 0)
+				{
+					PoorPerformance = Convert.ToDecimal(categorySettings.First().Value);
+				}
+
+				categorySettings = performanceCategoriesElement.Elements("satisfactory");
+				if (categorySettings.Count() > 0)
+				{
+					SatisfactoryPerformance = Convert.ToDecimal(categorySettings.First().Value);
+				}
+
+				categorySettings = performanceCategoriesElement.Elements("good");
+				if (categorySettings.Count() > 0)
+				{
+					GoodPerformance = Convert.ToDecimal(categorySettings.First().Value);
+				}
+			}
+
+		}
+
+		private void AddPerformanceCategories(XElement settingsElement)
+		{
+			XElement performanceCategoriesElement = new XElement("performanceCategories");
+			settingsElement.Add(performanceCategoriesElement);
+
+			XElement poor = new XElement("poor");
+			poor.Value = PoorPerformance.ToString();
+			performanceCategoriesElement.Add(poor);
+
+			XElement satisfactory = new XElement("satisfactory");
+			satisfactory.Value = SatisfactoryPerformance.ToString();
+			performanceCategoriesElement.Add(satisfactory);
+
+			XElement good = new XElement("good");
+			good.Value = GoodPerformance.ToString();
+			performanceCategoriesElement.Add(good);
 		}
 
 	}

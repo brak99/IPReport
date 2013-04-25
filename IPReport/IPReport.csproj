@@ -257,6 +257,7 @@
     <Compile Include="View\DebugTestQueryWindow.xaml.cs">
       <DependentUpon>DebugTestQueryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DecimalToPercentConverter.cs" />
     <Compile Include="View\DepartmentGroupSalesView.xaml.cs">
       <DependentUpon>DepartmentGroupSalesView.xaml</DependentUpon>
     </Compile>

@@ -204,6 +204,7 @@
                             <GridViewColumn Header="$/Sale    " DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePerSale"/>
                             <GridViewColumn Header="Items/Sale    " DisplayMemberBinding="{Binding AverageItemsPerSale, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="AverageItemsPerSale"/>
                             <GridViewColumn Header="Sales/Hour    " DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="SalesPerHour"/>
+                            <GridViewColumn Header="$/Item Sold    " DisplayMemberBinding="{Binding AveragePricePerItemSold, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePricePerItemSold"/>
                             <GridViewColumn Header="Profit Margin    " DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="ProfitMargin"/>
                         </GridView>
                     </ListView.View>

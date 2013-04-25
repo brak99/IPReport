@@ -118,7 +118,14 @@ namespace IPReport.ViewModel
             OnPropertyChanged("ProfitMargin");
             }
         }
-
+		private decimal _averagePricePerItemSold;
+		public decimal AveragePricePerItemSold
+		{
+			get { return _averagePricePerItemSold; }
+			set { _averagePricePerItemSold = value;
+			OnPropertyChanged("AveragePricePerItemSold");
+			}
+		}
         #region Debugging Aides
 
         /// <summary>
@@ -501,6 +508,7 @@ namespace IPReport.ViewModel
                 associateSales.AverageItemsPerSale = associateSales.NumberSales == 0.0m ? 0.0m : (decimal)associateSales.TotalItems / (decimal)associateSales.NumberSales;
                 associateSales.AveragePerSale = associateSales.NumberSales == 0.0m ? 0.0m : associateSales.TotalSales / associateSales.NumberSales;
                 associateSales.ProfitMargin = associateSales.TotalCost == 0.0m ? 0.0m : ((associateSales.TotalSales - associateSales.TotalCost) / associateSales.TotalSales)*100.0m;
+				associateSales.AveragePricePerItemSold = associateSales.TotalItems == 0.0m ? 0.0m : (associateSales.TotalSales / associateSales.TotalItems);
             }
         }
 
