@@ -428,7 +428,7 @@ namespace IPReport.ViewModel
 			decimal actualRevenuePerformance = 0.0m;
 
 			decimal totalHoursForTheMonth = TotalHoursForTheMonth();
-			decimal targetRevenue = _settings.MonthlyRevenueTargets.FirstOrDefault(revenueTarget => revenueTarget.Month == ReportMonth).Target;
+			decimal targetRevenue = _settings.MonthlyRevenueTargets.FirstOrDefault(revenueTarget => revenueTarget.Month == StartDate.Value.Month).Target;
 			decimal targetDollarPerHour = totalHoursForTheMonth != 0 ? targetRevenue / totalHoursForTheMonth : 0.0m;
 
 			IStatusUpdate statusUpdate = ServiceContainer.Instance.GetService<IStatusUpdate>();
@@ -478,8 +478,7 @@ namespace IPReport.ViewModel
 			_salesAssociatePerformance.Series.Add(costSeriesData);
 			_salesAssociatePerformance.Series.Add(marginSeriesData);
 
-			decimal performanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
-			MonthlyRevenuePerformance.AddPerformanceSeries("revenue", performanceTarget, actualRevenuePerformance);
+			MonthlyRevenuePerformance.AddPerformanceSeries("revenue", targetRevenue, actualRevenuePerformance);
 
 
         }
@@ -498,7 +497,7 @@ namespace IPReport.ViewModel
 		}
 		//protected void UpdateRevenueTarget()
 		//{
-		//    _monthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
+		//    MonthlyRevenuePerformance.PerformanceTarget = _settings.MonthlyRevenueTargets.First(target => target.Month == ReportMonth).Target;
 		//}
 
         private void PopulateAverages()
