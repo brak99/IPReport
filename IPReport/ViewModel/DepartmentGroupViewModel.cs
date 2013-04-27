@@ -232,7 +232,7 @@ namespace IPReport.ViewModel
 		public string ToOTB(string store)
 		{
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
-			DateTime reportDate = dateService.DateForReport();
+			DateTime reportDate = dateService.DateForReport;
 
             string decimalSpecifier = "#.00";
 

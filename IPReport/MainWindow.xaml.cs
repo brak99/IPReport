@@ -69,17 +69,12 @@ namespace IPReport
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
 
 			DateSelection dateSelection = new DateSelection();
+
+			dateSelection.DataContext = dateService;
+
 			dateSelection.Owner = this;
 
-			dateSelection.datePicker1.DisplayDate = dateService.DateForReport();
-			dateSelection.datePicker1.SelectedDate = dateService.DateForReport();
-
 			dateSelection.ShowDialog();
-
-			if (dateSelection.DialogResult == true)
-			{
-				dateService.SetDateForReport((DateTime)dateSelection.datePicker1.SelectedDate);
-			}
 		}
 
 

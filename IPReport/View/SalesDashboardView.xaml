@@ -214,10 +214,6 @@
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <TextBlock FontSize="20" Padding="10,0,30,0">Sales Dashboard</TextBlock>
-            <!--<Label Content="Start:" VerticalAlignment="Center"/>
-            <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}" Height="23" VerticalAlignment="Center"></DatePicker>
-            <Label Content="End:" VerticalAlignment="Center"/>
-            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate}" Height="23" VerticalAlignment="Center"></DatePicker>-->
             <Button Background="Transparent" Width="30" BorderBrush="LightGray" Command="{Binding PreviousMonthCommand}">
                 <TextBlock Text="&lt;" FontSize="18"></TextBlock>
             </Button>

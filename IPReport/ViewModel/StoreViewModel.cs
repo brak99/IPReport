@@ -168,7 +168,7 @@ namespace IPReport.ViewModel
 			statusUpdateService.UpdateStatus("Running Voucher query");
 
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
-			XmlNodeList vouchers = VoucherRepository.GetVouchersForMonth(dateService.DateForReport(), _store.StoreNumber);
+			XmlNodeList vouchers = VoucherRepository.GetVouchersForMonth(dateService.DateForReport, _store.StoreNumber);
 
 			if (vouchers != null)
 			{
@@ -193,7 +193,7 @@ namespace IPReport.ViewModel
 			//statusUpdate.UpdateStatus("Running transfer query for " + department.DisplayName);
 
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
-			XmlNodeList transfers = TransferRepository.GetTransfersForMonthFromStore(dateService.DateForReport(), _store.StoreNumber);
+			XmlNodeList transfers = TransferRepository.GetTransfersForMonthFromStore(dateService.DateForReport, _store.StoreNumber);
 
 			if (transfers != null)
 			{
@@ -218,7 +218,7 @@ namespace IPReport.ViewModel
 				}
 			}
 
-			transfers = TransferRepository.GetTransfersForMonthToStore(dateService.DateForReport(), _store.StoreNumber);
+			transfers = TransferRepository.GetTransfersForMonthToStore(dateService.DateForReport, _store.StoreNumber);
 
 			if (transfers != null)
 			{
@@ -249,7 +249,7 @@ namespace IPReport.ViewModel
 
 			IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
 
-			DateTime startDate = dateService.DateForReport();
+			DateTime startDate = dateService.DateForReport;
 			startDate = DateUtil.FirstDayOfMonthFromDateTime(startDate);
 
 			XmlNodeList salesList = SalesRepository.GetSales(startDate, _store.StoreNumber);
@@ -285,7 +285,7 @@ namespace IPReport.ViewModel
 
             IDateService dateService = ServiceContainer.Instance.GetService<IDateService>();
 
-            XmlNodeList salesList = SalesRepository.GetSales(dateService.DateForReport(), _store.StoreNumber);
+            XmlNodeList salesList = SalesRepository.GetSales(dateService.DateForReport, _store.StoreNumber);
 
             if (salesList != null)
             {
