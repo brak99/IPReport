@@ -35,31 +35,23 @@ namespace IPReport.View
 
 		private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			//try
-			//{
-			//    if (e.Key == Key.Enter)
-			//{	
-			//        e.Handled = true;
-			//        DataGrid dataGrid = sender as DataGrid;
+			try
+			{
+				DataGrid dataGrid = sender as DataGrid;
 
-			//        int cellColumn = dataGrid.CurrentCell.Column.DisplayIndex;
-			//        dataGrid.CurrentCell = dataGrid.Ite
-			//        DataGridColumn leftmostColumn = dataGrid.ColumnFromDisplayIndex(0);
-			//        dataGrid.
-			//        //var cell = GetCell(dgIssuance, dgIssuance.Items.Count - 1, 2);
-			//        //if (cell != null)
-			//        //{
-			//        //    cell.IsSelected = true;
-			//        //    cell.Focus();
-			//        //    dg.BeginEdit();
-			//        //}
-			//    }
-			//}
-			//catch (Exception ex)
-			//{
-			//    //MessageBox(ex.Message, "Error", MessageType.Error);
-			//}
+				if (e.Key == Key.Enter)
+				{
+					if (dataGrid.CurrentCell.Column.DisplayIndex == 1)
+					{
+						dataGrid.CurrentCell = new DataGridCellInfo(dataGrid.Items[dataGrid.Items.Count-1], dataGrid.Columns[0]);
+						e.Handled = true;
+					}
+				}
+			}
+			catch (System.Exception ex)
+			{
+				
+			}
 		}
-
 	}
 }

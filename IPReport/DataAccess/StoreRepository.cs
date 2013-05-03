@@ -5,10 +5,11 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
+using IPReport.Util;
 
 namespace IPReport.DataAccess
 {
-	public class StoreRepository
+	public class StoreRepository : IStoreName
 	{
 		private object _lockObject = new object();
 		public static readonly StoreRepository Instance = new StoreRepository();
@@ -26,6 +27,7 @@ namespace IPReport.DataAccess
 			{
 				LoadStores(StoreFileLocation());
 			}
+			ServiceContainer.Instance.AddService<IStoreName>(this);
 		}
 
 		private string StoreFileLocation()
@@ -108,6 +110,20 @@ namespace IPReport.DataAccess
 			{
 				InitDefaultStores();	
 			}
+		}
+
+		public string GetStoreName(int storeNumber)
+		{
+			Store store = _stores.Find(repositoryStore => repositoryStore.StoreNumber == storeNumber);
+
+			string storeName = "";
+
+			if (store != null)
+			{
+				storeName = store.Name;
+			}
+
+			return storeName;
 		}
 	}
 }

@@ -209,6 +209,7 @@
     <Compile Include="Util\ISaveToOtb.cs" />
     <Compile Include="Util\ISaveToXml.cs" />
     <Compile Include="Util\IStatusUpdate.cs" />
+    <Compile Include="Util\IStoreName.cs" />
     <Compile Include="Util\QuickBooksQuery.cs" />
     <Compile Include="Util\ReportDateService.cs" />
     <Compile Include="Util\ServiceContainer.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="View\DepartmentSalesDisplayView.xaml.cs">
       <DependentUpon>DepartmentSalesDisplayView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AverageColumnConverter.cs" />
     <Compile Include="View\IntToMonthConverter.cs" />
     <Compile Include="View\InventoryView.xaml.cs">
       <DependentUpon>InventoryView.xaml</DependentUpon>
@@ -277,6 +279,7 @@
     <Compile Include="View\SalesDashboardView.xaml.cs">
       <DependentUpon>SalesDashboardView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\StoreNumberToNameConverter.cs" />
     <Compile Include="View\StoreRetailValueView.xaml.cs">
       <DependentUpon>StoreRetailValueView.xaml</DependentUpon>
     </Compile>
