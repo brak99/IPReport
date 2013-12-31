@@ -1,0 +1,24 @@
+﻿TODO
+----------------------
+* vendor transfers -- returns to vendor are a transfer
+   * <?xml version="1.0" encoding="utf-8"?><?qbposxml version="3.0"?><QBPOSXML><QBPOSXMLMsgsRq onError="stopOnError"><VoucherQueryRq><TimeCreatedRangeFilter><FromTimeCreated>2013-04-01T00:00:00</FromTimeCreated><ToTimeCreated>2013-04-30T23:59:59</ToTimeCreated></TimeCreatedRangeFilter><StoreNumberFilter><MatchNumericCriterion>Equal</MatchNumericCriterion><StoreNumber>1</StoreNumber></StoreNumberFilter></VoucherQueryRq></QBPOSXMLMsgsRq></QBPOSXML>
+* caching, try out microsoft enterprise library
+      * sqlite
+* graph margin in bullet graph vs ideal percent (52%)
+* for sales dashboard...need double click to show items for sales
+* need lookup for inventory to calc margin...that or is cost in receipt?  in receipt there is SalesReceiptItemRet which has Cost, but margin coming out diff than QB report
+* sales $ per hour, cost $ per hour stacked graph
+      or total sales $, cost $ stacked graph
+* What about year?  Do I need to support past years?  Future years?
+* Year rollover
+* wait indicator when running reports
+* bootstrap employee hours from QB, prompt user?
+* set year for dashboard settings dialog?
+* YTD revenue?
+
+
+
+
+
+
+

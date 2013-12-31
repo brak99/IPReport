@@ -339,19 +339,6 @@ namespace IPReport.ViewModel
             }
         }
 
-		private CollectionView _associateSalesView = null;
-		public CollectionView AssociateSalesView
-		{
-			get
-			{
-				if (_associateSalesView == null)
-				{
-					_associateSalesView = new CollectionView(_associateSales);
-				}
-
-				return _associateSalesView;
-			}
-		}
 		protected Dictionary<string, ItemSold> _itemsSold = new Dictionary<string, ItemSold>();
 
 		protected ObservableCollection<ItemSold> _topItemsSold = new ObservableCollection<ItemSold>();
@@ -403,8 +390,8 @@ namespace IPReport.ViewModel
             if (StartDate.HasValue && EndDate.HasValue)
             {
 				ZeroOut();
-                PopulateSales();
-                PopulateTime();
+				PopulateTime();
+				PopulateSales();
                 PopulateAverages();
                 PopulateChartData();
             }
@@ -582,14 +569,14 @@ namespace IPReport.ViewModel
                     else
                     {
                         associateSales = new AssociateSales();
+
                         associateSales.SalesAssociate = timeEntry.EmployeeLoginName;
                         DateTime clockIn = DateUtil.ParseDate(timeEntry.ClockInTime);
                         DateTime clockOut = DateUtil.ParseDate(timeEntry.ClockOutTime);
 
                         associateSales.HoursWorked = (decimal)((clockOut - clockIn).TotalHours);
 						associateSales.StoreNumber = timeEntry.StoreNumber;
-
-                        AssociateSales.Add(associateSales);
+						AssociateSales.Add(associateSales);
                     }
                 }
             }
@@ -633,10 +620,11 @@ namespace IPReport.ViewModel
                         associateSales = new AssociateSales();
                         associateSales.SalesAssociate = salesReceipt.Associate;
                         associateSales.NumberSales = 1;
+						
                         TotalUpSales(associateSales, salesReceipt);
-                        
-                        AssociateSales.Add(associateSales);
-                    }
+
+						AssociateSales.Add(associateSales);
+					}
                     TotalUpCost(associateSales, salesReceipt);
                 }
 

@@ -17,9 +17,9 @@
         <view:AverageColumnConverter x:Key="AverageColumnConverter"/>
         
         <CollectionViewSource x:Key="GroupedStoreView" Source="{Binding AssociateSales}">
-            <CollectionViewSource.SortDescriptions>
+            <!--<CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="StoreNumber"/>
-            </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource.SortDescriptions>-->
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="StoreNumber"/>
             </CollectionViewSource.GroupDescriptions>
@@ -144,7 +144,7 @@
                     </chart:StackedBarChart>
                 </StackPanel>
                 
-                <StackPanel Orientation="Vertical" Grid.Row="1">
+                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="1,0,-1,0">
                     <TextBlock Text="Monthly Revenue" FontWeight="Light" FontSize="18"/>
                     <chart:BulletGraph x:Name="RevenueBulletGraph"
                                    DataContext="{Binding MonthlyRevenuePerformance}"
@@ -186,82 +186,91 @@
                 </StackPanel>
                 
             </Grid>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Top 10 Items Sold" FontSize="18" FontWeight="Light"/>
-                <ListView
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Top 10 Items Sold" FontSize="18" FontWeight="Light"/>
+                    <ListView Grid.Row="1"
                       ItemContainerStyle="{StaticResource alternatingStyle}" AlternationCount="2"
                     ItemsSource="{Binding Path=TopItemsSold}" Width="Auto">
-                    <ListView.View>
-                        <GridView >
-                            <GridViewColumn Header="Item    " DisplayMemberBinding="{Binding Desc1}" />
-                            <GridViewColumn Header="# Sold    " DisplayMemberBinding="{Binding Quantity}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <TextBlock Text="Performance" FontSize="18" FontWeight="Light"/>
-                <ListView
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="Item    " DisplayMemberBinding="{Binding Desc1}" />
+                                <GridViewColumn Header="# Sold    " DisplayMemberBinding="{Binding Quantity}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <TextBlock Grid.Row="2" Text="Performance" FontSize="18" FontWeight="Light"/>
+
+                    <ListView x:Name="AssociatePerformance" Grid.Row="3"
+                              DataContext="{StaticResource GroupedStoreView}"
                       ItemContainerStyle="{StaticResource alternatingStyle}" AlternationCount="2"
-                    ItemsSource="{Binding Source={StaticResource GroupedStoreView}}" 
+                     ItemsSource="{Binding}"
                     Width="Auto"
                       util:GridViewSort.AutoSort="True">
-                    <ListView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.ContainerStyle>
-                                <Style TargetType="{x:Type GroupItem}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
-                                                    <Expander.Header>
-                                                        <StackPanel Orientation="Horizontal" Background="#e6f2f5">
-                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name, Converter={StaticResource StoreNumberToNameConverter}}" 
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Horizontal" Background="#e6f2f5">
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=Name, Converter={StaticResource StoreNumberToNameConverter}}" 
                                                                        Width="{Binding ElementName=AssociateColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=HoursWorked, StringFormat={}{0:#.0}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=HoursWorked, StringFormat={}{0:#.0}}"
                                                                        Width="{Binding ElementName=HoursWorkedColumn, Path=ActualWidth}"
                                                                        Margin="-16,0,0,0"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=NumberSales, StringFormat={}{0:#.0}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=NumberSales, StringFormat={}{0:#.0}}"
                                                                        Width="{Binding ElementName=SalesColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=TotalSales, StringFormat={}{0:#.00}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=TotalSales, StringFormat={}{0:#.00}}"
                                                                        Width="{Binding ElementName=SalesDollarsColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=AveragePerSale, StringFormat={}{0:#.00}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=AveragePerSale, StringFormat={}{0:#.00}}"
                                                                        Width="{Binding ElementName=DollarsPerSaleColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=AverageItemsPerSale, StringFormat={}{0:#.0}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=AverageItemsPerSale, StringFormat={}{0:#.0}}"
                                                                        Width="{Binding ElementName=ItemsPerSaleColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=SalesPerHour, StringFormat={}{0:#.0}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=SalesPerHour, StringFormat={}{0:#.0}}"
                                                                        Width="{Binding ElementName=SalesPerHourColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=AveragePricePerItemSold, StringFormat={}{0:#.00}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=AveragePricePerItemSold, StringFormat={}{0:#.00}}"
                                                                        Width="{Binding ElementName=DollarsPerItemColumn, Path=ActualWidth}"/>
-                                                            <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=ProfitMargin, StringFormat={}{0:#.0}}"
+                                                                <TextBlock Text="{Binding Converter={StaticResource AverageColumnConverter}, ConverterParameter=ProfitMargin, StringFormat={}{0:#.0}}"
                                                                        Width="{Binding ElementName=ProfitMarginColumn, Path=ActualWidth}"/>
-                                                        </StackPanel>
-                                                    </Expander.Header>
-                                                    <Expander.Content>
-                                                        <ItemsPresenter />
-                                                    </Expander.Content>
-                                                </Expander>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                    </ListView.GroupStyle>
-                    <ListView.View>
-                        <GridView >
-                            <GridViewColumn x:Name="AssociateColumn" Header="Associate    " DisplayMemberBinding="{Binding SalesAssociate}" util:GridViewSort.PropertyName="SalesAssociate"/>
-                            <GridViewColumn x:Name="HoursWorkedColumn" Header="Hours    " DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="HoursWorked"/>
-                            <GridViewColumn x:Name="SalesColumn" Header="Sales    " DisplayMemberBinding="{Binding NumberSales}" util:GridViewSort.PropertyName="NumberSales"/>
-                            <GridViewColumn  x:Name="SalesDollarsColumn" Header="Sales $    " DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="TotalSales"/>
-                            <GridViewColumn  x:Name="DollarsPerSaleColumn" Header="$/Sale    " DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePerSale"/>
-                            <GridViewColumn  x:Name="ItemsPerSaleColumn" Header="Items/Sale    " DisplayMemberBinding="{Binding AverageItemsPerSale, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="AverageItemsPerSale"/>
-                            <GridViewColumn  x:Name="SalesPerHourColumn" Header="Sales/Hour    " DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="SalesPerHour"/>
-                            <GridViewColumn  x:Name="DollarsPerItemColumn" Header="$/Item Sold    " DisplayMemberBinding="{Binding AveragePricePerItemSold, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePricePerItemSold"/>
-                            <GridViewColumn  x:Name="ProfitMarginColumn" Header="Profit Margin    " DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="ProfitMargin"/>
-                            <!--<GridViewColumn Header="Store    " DisplayMemberBinding="{Binding StoreNumber}" util:GridViewSort.PropertyName="StoreNumber"/>-->
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </StackPanel>
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                        <Expander.Content>
+                                                            <ItemsPresenter />
+                                                        </Expander.Content>
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn x:Name="AssociateColumn" Header="Associate    " DisplayMemberBinding="{Binding SalesAssociate}" util:GridViewSort.PropertyName="SalesAssociate"/>
+                                <GridViewColumn x:Name="HoursWorkedColumn" Header="Hours    " DisplayMemberBinding="{Binding HoursWorked, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="HoursWorked"/>
+                                <GridViewColumn x:Name="SalesColumn" Header="Sales    " DisplayMemberBinding="{Binding NumberSales}" util:GridViewSort.PropertyName="NumberSales"/>
+                                <GridViewColumn  x:Name="SalesDollarsColumn" Header="Sales $    " DisplayMemberBinding="{Binding TotalSales, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="TotalSales"/>
+                                <GridViewColumn  x:Name="DollarsPerSaleColumn" Header="$/Sale    " DisplayMemberBinding="{Binding AveragePerSale, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePerSale"/>
+                                <GridViewColumn  x:Name="ItemsPerSaleColumn" Header="Items/Sale    " DisplayMemberBinding="{Binding AverageItemsPerSale, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="AverageItemsPerSale"/>
+                                <GridViewColumn  x:Name="SalesPerHourColumn" Header="Sales/Hour    " DisplayMemberBinding="{Binding SalesPerHour, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="SalesPerHour"/>
+                                <GridViewColumn  x:Name="DollarsPerItemColumn" Header="$/Item Sold    " DisplayMemberBinding="{Binding AveragePricePerItemSold, StringFormat={}{0:#.00}}" util:GridViewSort.PropertyName="AveragePricePerItemSold"/>
+                                <GridViewColumn  x:Name="ProfitMarginColumn" Header="Profit Margin    " DisplayMemberBinding="{Binding ProfitMargin, StringFormat={}{0:#.0}}" util:GridViewSort.PropertyName="ProfitMargin"/>
+                                <!--<GridViewColumn Header="Store    " DisplayMemberBinding="{Binding StoreNumber}" util:GridViewSort.PropertyName="StoreNumber"/>-->
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                
+            </Grid>
             
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">

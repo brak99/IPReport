@@ -100,10 +100,6 @@ namespace IPReport.DataAccess
 						_stores.Add(store);
 
 					}
-					//_stores = (from storeElem in XDocument.Load(reader).Element("stores").Elements("store")
-					// select Store.GetInstance(
-					//    (string)storeElem.Attribute("Name")
-					//     )).ToList();
 				}
 			}
 			catch (System.Exception)
