@@ -180,18 +180,24 @@
 
                 </Grid>
                 
-                <StackPanel Grid.Row="3" Orientation="Vertical">
-                    <TextBlock Text="Performance Targets" FontWeight="Light" FontSize="18"/>
-                    <chart:BulletGraph DataContext="{Binding Path=SalesAssociateTargetPerformance}">
-                        <chart:BulletGraph.ItemTemplate>
-                            <DataTemplate>
-                                <ItemsControl ItemsSource="{Binding Path=Items}" />
-                            </DataTemplate>
-                        </chart:BulletGraph.ItemTemplate>
+                <Grid x:Name="PerformanceTargets" Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Performance Targets" FontWeight="Light" FontSize="18"/>
+                    <ScrollViewer Grid.Row="1">
+                        <chart:BulletGraph DataContext="{Binding Path=SalesAssociateTargetPerformance}">
+                            <chart:BulletGraph.ItemTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Path=Items}" />
+                                </DataTemplate>
+                            </chart:BulletGraph.ItemTemplate>
 
-                    </chart:BulletGraph>
-                </StackPanel>
-                
+                        </chart:BulletGraph>
+                    </ScrollViewer>
+                    
+                </Grid>
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

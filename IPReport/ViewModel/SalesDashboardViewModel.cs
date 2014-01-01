@@ -403,7 +403,7 @@ namespace IPReport.ViewModel
 
 			decimal totalHours = 0.0m;
 
-			if (monthHours != null)
+			if (monthHours != null && monthHours.Count > 0)
 			{
 				foreach (MonthlyHours monthlyHours in monthHours)
 				{
@@ -411,22 +411,51 @@ namespace IPReport.ViewModel
 				}
 
 			}
+			else
+			{
+				foreach (AssociateSales associateSales in AssociateSales)
+				{
+					totalHours += associateSales.HoursWorked;
+				}
+			}
 			
 			return totalHours;
 		}
 
+		private IEnumerable<AssociateSales> CalculateAssociateTotals()
+		{
+			Dictionary<string, AssociateSales> totaledUp = new Dictionary<string, AssociateSales>();
+
+			foreach (AssociateSales associateSales in AssociateSales)
+			{
+				AssociateSales summedSales = null;
+
+				if (totaledUp.TryGetValue(associateSales.SalesAssociate, out summedSales))
+				{
+					summedSales.TotalCost += associateSales.TotalCost;
+					summedSales.TotalSales += associateSales.TotalSales;
+					summedSales.HoursWorked += associateSales.HoursWorked;
+				}
+				else
+				{
+					summedSales = new AssociateSales
+					{
+						SalesAssociate = associateSales.SalesAssociate,
+						TotalCost = associateSales.TotalCost,
+						TotalSales = associateSales.TotalSales,
+						HoursWorked = associateSales.HoursWorked
+					};
+					totaledUp.Add(summedSales.SalesAssociate, summedSales);
+				}
+			}
+
+			return totaledUp.Values.ToList();
+		}
+
         private void PopulateChartData()
         {
-			MonthlyRevenuePerformance.Clear();
-			MonthlyRevenuePerformance.GoodPerformance = (double)_settings.GoodPerformance;
-			MonthlyRevenuePerformance.SatisfactoryPerformance = (double)_settings.SatisfactoryPerformance;
-			MonthlyRevenuePerformance.PoorPerformance = (double)_settings.PoorPerformance;
-
-			SalesAssociateTargetPerformance.Clear();
-
-			SalesAssociateTargetPerformance.GoodPerformance = (double)_settings.GoodPerformance;
-			SalesAssociateTargetPerformance.SatisfactoryPerformance = (double)_settings.SatisfactoryPerformance;
-			SalesAssociateTargetPerformance.PoorPerformance = (double)_settings.PoorPerformance;
+			SetMonthlyRevenuePerformanceNumbers();
+			SetSalesAssociateTargetPerformanceNumbers();
 
 			_salesAssociatePerformance.Series.Clear();
 			SeriesData costSeriesData = new SeriesData();
@@ -442,12 +471,11 @@ namespace IPReport.ViewModel
 
 			IStatusUpdate statusUpdate = ServiceContainer.Instance.GetService<IStatusUpdate>();
 
-            foreach (AssociateSales associateSales in AssociateSales)
-            {
-				StringWrapper wrapper = new StringWrapper();
-				wrapper.Value = associateSales.SalesAssociate;
+			IEnumerable<AssociateSales> totaledUp = CalculateAssociateTotals();
 
-				if (_settings.IgnoreList.FirstOrDefault(ignore => ignore.Value == associateSales.SalesAssociate) != null)
+			foreach (AssociateSales associateSales in totaledUp)
+            {
+				if (ShouldSkipBasedOnIgnoreList(associateSales))
 				{
 					continue;
 				}
@@ -465,13 +493,12 @@ namespace IPReport.ViewModel
                 marginData.Category = costData.Category;
                 marginData.Number = associateSales.TotalSales - associateSales.TotalCost;
 				
-				//_monthlyRevenuePerformance.ActualPerformance += associateSales.TotalSales;
 				actualRevenuePerformance += associateSales.TotalSales;
 
 				costSeriesData.Items.Add(costData);
 				marginSeriesData.Items.Add(marginData);
 
-				if (_settings.MonthHours != null)
+				if (_settings.MonthHours != null && _settings.MonthHours.Count > 0)
 				{
 					MonthlyHours salesAssociateScheduledHours = _settings.MonthHours.FirstOrDefault(monthHours => monthHours.Associate == associateSales.SalesAssociate);
 
@@ -482,6 +509,14 @@ namespace IPReport.ViewModel
 						SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
 					}
 				}
+				else
+				{
+					MonthlyHours salesAssociateHoursWorked = new MonthlyHours { Associate = associateSales.SalesAssociate, Hours = associateSales.HoursWorked };
+
+					decimal associateTarget = salesAssociateHoursWorked.Hours * targetDollarPerHour;
+
+					SalesAssociateTargetPerformance.AddPerformanceSeries(associateSales.SalesAssociate, associateTarget, associateSales.TotalSales);
+				}
             }
 
 			_salesAssociatePerformance.Series.Add(costSeriesData);
@@ -491,6 +526,28 @@ namespace IPReport.ViewModel
 
 
         }
+
+		private bool ShouldSkipBasedOnIgnoreList(AssociateSales associateSales)
+		{
+			return _settings.IgnoreList.FirstOrDefault(ignore => ignore.Value == associateSales.SalesAssociate) != null;
+		}
+
+		private void SetSalesAssociateTargetPerformanceNumbers()
+		{
+			SalesAssociateTargetPerformance.Clear();
+
+			SalesAssociateTargetPerformance.GoodPerformance = (double)_settings.GoodPerformance;
+			SalesAssociateTargetPerformance.SatisfactoryPerformance = (double)_settings.SatisfactoryPerformance;
+			SalesAssociateTargetPerformance.PoorPerformance = (double)_settings.PoorPerformance;
+		}
+		
+		private void SetMonthlyRevenuePerformanceNumbers()
+		{
+			MonthlyRevenuePerformance.Clear();
+			MonthlyRevenuePerformance.GoodPerformance = (double)_settings.GoodPerformance;
+			MonthlyRevenuePerformance.SatisfactoryPerformance = (double)_settings.SatisfactoryPerformance;
+			MonthlyRevenuePerformance.PoorPerformance = (double)_settings.PoorPerformance;
+		}
 
 		protected void CalculateSalesAssociatePerformanceTargetData()
 		{
@@ -516,18 +573,31 @@ namespace IPReport.ViewModel
                 associateSales.SalesPerHour = associateSales.HoursWorked == 0.0m ? 0.0m : (associateSales.NumberSales / associateSales.HoursWorked);
                 associateSales.AverageItemsPerSale = associateSales.NumberSales == 0.0m ? 0.0m : (decimal)associateSales.TotalItems / (decimal)associateSales.NumberSales;
                 associateSales.AveragePerSale = associateSales.NumberSales == 0.0m ? 0.0m : associateSales.TotalSales / associateSales.NumberSales;
-                associateSales.ProfitMargin = associateSales.TotalCost == 0.0m ? 0.0m : ((associateSales.TotalSales - associateSales.TotalCost) / associateSales.TotalSales)*100.0m;
+				associateSales.ProfitMargin = CalculateProfitMargin(associateSales);
+                
 				associateSales.AveragePricePerItemSold = associateSales.TotalItems == 0.0m ? 0.0m : (associateSales.TotalSales / associateSales.TotalItems);
             }
         }
 
-        protected AssociateSales GetAssociate(string salesAssociate)
+		private decimal CalculateProfitMargin(AssociateSales associateSales)
+		{
+			decimal profitMargin = 0.0m;
+			
+			if (associateSales.TotalCost > 0.0m && associateSales.TotalSales > 0.0m)
+			{
+				profitMargin = ((associateSales.TotalSales - associateSales.TotalCost) / associateSales.TotalSales) * 100.0m;
+			}
+
+			return profitMargin;
+		}
+
+        protected AssociateSales GetAssociate(string salesAssociate, string storeNumber)
         {
             AssociateSales associateSales;
 
             try
             {
-                associateSales = AssociateSales.FirstOrDefault(associate => associate.SalesAssociate == salesAssociate);
+                associateSales = AssociateSales.FirstOrDefault(associate => (associate.SalesAssociate == salesAssociate && associate.StoreNumber == storeNumber));
             }
             catch (InvalidOperationException)
             {
@@ -556,7 +626,7 @@ namespace IPReport.ViewModel
 
                     _timeEntries.Add(timeEntry);
 
-                    AssociateSales associateSales = GetAssociate(timeEntry.EmployeeLoginName);
+                    AssociateSales associateSales = GetAssociate(timeEntry.EmployeeLoginName, timeEntry.StoreNumber);
 
                     if (associateSales != null)
                     {
@@ -564,7 +634,7 @@ namespace IPReport.ViewModel
                         DateTime clockOut = DateUtil.ParseDate(timeEntry.ClockOutTime);
 
                         associateSales.HoursWorked += (decimal)((clockOut - clockIn).TotalHours);
-						associateSales.StoreNumber = timeEntry.StoreNumber;
+						//associateSales.StoreNumber = timeEntry.StoreNumber;
                     }
                     else
                     {
@@ -609,7 +679,7 @@ namespace IPReport.ViewModel
 
                     _salesReceipts.Add(salesReceipt);
                    
-                    AssociateSales associateSales = GetAssociate(salesReceipt.Associate);
+                    AssociateSales associateSales = GetAssociate(salesReceipt.Associate, salesReceipt.StoreNumber);
                     if (associateSales != null)
                     {
                         associateSales.NumberSales++;
@@ -620,7 +690,8 @@ namespace IPReport.ViewModel
                         associateSales = new AssociateSales();
                         associateSales.SalesAssociate = salesReceipt.Associate;
                         associateSales.NumberSales = 1;
-						
+						associateSales.StoreNumber = salesReceipt.StoreNumber;
+
                         TotalUpSales(associateSales, salesReceipt);
 
 						AssociateSales.Add(associateSales);

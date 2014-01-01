@@ -15,6 +15,8 @@
 * bootstrap employee hours from QB, prompt user?
 * set year for dashboard settings dialog?
 * YTD revenue?
+* NUnit not working (file not found?)
+* Set status to done when report or whatever finally finished.  Currently leaves it at last status.
 
 
 

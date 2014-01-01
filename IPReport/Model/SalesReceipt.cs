@@ -18,6 +18,7 @@ namespace IPReport.Model
 		public string Discount { get { return GetNodeInnerText("Discount"); } }
         public string Associate { get { return GetNodeInnerText("Associate"); } }
         public string Cashier { get { return GetNodeInnerText("Cashier"); } }
+		public string StoreNumber { get { return GetNodeInnerText("StoreNumber"); } }
 
 		public SalesReceipt(XmlNode node)
 			: base(node)
