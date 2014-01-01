@@ -17,9 +17,9 @@
         <view:AverageColumnConverter x:Key="AverageColumnConverter"/>
         
         <CollectionViewSource x:Key="GroupedStoreView" Source="{Binding AssociateSales}">
-            <!--<CollectionViewSource.SortDescriptions>
+            <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="StoreNumber"/>
-            </CollectionViewSource.SortDescriptions>-->
+            </CollectionViewSource.SortDescriptions>
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="StoreNumber"/>
             </CollectionViewSource.GroupDescriptions>
@@ -159,20 +159,27 @@
                 </StackPanel>
                 
                     
-                <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Stretch">
-                    <TextBlock Text="Associate Sales" FontWeight="Light" FontSize="18"/>
-                    <TextBlock Text="Cost $ / Profit $" FontWeight="Light" FontSize="13" Margin="10,0,0,0"/>
-                    
-                    <chart:StackedBarChart DataContext="{Binding Path=SalesAssociatePerformance}">
-                        <chart:StackedBarChart.ItemTemplate>
-                            <DataTemplate>
-                                <ItemsControl ItemsSource="{Binding Path=Items}" />
-                            </DataTemplate>
-                        </chart:StackedBarChart.ItemTemplate>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Associate Sales" FontWeight="Light" FontSize="18"/>
+                    <TextBlock Grid.Row="1" Text="Cost $ / Profit $" FontWeight="Light" FontSize="13" Margin="10,0,0,0"/>
+                    <ScrollViewer Grid.Row="2">
+                        <chart:StackedBarChart DataContext="{Binding Path=SalesAssociatePerformance}">
+                            <chart:StackedBarChart.ItemTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Path=Items}" />
+                                </DataTemplate>
+                            </chart:StackedBarChart.ItemTemplate>
 
-                    </chart:StackedBarChart>
-                </StackPanel>
+                        </chart:StackedBarChart>
+                    </ScrollViewer>
 
+                </Grid>
+                
                 <StackPanel Grid.Row="3" Orientation="Vertical">
                     <TextBlock Text="Performance Targets" FontWeight="Light" FontSize="18"/>
                     <chart:BulletGraph DataContext="{Binding Path=SalesAssociateTargetPerformance}">

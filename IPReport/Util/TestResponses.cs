@@ -1219,7 +1219,7 @@ namespace IPReport.Util
             {
                 string returnValue = "";
 
-                FileStream stream = new FileStream("ReceiptRequestResponse.xml", FileMode.Open, FileAccess.Read);
+                FileStream stream = new FileStream("SalesReceiptQueryRs.txt", FileMode.Open, FileAccess.Read);
                 StreamReader sr = new StreamReader(stream);
 
                 returnValue = sr.ReadToEnd();
@@ -1236,7 +1236,7 @@ namespace IPReport.Util
             {
                 string returnValue = "";
 
-                FileStream stream = new FileStream("TimeEntryQueryResponse.xml", FileMode.Open, FileAccess.Read);
+                FileStream stream = new FileStream("TimeEntryQueryRs.txt", FileMode.Open, FileAccess.Read);
                 StreamReader sr = new StreamReader(stream);
 
                 returnValue = sr.ReadToEnd();
