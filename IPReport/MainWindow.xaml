@@ -96,7 +96,7 @@
 										 Command="{Binding SettingsCommand}" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
-            <ribbon:RibbonTab x:Name="DebugTab" Header="Debug">
+            <ribbon:RibbonTab x:Name="DebugTab" Header="Debug" Visibility="Hidden">
 				<ribbon:RibbonGroup Header="Debugging">
 					<ribbon:RibbonButton Label="Debug" LargeImageSource="Resources\login_big.png"
 										 Command="{Binding DebugConnectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />

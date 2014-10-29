@@ -15,14 +15,20 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_27FA5F4722FC2B3617E3DA01B666D2E2"
+        "OwnerKey" = "8:_2CEA0EBF8FC344C1AA99C373407A5BE3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2CEA0EBF8FC344C1AA99C373407A5BE3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2EA53D877F3CEEDC4850E931E204F0EE"
-        "OwnerKey" = "8:_2CEA0EBF8FC344C1AA99C373407A5BE3"
+        "MsmKey" = "8:_3E6E5ED67470418A9C77BA1A802AAA84"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,14 +39,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_764602E3E8A242A58E17C1D84F7270EF"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_77EE7B79FEA1D50A1246BA176CB05400"
+        "OwnerKey" = "8:_2CEA0EBF8FC344C1AA99C373407A5BE3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BE6F3490FC63BFFDB2F411249EB54754"
-        "OwnerKey" = "8:_2EA53D877F3CEEDC4850E931E204F0EE"
+        "MsmKey" = "8:_77EE7B79FEA1D50A1246BA176CB05400"
+        "OwnerKey" = "8:_27FA5F4722FC2B3617E3DA01B666D2E2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C30C12F633CD5EADC1DD75BBF245360F"
+        "OwnerKey" = "8:_3E6E5ED67470418A9C77BA1A802AAA84"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -59,6 +71,24 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2CEA0EBF8FC344C1AA99C373407A5BE3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3E6E5ED67470418A9C77BA1A802AAA84"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_27FA5F4722FC2B3617E3DA01B666D2E2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_77EE7B79FEA1D50A1246BA176CB05400"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -71,12 +101,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C4F30B290C836D607A73714BE3CD0177"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2EA53D877F3CEEDC4850E931E204F0EE"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -104,6 +128,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -171,20 +208,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2EA53D877F3CEEDC4850E931E204F0EE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_27FA5F4722FC2B3617E3DA01B666D2E2"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Interop.QBPOSXMLRPLIB, Version=3.0.1.48, Culture=neutral, PublicKeyToken=31d8aec643e18259"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite.Linq, Version=1.0.84.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_2EA53D877F3CEEDC4850E931E204F0EE"
+                    "_27FA5F4722FC2B3617E3DA01B666D2E2"
                     {
-                    "Name" = "8:Interop.QBPOSXMLRPLIB.dll"
+                    "Name" = "8:System.Data.SQLite.Linq.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Interop.QBPOSXMLRPLIB.dll"
+            "SourcePath" = "8:System.Data.SQLite.Linq.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46980961708A4FDAB2D373B24FB438F6"
@@ -200,6 +237,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3E6E5ED67470418A9C77BA1A802AAA84"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Interop.QBPOSXMLRPLIB, Version=3.0.1.48, Culture=neutral, PublicKeyToken=31d8aec643e18259"
+                "ScatterAssemblies"
+                {
+                    "_3E6E5ED67470418A9C77BA1A802AAA84"
+                    {
+                    "Name" = "8:Interop.QBPOSXMLRPLIB.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\IPReport\\interop.QBPOSXMLRPLIB\\Interop.QBPOSXMLRPLIB.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_46980961708A4FDAB2D373B24FB438F6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_451D6EE2FFEB27B192E3EA522010F605"
@@ -233,10 +301,21 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_764602E3E8A242A58E17C1D84F7270EF"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_77EE7B79FEA1D50A1246BA176CB05400"
             {
-            "SourcePath" = "8:..\\IPReport\\QBXMLRP2Installer\\QBXMLRP2Installer.exe"
-            "TargetName" = "8:QBXMLRP2Installer.exe"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.84.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_77EE7B79FEA1D50A1246BA176CB05400"
+                    {
+                    "Name" = "8:System.Data.SQLite.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Data.SQLite.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46980961708A4FDAB2D373B24FB438F6"
             "Condition" = "8:"
@@ -250,10 +329,10 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BE6F3490FC63BFFDB2F411249EB54754"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C30C12F633CD5EADC1DD75BBF245360F"
             {
             "SourcePath" = "8:QBPOSXMLRPLib.dll"
             "TargetName" = "8:QBPOSXMLRPLib.dll"
@@ -268,7 +347,7 @@
             "Permanent" = "11:FALSE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
-            "Register" = "3:1"
+            "Register" = "3:2"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
@@ -372,7 +451,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:IPReport"
         "ProductCode" = "8:{AD0F69DA-A05A-46C0-8870-FA21DAA5FFA9}"
-        "PackageCode" = "8:{81294379-E30F-4630-9130-79A521722E9A}"
+        "PackageCode" = "8:{673C589C-CB04-491C-BDB2-7E400C204058}"
         "UpgradeCode" = "8:{160B5D03-B393-4353-89D3-E347F6713E8C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -935,7 +1014,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2CEA0EBF8FC344C1AA99C373407A5BE3"
             {
-            "SourcePath" = "8:..\\IPReport\\obj\\x86\\Debug\\IPReport.exe"
+            "SourcePath" = "8:..\\IPReport\\obj\\x86\\Release\\IPReport.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46980961708A4FDAB2D373B24FB438F6"

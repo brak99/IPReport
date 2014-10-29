@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IPReport.ViewModel;
 
 namespace IPReport.View
 {
@@ -23,5 +24,19 @@ namespace IPReport.View
         {
             InitializeComponent();
         }
+		
+		private void MonthToggleButton_Click(object sender, RoutedEventArgs e)
+		{
+			MonthSelect dialog = new MonthSelect();
+			//dialog.DataContext = DataContext;
+			dialog.Calendar.SelectedDate = ((SalesDashboardViewModel)DataContext).StartDate;
+			dialog.ShowDialog();
+			((SalesDashboardViewModel)DataContext).StartDate = dialog.Calendar.SelectedDate.Value;
+		}
+
+		private void MonthSelectControl_LostFocus(object sender, RoutedEventArgs e)
+		{
+			((SalesDashboardViewModel)DataContext).StartDate = MonthSelect.SelectedDate.Value;
+		}
     }
 }

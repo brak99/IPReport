@@ -205,8 +205,8 @@ namespace IPReport.ViewModel
     // Sales Associate        Hours Worked       # of sales       % of total store sales       Total Sales $     Avg $ per sale      Avg Items Per Sale     Sales per hour     margin %
     public class SalesDashboardViewModel : WorkspaceViewModel, IReportMonth
     {
-        private DateTime? _startDate;
-        public DateTime? StartDate
+        private DateTime _startDate;
+        public DateTime StartDate
         {
             get { return _startDate; }
             set 
@@ -368,26 +368,26 @@ namespace IPReport.ViewModel
 
 		private void NextMonth(object sender, RoutedEventArgs args)
 		{
-			StartDate = StartDate.Value.AddMonths(1);
-			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+			StartDate = StartDate.AddMonths(1);
+			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate);
 			Update(null, null);
 		}
 
 		private void PreviousMonth(object sender, RoutedEventArgs args)
 		{
-			StartDate = StartDate.Value.AddMonths(-1);
-			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+			StartDate = StartDate.AddMonths(-1);
+			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate);
 			Update(null, null);
 		}
 
 		private void UpdateStartAndEndDates()
 		{
 			StartDate = new DateTime(DateTime.Now.Year, ReportMonth, 1);
-			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate.Value);
+			EndDate = DateUtil.LastDayOfMonthFromDateTime(StartDate);
 		}
         public void Update(object sender, RoutedEventArgs args)
         {
-            if (StartDate.HasValue && EndDate.HasValue)
+            if (EndDate.HasValue)
             {
 				ZeroOut();
 				PopulateTime();
@@ -466,7 +466,7 @@ namespace IPReport.ViewModel
 			decimal actualRevenuePerformance = 0.0m;
 
 			decimal totalHoursForTheMonth = TotalHoursForTheMonth();
-			decimal targetRevenue = _settings.MonthlyRevenueTargets.FirstOrDefault(revenueTarget => revenueTarget.Month == StartDate.Value.Month).Target;
+			decimal targetRevenue = _settings.MonthlyRevenueTargets.FirstOrDefault(revenueTarget => revenueTarget.Month == StartDate.Month).Target;
 			decimal targetDollarPerHour = totalHoursForTheMonth != 0 ? targetRevenue / totalHoursForTheMonth : 0.0m;
 
 			IStatusUpdate statusUpdate = ServiceContainer.Instance.GetService<IStatusUpdate>();
@@ -609,7 +609,7 @@ namespace IPReport.ViewModel
 
         private void PopulateTime()
         {
-            XmlNodeList timeList = TimeEntryRepository.GetTimeEntries(StartDate.Value, EndDate.Value);
+            XmlNodeList timeList = TimeEntryRepository.GetTimeEntries(StartDate, EndDate.Value);
 
             if (timeList != null)
             {
@@ -630,23 +630,51 @@ namespace IPReport.ViewModel
 
                     if (associateSales != null)
                     {
-                        DateTime clockIn = DateUtil.ParseDate(timeEntry.ClockInTime);
-                        DateTime clockOut = DateUtil.ParseDate(timeEntry.ClockOutTime);
+						try
+						{
+							DateTime clockIn = DateUtil.ParseDate(timeEntry.ClockInTime);
+							DateTime clockOut = DateUtil.ParseDate(timeEntry.ClockOutTime);
 
-                        associateSales.HoursWorked += (decimal)((clockOut - clockIn).TotalHours);
+							associateSales.HoursWorked += (decimal)((clockOut - clockIn).TotalHours);
+						}
+						catch (FormatException)
+						{
+							if (String.IsNullOrEmpty(timeEntry.ClockOutTime))
+							{
+								IShowError showError = ServiceContainer.Instance.GetService<IShowError>();
+								if (showError != null)
+								{
+									showError.ShowWarning(timeEntry.EmployeeLoginName + " did not clock out after " + timeEntry.ClockInTime, "Missing Clock Out");
+								}
+							}
+						}
 						//associateSales.StoreNumber = timeEntry.StoreNumber;
                     }
                     else
                     {
-                        associateSales = new AssociateSales();
+						try
+						{
+							associateSales = new AssociateSales();
 
-                        associateSales.SalesAssociate = timeEntry.EmployeeLoginName;
-                        DateTime clockIn = DateUtil.ParseDate(timeEntry.ClockInTime);
-                        DateTime clockOut = DateUtil.ParseDate(timeEntry.ClockOutTime);
+							associateSales.SalesAssociate = timeEntry.EmployeeLoginName;
+							DateTime clockIn = DateUtil.ParseDate(timeEntry.ClockInTime);
+							DateTime clockOut = DateUtil.ParseDate(timeEntry.ClockOutTime);
 
-                        associateSales.HoursWorked = (decimal)((clockOut - clockIn).TotalHours);
-						associateSales.StoreNumber = timeEntry.StoreNumber;
-						AssociateSales.Add(associateSales);
+							associateSales.HoursWorked = (decimal)((clockOut - clockIn).TotalHours);
+							associateSales.StoreNumber = timeEntry.StoreNumber;
+							AssociateSales.Add(associateSales);
+						}
+						catch (FormatException)
+						{
+							if (String.IsNullOrEmpty(timeEntry.ClockOutTime))
+							{
+								IShowError showError = ServiceContainer.Instance.GetService<IShowError>();
+								if (showError != null)
+								{
+									showError.ShowWarning(timeEntry.EmployeeLoginName + " did not clock out after " + timeEntry.ClockInTime, "Missing Clock Out");
+								}
+							}
+						}
                     }
                 }
             }
@@ -662,7 +690,7 @@ namespace IPReport.ViewModel
 
         private void PopulateSales()
         {
-            XmlNodeList salesList = SalesRepository.GetSales(StartDate.Value, EndDate.Value);
+            XmlNodeList salesList = SalesRepository.GetSales(StartDate, EndDate.Value);
 
             if (salesList != null)
             {

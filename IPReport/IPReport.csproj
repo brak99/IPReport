@@ -208,6 +208,7 @@
     <Compile Include="Util\ISaveToCsv.cs" />
     <Compile Include="Util\ISaveToOtb.cs" />
     <Compile Include="Util\ISaveToXml.cs" />
+    <Compile Include="Util\IShowError.cs" />
     <Compile Include="Util\IStatusUpdate.cs" />
     <Compile Include="Util\IStoreName.cs" />
     <Compile Include="Util\QuickBooksQuery.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="View\AssociateSalesView.xaml.cs">
       <DependentUpon>AssociateSalesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\BoolInvertConverter.cs" />
     <Compile Include="View\DateSelection.xaml.cs">
       <DependentUpon>DateSelection.xaml</DependentUpon>
     </Compile>
@@ -272,6 +274,12 @@
     <Compile Include="View\IntToMonthConverter.cs" />
     <Compile Include="View\InventoryView.xaml.cs">
       <DependentUpon>InventoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MonthSelect.xaml.cs">
+      <DependentUpon>MonthSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MonthSelectControl.xaml.cs">
+      <DependentUpon>MonthSelectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SalesDashboardSettings.xaml.cs">
       <DependentUpon>SalesDashboardSettings.xaml</DependentUpon>
@@ -340,6 +348,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\InventoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MonthSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MonthSelectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

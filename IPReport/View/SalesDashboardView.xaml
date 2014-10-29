@@ -15,6 +15,7 @@
         <view:IntToMonthConverter x:Key="IntToMonthConverter"/>
         <view:StoreNumberToNameConverter x:Key="StoreNumberToNameConverter"/>
         <view:AverageColumnConverter x:Key="AverageColumnConverter"/>
+        <view:BoolInvertConverter x:Key="BoolInvertConverter"/>
         
         <CollectionViewSource x:Key="GroupedStoreView" Source="{Binding AssociateSales}">
             <CollectionViewSource.SortDescriptions>
@@ -292,7 +293,18 @@
                 <TextBlock Text="&lt;" FontSize="18"></TextBlock>
             </Button>
             <TextBlock VerticalAlignment="Center" Text=" " FontSize="16"/>
-            <TextBlock  VerticalAlignment="Center" Text="{Binding Path=StartDate.Month, Converter={StaticResource IntToMonthConverter}}" FontSize="16"/>
+            <!--<TextBlock  VerticalAlignment="Center" Text="{Binding Path=StartDate.Month, Converter={StaticResource IntToMonthConverter}}" FontSize="16" />-->
+            <Grid>
+                <!--<Button  Name="MonthToggleButton" VerticalAlignment="Center" Background="Transparent" BorderBrush="Transparent"
+                            Click="MonthToggleButton_Click">-->
+                <ToggleButton  Name="MonthToggleButton" VerticalAlignment="Center" Background="Transparent" BorderBrush="Transparent"
+                            >
+                    <TextBlock  VerticalAlignment="Center" Text="{Binding Path=StartDate.Month, Converter={StaticResource IntToMonthConverter}}" FontSize="16" />
+                </ToggleButton>
+                <Popup IsOpen="{Binding IsChecked, ElementName=MonthToggleButton}" x:Name="Popup" StaysOpen="False" Placement="Top">
+                    <view:MonthSelectControl x:Name="MonthSelect" Background="Transparent" LostFocus="MonthSelectControl_LostFocus"/>
+                </Popup>
+            </Grid>
             <TextBlock VerticalAlignment="Center" Text="  " FontSize="16"/>
             <TextBlock VerticalAlignment="Center" Text="{Binding Path=StartDate.Year}" FontSize="16"/>
             <TextBlock VerticalAlignment="Center" Text=" " FontSize="16"/>

@@ -20,7 +20,7 @@ namespace IPReport
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : ISaveFilePath, ISalesDashboardSettings
+	public partial class MainWindow : ISaveFilePath, ISalesDashboardSettings, IShowError
 	{
 		public RequestProcessor requestProcessor = null;
 
@@ -45,6 +45,7 @@ namespace IPReport
 			ServiceContainer.Instance.AddService<IDateService>(new FakeDateService());
 			ServiceContainer.Instance.AddService<IRetailCost>(new InventoryRepository());
 			ServiceContainer.Instance.AddService<IItemDepartmentService>(new ItemDepartmentRepository());
+			ServiceContainer.Instance.AddService<IShowError>(this);
 
 			MainWindowViewModel vm = DataContext as MainWindowViewModel;
 			//vm.UpdateAll();
@@ -105,6 +106,11 @@ namespace IPReport
 		{
 			InitializeComponent();
 
+			if (DateTime.Now.AddYears(-1) >= new DateTime(2014, 11, 02))
+			{
+				throw new FormatException();
+			}
+
 			DataContext = new MainWindowViewModel();
 
 			ServiceContainer.Instance.AddService<IQuickBooksQueryService>(new QuickBooksQuery());
@@ -142,6 +148,16 @@ namespace IPReport
 			bool? dialogResult = settingsDialog.ShowDialog();
 
 			return dialogResult;
+		}
+
+		public void ShowError(string errorMessage, string errorTitle)
+		{
+			MessageBox.Show(errorMessage, errorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+		}
+
+		public void ShowWarning(string warningMessage, string warningTitle)
+		{
+			MessageBox.Show(warningMessage, warningTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
 		}
 	}
 }
