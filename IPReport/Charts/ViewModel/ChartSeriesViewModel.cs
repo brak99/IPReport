@@ -62,13 +62,16 @@ namespace IPReport.Charts.ViewModel
 
 		void DataPointsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            foreach(var item in e.NewItems)
-            {
-                if (item is INotifyPropertyChanged)
-                {
-                    (item as INotifyPropertyChanged).PropertyChanged += DataPointGroup_PropertyChanged;
-                }
-            }
+			if (e.NewItems != null)
+			{
+				foreach (var item in e.NewItems)
+				{
+					if (item is INotifyPropertyChanged)
+					{
+						(item as INotifyPropertyChanged).PropertyChanged += DataPointGroup_PropertyChanged;
+					}
+				}
+			}
 
 			if (e.OldItems != null)
 			{
@@ -89,9 +92,6 @@ namespace IPReport.Charts.ViewModel
 
         private void RecalcValues()
         {
-            if (this.Caption == "Correctness")
-            {
-            }
             double maxValue = 0.0;
             double sum = 0.0;
             foreach (DataPoint dataPoint in DataPoints)
@@ -109,32 +109,5 @@ namespace IPReport.Charts.ViewModel
 
         public string Caption { get; set; }
 
-		//public event PropertyChangedEventHandler PropertyChanged;
-
-		//private void RaisePropertyChangeEvent(String propertyName)
-		//{
-		//    if (PropertyChanged != null)
-		//        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-		//}
-
-		//private object _ReferencedObject;
-
-		//public object ReferencedObject
-		//{
-		//    get
-		//    {
-		//        return _ReferencedObject;
-		//    }
-		//    set
-		//    {
-		//        _ReferencedObject = value;
-		//        //RaisePropertyChangeEvent("Value");
-		//        //RaisePropertyChangeEvent("DisplayName");
-		//        //if (_ReferencedObject is INotifyPropertyChanged)
-		//        //{
-		//        //    (_ReferencedObject as INotifyPropertyChanged).PropertyChanged += DataPoint_PropertyChanged;
-		//        //}
-		//    }
-		//}
 	}
 }

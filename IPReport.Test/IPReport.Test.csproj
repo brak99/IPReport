@@ -75,9 +75,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllDepartmentsViewModelTests.cs" />
+    <Compile Include="ChartSeriesViewModelTests.cs" />
     <Compile Include="DateUtilTests.cs" />
     <Compile Include="DepartmentGroupsRepositoryTest.cs" />
     <Compile Include="DepartmentGroupViewModelTests.cs" />
